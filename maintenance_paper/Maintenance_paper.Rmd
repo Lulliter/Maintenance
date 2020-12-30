@@ -1,22 +1,22 @@
 ---
-title: "Maintenance of infrastructure systems"
-subtitle: "Literature Review"
+title: "Manuscript"
+subtitle: "Generated using RMarkdown"
 author:
-- Luisa M. Mimmi^1^, Authorr II^2^
-- ^1^Independent Consultant, ^2^ Other University
+- Thea Knowles^1^, Thea Knowles' Alter Ego^2^
+- ^1^University at Buffalo, ^2^Western University
 date: "Last updated: `r format(Sys.time(), '%d %B, %Y')`"
 output:
-  bookdown::html_document2:
-    toc: yes
-    number_sections: no
   bookdown::word_document2:
     fig_caption: yes
     md_extensions: +footnotes
     reference_docx: ../custom_reference.docx
     toc: yes
+  bookdown::html_document2:
+    toc: yes
+    number_sections: no
 include.latex: TRUE
 csl: ../apa.csl
-bibliography: ../Maintenance-Resilience.bib
+bibliography: ../starwars_refs.bib
 ---
 
 ```{r setup, include=FALSE}
@@ -30,8 +30,9 @@ library(captioner) # You may have to download this
 figs <- captioner(prefix="Figure")
 tbls <- captioner(prefix="Table")
 
-# Source helper
-source("../r_scripts/helper.R")
+# Source helper (data cleaning and basic analyses) 
+# (if you have more .R files, each will source the previous, then the .Rmd sources the last .R) 
+source("../helper.R")
 ```
 
 
