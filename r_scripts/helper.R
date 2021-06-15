@@ -13,9 +13,14 @@
 #    install.packages(c("ggplot2", "dplyr", "captioner"))
 # Note: you can also check if you have them installed, and even install them directly, in your RStudio Packages panel or by clicking Tools >> Install Packages
 
-library(ggplot2)
-library(dplyr)
-
+if (!require("pacman")) install.packages("pacman")
+p_load(here,
+       magrittr,
+        dplyr, janitor,
+       ggplot2,
+       captioner,
+       citr,emo, readr, 
+       gt)
 
 # Load data ----
 starwars <- dplyr::starwars

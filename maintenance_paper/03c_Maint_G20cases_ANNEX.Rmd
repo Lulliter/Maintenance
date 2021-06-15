@@ -1,0 +1,530 @@
+---
+title: "ANNEX 1 - Maintenance Case Studies"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  bookdown::html_document2:
+    toc: yes
+    toc_depth: 3
+    toc_float: TRUE
+    number_sections: no
+    code_folding: hide
+  bookdown::word_document2:
+    fig_caption: yes
+    md_extensions: +footnotes
+    reference_docx: ../custom_reference.docx
+    toc: yes
+include.latex: TRUE
+---
+
+##### ------ (Set up + colors) 
+```{r setupANNEX, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+# Load required packages
+if (!require("pacman")) install.packages("pacman")
+p_load(here,fs,# dir managmnt
+       captioner, # allows you to store figure and table captions and print them later.
+       citr, # RStudio Addin to Insert Markdown Citations
+       tidyverse, # dplyr,tidyr, ggplot2,readr, purr, stringr, forcats
+       magrittr,
+       janitor,
+       skimr,
+       emo, # emojy
+       gt,
+       readxl,
+       eulerr , # for venn diagram
+       viridis, patchwork, hrbrthemes, fmsb,colormap, # 4 radar chart 
+       flextable, #framework for easily create tables for reporting and publications (WORD)
+        colortools,
+       officer, # to save flextable in word
+       data.table
+       )
+
+# Preparing to make figure and table captions using the captioner package
+figs <- captioner(prefix="Figure")
+tbls <- captioner(prefix="Table")
+# then for referinging 
+#Figure \@ref(fig:chunk-name)) 
+
+#   colori                                                             
+	bluMEFprinc	<- "#2D337C"        # "#2D337CFF" (alpha = 1) OR rgb(45/255, 51/255, 124/255, 1)
+	
+	gialloMEFprinc <- "#BD8723"       # "#BD8723FF" (alpha = 1) OR rgb(189/255, 135/255, 35/255, 1)
+ 	gialloMEFlight <- "#BD872399"       # "#BD8723FF" (alpha = 1) OR rgb(189/255, 135/255, 35/255, 0.4)
+ 
+	bluMEFsec	<- "#455A8B"         # "#455A8BFF" (alpha = 1) OR rgb(69/255, 90/255, 139/255, 1)
+	bluMEFsec_light	<- "#455A8B99"   
+	bordeaux	<- "#854442"       # "#854442FF" (alpha = 1) OR rgb(133/255, 68/255, 66/255, 1)
+  bordeaux_light	<- 	"#85444299"
+	verde	<- "#285E60"       # "#285E60FF" (alpha = 1) OR rgb(40/255, 94/255, 96/255, 1)
+	verde_light	<- "#285E6099"   
+	marrone	<-  "#866445"       # "#866445FF" (alpha = 1) OR rgb(134/255, 100/255, 69/255, 1)
+	marrone_light	<-  "#86644599" 
+	grigio	<-"#A6A6A6"       # "#A6A6A6FF" (alpha = 1) OR rgb(166/255, 166/255, 166/255, 1)
+	grigioSfondo	<-"#F2F2F2"       # "#F2F2F2FF" (alpha = 1) OR rgb(242/255, 242/255, 242/255, 1)
+ 
+	# col2rgb( "#854442")
+	
+palette_g20 <- c("#455A8B", "#854442", "#285E60", "#866445",  "#A6A6A6" )
+palette_g20_light <- c(rgb(69/255, 90/255, 139/255, 0.4), rgb(133/255, 68/255, 66/255, 0.4), rgb(40/255, 94/255, 96/255, 0.4), 	                      rgb(134/255, 100/255, 69/255, 0.4),  rgb(166/255, 166/255, 166/255, 0.4) )
+blue_scale <- 	colortools::sequential(rgb(45/255, 51/255, 124/255, 1),what = "alpha")
+blue_comp <- 	colortools::tetradic(rgb(45/255, 51/255, 124/255, 1) )
+bordeaux_scale	<- 	colortools::sequential(rgb(133/255, 68/255, 66/255, 1) , what = "alpha" )
+bordeaux_comp	<- 	colortools::tetradic(rgb(133/255, 68/255, 66/255, 1)   )
+
+verde_scale	<- 	colortools::sequential(rgb(40/255, 94/255, 96/255, 1) , what = "alpha" )
+verde_comp	<- 	colortools::tetradic(rgb(40/255, 94/255, 96/255, 1)  )
+marrone_scale	<- 	colortools::sequential(rgb(134/255, 100/255, 69/255, 1), what = "alpha" )
+marrone_comp	<- 	colortools::tetradic(rgb(134/255, 100/255, 69/255, 1))
+
+marrone_scale	<- 	colortools::sequential(rgb(134/255, 100/255, 69/255, 1), what = "alpha" )
+marrone_comp	<- 	colortools::tetradic(rgb(134/255, 100/255, 69/255, 1))
+
+
+grigio_scale	<- 	colortools::sequential(rgb(166/255, 166/255, 166/255, 1), what = "alpha" )
+# grigio_comp	<- 	colortools::tetradic(rgb(166/255, 166/255, 166/255, 1)))
+```
+
+##### ------ (load files ) 
+```{r, include=FALSE}
+# Load necessary file (prepared in "maintenance_paper/03_Maint_G20cases_PREP.Rmd")
+load(here::here("maintenance_paper", "casi.Rdata"))
+casi$has_resilience  <- casi$`has_resilience (energy efficiency, natural hazard risk et)`
+# Source helper (data cleaning and basic analyses) 
+# (if you have more .R files, each will source the previous, then the .Rmd sources the last) 
+
+# source("../r_scripts/helper.R")
+#rmarkdown::render(here::here("maintenance_paper", "03_Maint_G20cases_PREP.Rmd"))
+```
+
+# 1) BACKGROUND
+This Annex presents a collection of case studies, contributed by Infrastructure Working Group members to accompany the **Policy Agenda on Infrastructure Maintenance**, the flagship deliverable completed by the IWG under the “Resilience and Maintenance” priority indicated by the Italian G20 Presidency. Such examples serve to enrich the Policy Agenda by promoting knowledge sharing, as well as illustrating concrete applications of a range of policy tools and levers that can be adopted to enable better planning and prioritization, to secure adequate resources and to implement more efficient and effective maintenance of infrastructure.
+
+# 2) METHODOLOGICAL NOTES
+Between March and May of 2021, each IWG member (including some IOs and observer countries) submitted 2 or more cases according to a simple template provided with guidelines _[Appendix I]_ which was also accompanied by an Annotated Glossary on Infrastructure Maintenance _[Appendix II]_ a tool offered to assist the case studies preparation. In line with the goal of the exercise - to accompany and further illustrate the G20 Policy Agenda - the guidelines suggested to _"briefly describe a recent domestic project/program/institutional reform (either completed or at advanced stage of implementation) that could illustrate a best practice solution to promote infrastructure maintenance."_  In line with the Agenda, the template proposed to categorize the cases into three macro policy areas: 1) improved planning; 2) funding or financing; 3) implementation/delivery (allowing for initiatives to check more than one policy area). 
+
+It is important to remark **the voluntary nature** of the decision of individual members to submit cases, as well as their choice in terms of the number of cases submitted, their sector, scope, typology, etc. Furthermore, in preparing the cases, some members kept the case study collection internal to the MoF/Treasury boundaries, while others reached out to other ministries or agencies for collaboration, which explains the richness and diversity of examples gathered in terms of perspective and policy focus. For these reasons, **it would be incorrect and misleading to interpret this collection as a representative sample of member countries' infrastructure maintenance programs and projects**. Instead, what this Annex can provide is a documentation of what IWG members currently perceive as important, in that the kind of initiatives they describe indicate some of the priorities members are focusing on in the present and forthcoming years. Most importantly, this Annex (also thanks to members active engagement) illustrates how the G20 working groups can promote knowledge exchange, by sharing policy solutions that can serve as mutual inspiration to tackle common issues.
+
+## Selecting two cases per member 
+
+As mentioned above, even though members submitted a different number of cases, it was decided to pick two per participant, in order to keep the document within reasonable lenght, as well as securing a balanced country representation. 
+
+In cases when members provided more than 2 examples, the Presicdency adopted these selection criteria: 
+
+1. Preferring cases with a more accurate focus within the scope boundaries of the collection: i.e. cases with a stricter and more explicit pertinence to infrastructure maintenance (as opposed to other related aspects)
+2. Facilitating diversity in terms of sectors covered: given the preponderance of transportation, when available and relevant, examples on other sectors (energy, water, waste, social infrastructure) were picked.
+
+## Some caveats 
+
+> !DA RISCRIVERE! 
+
++ there might have been misunderstandings (aka people did not read the entire thing) so the policy tools categorization is not to be taken as a rigorous and systemantic description but rather as indicative of «perceived importantce»] 
+
++ the aggregate info reporting frequency of “x” among the case studies refers to features that were made evident in the overview (not necessary those flagged in the table… whose answers were not always credible nor verifiable) 
+
++ how the sums below were taken ... (dove esplicito nella overview plus confirmation in table )
+
+# 3) CASES AT A GLANCE
+
+The case studies collection was deliberately left open and flexible to reflect the complexity of the challenge at hand, as well as the myriad of different actors and solutions that are engaged in the endeavour. 
+
+<!-- Figure \@ref(fig:chunk-name)) -->
+In Figure \@ref(fig:glancea) there is a list of the cases selected. 
+
+> ! Confermare (Russia/BRA/FRA+1/MEX+1/ SAU/ ZAF  ) 
+ 
+<!-- sostituire con ./images/0_ft_glance_fl_all.docx  (POSSIBLY) -->
+
+```{r  glancea, fig.cap = "Selected case studies (a)", echo=FALSE}
+knitr::include_graphics(here::here("images", "0_ft_glance_fl1.png"))
+```
+
+```{r  glanceb, echo=FALSE}
+knitr::include_graphics(here::here("images", "0_ft_glance_fl2.png"))
+```
+
+## Distribution of cases collection across basic characteristics 
+
+#### Key agency/agencies in charge of the intervention  
+
+```{r include=FALSE}
+casi %>% group_by(key_stakes_types) %>%
+  filter(str_detect(key_stakes_types, "ministry of infrastructure/transportation")) %>%
+  summarize(N = n()) -> ministri
+# split 
+casi %>% group_by(key_stakes_types) %>%
+  filter(str_detect(key_stakes_types, "ministry of finance")) %>%
+  summarize(N = n()) -> mof
+
+casi %>% group_by(key_stakes_types) %>%
+  filter(str_detect(key_stakes_types, "regulator")) %>%
+  summarize(N = n()) -> regu # 3
+
+casi %>% group_by(key_stakes_types) %>%
+  filter(str_detect(key_stakes_types, "authority")) %>%
+  summarize(N = n()) -> auto
+auto # 6 
+
+casi %>% group_by(key_stakes_types) %>%
+  filter(str_detect(string = key_stakes_types, pattern =  "local|city|region|subnational" )) %>%
+  summarize(N = n()) -> local 
+local # 7
+ 
+casi %>% group_by(key_stakes_types) %>%
+  filter(str_detect(string = key_stakes_types, pattern =  "city" )) %>%
+  summarize(N = n()) -> city 
+city # 2
+
+casi %>% group_by(key_stakes_types) %>%
+  filter(str_detect(string = key_stakes_types, pattern =  "local" )) %>%
+  summarize(N = n()) -> region 
+region # 2
+
+casi %>% group_by(key_stakes_types) %>%
+  filter(str_detect(string = key_stakes_types, pattern =  "private corporation" )) %>%
+  summarize(N = n()) -> private 
+private # 
+
+casi %>% group_by(key_stakes_types) %>%
+  filter(str_detect(string = key_stakes_types, pattern =  "government-owned corporation" )) %>%
+  summarize(N = n()) -> govown 
+govown # 
+
+ casi %>% group_by(key_stakes_types) %>%
+  filter(str_detect(key_stakes_types, ";")) %>%
+  summarize(N = n()) -> more 
+```
+
+Not surprisingly, the responses of IWG members reflect the great variability of entities described. We can grasp this variability by analyzing the key stakeholders involved
+
+In Figure \@ref(fig:stake2) we can see (in aggregate form) the key agencies involved in the submitted case studies[^1]. 
+
+[^1]: The names of agencies have been streamlined to make them comparable
+
+Out of the `r nrow(casi)` examples considered: 
+
++ An interesting aspect to remark is that many cases submitted (`r sum(more$N)`) involved **more than one agency**.
++ Several cases (`r sum(ministri$N)`) involved the **Ministry of Infrastructure/Transportation** (with or without other agencies), plus (`r sum(mof$N)`) with direct involvement of **Ministry of Finance/Treasury**;
++ **Local/regional/city government agencies** had a role, often in combination with other national/federal agencies, in `r sum(local$N)` cases; 
++ **Private corporations** were in charge in `r sum(private$N)` cases, along with  **government-owned corporation** (`r sum(govown$N)` cases);
++ **Regulators** were only involved in `r sum(regu$N)` cases, while **authority entities** (on roads, aviation, energy) in `r sum(auto$N)`;
+
+  
+```{r  stake2,  fig.cap="Key agencies involved", out.width= "100%", echo=FALSE}
+# knitr::include_graphics(here::here("images", "1c_stake_bar.png"))
+knitr::include_graphics(here::here("images", "1c_2_stake_bar.png"))
+```
+
+
+--- 
+
+#### The administrative level of interventions 
+ 
+```{r include=FALSE}
+casi %>% group_by(admin_type) %>%
+  filter(str_detect(admin_type, "federal/national")) %>%
+  summarize(N = n()) -> fed_nat
+
+casi %>% group_by(admin_type) %>%
+  filter(str_starts(admin_type,   "city" )) %>%
+  summarize(N = n()) ->  city
+
+casi %>% group_by(admin_type) %>%
+  filter(str_starts(admin_type,   "region" )) %>%
+  summarize(N = n()) ->  region
+# say the names 
+which_city_reg <- subset (casi, admin_type == "region" | admin_type == "city")
+paste0(which_city_reg$id, " - ", which_city_reg$name)
+
+casi %>% group_by(admin_type) %>%
+  filter(str_detect(admin_type, "city|region|local|state")) %>%
+  summarize(N = n()) -> local 
+local
+
+whichlocal <- inner_join(casi,local, by = "admin_type"  )  %>% 
+  select(id, name)
+whichlocal
+
+casi %>% group_by(admin_type) %>%
+  filter(str_detect(admin_type, ";")) %>%
+  summarize(N = n()) -> manylev 
+
+whichmany <- inner_join(casi,manylev, by = "admin_type"  )  %>% 
+  select(id, name)
+whichmany
+
+ casi %>% group_by(admin_type) %>%
+  filter(str_detect(admin_type, "supranational")  ) %>%
+  summarize(N = n()) -> supranational 
+supranational
+```
+
+In Figure \@ref(fig:admin) we see the relevant administrative level(s) at which the described initiatives were implemented in the `r nrow(casi)` examples considered: 
+
++ The first observation worth remarking is how in many examples (`r sum(manylev$N)` cases) it appears that **multiple administrative levels** were involved (e.g. national, state and city level jointly engaged). This is often the case of policies or new guidelines endorsed at the national level were implemented at sub-national levels.
++ Most cases submitted were at the **federal or national** level: `r sum(fed_nat$N)`, while only `r sum(supranational$N)` involved supranational entities.
++ Some case studies, instead, were focused specifically at the **region** (`r sum(region$N)` cases)  or **city level** (`r sum(city$N)` cases) [^2]. When considering cases that joined multiple administrative levels, the number of cases implemented at the **sub-national level** rises to a total of `r sum(local$N)`.  
+
+
+[^2]:  Namely: `r paste0(which_city_reg$id, " - ", which_city_reg$name)`.
+
+```{r  admin, fig.cap = "Key agencies involved", out.width = "100%", echo=FALSE}
+knitr::include_graphics(here::here("images", "2c_admin_bar.png"))
+
+```
+ 
+
+#### Year of launch   
+
+<!-- http://benalexkeen.com/creating-a-timeline-graphic-using-r-and-ggplot2/  -->
+
+```{r, include= FALSE}
+casi %>% group_by(year_laun) %>%
+  filter(year_laun >= 2010) %>%
+  summarize(N = n()) -> last_dec
+
+paste0( round (sum(last_dec$N)/nrow(casi)*100, digits = 0 ),    "%")
+```
+
+Figure \@ref(fig:launch) documents the time in which the submitted cases were launched: `r paste0( round (sum(last_dec$N)/nrow(casi)*100, digits = 1 ),"%")` of the cases were **launched in the last decade**, which is not surprising given the explicit request of the Presidency to submit recent cases. 
+ 
+```{r  launch, fig.cap = "Year of launch of initiatives", out.width="100%" , echo=FALSE}
+knitr::include_graphics(here::here("images", "3b_yeardot.png"))
+```
+
+
+####  Distributions by sector  
+```{r , include= FALSE}
+casi %>% group_by(sector) %>%
+  filter(str_detect(sector, ";")) %>%
+  summarize(N = n()) -> manysector 
+
+ casi %>% group_by(sector) %>%
+  filter(str_detect(sector, "transport")) %>%
+  summarize(N = n()) -> transportation 
+ 
+ sum(transportation$N)
+ 
+ casi %>% group_by(sector) %>%
+  filter(str_detect(sector, "social")) %>%
+  summarize(N = n()) -> social 
+ 
+ sum(social$N)
+
+```
+ 
+ 
+Figure \@ref(fig:sectordia) shows that (when counting each sector independently mentioned) transportation is the most frequently covered with `r sum(transportation$N)` mentions. 
+
+```{r  sectordia, fig.cap = "Distribution of cases by (individual) sector", out.width="100%", echo=FALSE}
+knitr::include_graphics(here::here("images", "5_radar_sect_ind_plot.png"))
+```
+
+#### Distribution by policy
+```{r, include= FALSE}
+casi %>% group_by(policy) %>%
+  filter(str_detect(policy, ";")) %>%
+  summarize(N = n()) -> manypol 
+
+casi %>% group_by(policy) %>%
+  filter(str_detect(policy, "planning; delivery")) %>%
+  summarize(N = n()) -> plandel 
+
+which_manypol <- subset (casi, #policy == "planning; funding; delivery" | 
+                           policy == "funding; delivery" | 
+                           policy == "planning; delivery")
+paste0(which_manypol$id, " - ", which_manypol$name)
+
+ casi %>% group_by(sector) %>%
+  filter(str_detect(sector, "transport")) %>%
+  summarize(N = n()) -> transportation 
+ 
+ sum(transportation$N)
+ 
+
+```
+
+
+```{r supol, include=FALSE}
+ 
+ casi %>% group_by(sub_policy_clean) %>%
+  #filter(str_detect(policy, ";")) %>%
+  summarize(N = n()) -> sub_pol 
+sub_pol 
+
+casi %>% group_by(sub_policy_clean) %>%
+  filter(str_detect(sub_policy_clean, "Data coll")) %>%
+  summarize(N = n()) -> data 
+
+casi %>% group_by(sub_policy_clean) %>%
+  filter(str_detect(sub_policy_clean, "M&E")) %>%
+  summarize(N = n()) -> mon 
+
+
+(data <- casi[ which( str_detect(casi$sub_policy_clean, "Data coll") ), c(4,6)])
+(m_e <- casi[ which( str_detect(casi$sub_policy_clean, "M&E") ), c(4,6)])
+(std <- casi[ which( str_detect(casi$sub_policy_clean, "Definition/adoption") ), c(4,6)])
+(ear <- casi[ which( str_detect(casi$sub_policy_clean, "Earmark") ), c(4,6)])
+
+(innov <- casi[ which( str_detect(casi$sub_policy_clean, "Innovative funding sources") ), c(4,6)])
+
+(prep <- casi[ which( str_detect(casi$sub_policy_clean, "preparedness to risk") ), c(4,6)])
+
+(disinc <- casi[ which( str_detect(casi$sub_policy_clean, "mitigation of disinc") ), c(4,6)])
+```
+
+
+In Figure \@ref(fig:policy) is is possible to see the distribution of cases across macro policy area (including when multiple areas were involved)
+
+Notably, most of the cases selected (`r sum(manypol$N)`) touch all three policy areas related to infrastructure maintenance (planning, funding and delivery) followed by `r sum(plandel$N)` cases combining two policy areas (planning and delivery).   
+
+```{r  policy, out.width="100%",fig.cap = "Distribution of cases by policy area", echo=FALSE}
+knitr::include_graphics(here::here("images", "4_radar_policy_mult+ind_plot.png"))
+```
+
+# 4) REVIEW OF CASES IN LIGHT OF POLICY AGENDA KEY INSIGHTS 
+As mentioned in the beginning, it is important to use caution when observing the cases collection and refrain from generalizing aggregate findings that may be linked to how this specific collection effort was conducted. Nonehteless, it is interesting to notice how many of the core messages in the Policy Agenda seem to be reflected by the recent cases analyzed and the aspects they address. 
+
+The aggregated characteristics reported in this section were obtained from the overview that was provided (as free text) by each case. 
+
+<!-- > HO MESSO IN NOTA I CASI SPECIFICI MA POTREBBERO AVERE DA RIDIRE SULLE SCELTE (VEDI CAVEAT ), VOLENDO POTREBBERO LEGGERE E CORREGGERE  -->
+
+```{r include=FALSE}
+has_resilience <- casi[ which( (casi$has_resilience == "x")), c(4,6)]
+paste0(has_resilience$id, " - ", has_resilience$name)
+
+circular <- casi[ which( str_detect(casi$name, "circular") ), c(4,6)]
+circular
+
+has_age <- casi[ which( (casi$has_age == "x")), c(4,6)]
+has_age
+paste0(has_age$id, " - ", has_age$name)
+
+has_social <- casi[ which( str_detect(casi$sector, "social")), c(4,6)]
+has_social
+paste0(has_social$id, " - ", has_social$name)
+
+has_regulatory_innovation <- casi[ which( (casi$has_regulatory_innovation == "x")), c(4,6)]
+has_regulatory_innovation
+paste0(has_regulatory_innovation$id, " - ", has_regulatory_innovation$name)
+
+
+has_plan_guidelines_std <- casi[ which( (casi$has_plan_guidelines_std == "x")), c(4,6)]
+has_plan_guidelines_std
+paste0(has_plan_guidelines_std$id, " - ", has_plan_guidelines_std$name)
+
+`has_O&M_costs_reduction` <- casi[ which( (casi$`has_O&M_costs_reduction` == "x")), c(4,6)]
+`has_O&M_costs_reduction`
+paste0(`has_O&M_costs_reduction`$id, " - ", `has_O&M_costs_reduction`$name)
+
+
+
+has_priv <- casi[ which( (casi$has_priv == "x")), c(4,6)]
+has_priv
+paste0(has_priv$id, " - ", has_priv$name)
+
+has_data_collec <- casi[ which( (casi$has_data_collec == "x")), c(4,6)]
+has_data_collec
+paste0(has_data_collec$id, " - ", has_data_collec$name)
+
+has_tech40 <- casi[ which( (casi$has_tech40 == "x")), c(4,6)]
+has_tech40
+paste0(has_tech40$id, " - ", has_tech40$name)
+
+has_knowshar <- casi[ which( (casi$has_knowshar == "x")), c(4,6)]
+has_knowshar
+paste0(has_knowshar$id, " - ", has_knowshar$name)
+
+(innov <- casi[ which( str_detect(casi$sub_policy_clean, "Adoption/sharing of innovation") ), c(4,6)])
+```
+
+**1. _(RATIONALE): Maintenance is key to resilience_**  
+ 
+Several cases (`r  length( which( (casi$has_resilience == "x")))`) reported among their goals some **improvements in term of sustainability and resilience** (e.g. energy savings, reduced exposure to natural hazard risk etc.) or even, as in a case proposed by the Netherlands, the implementation of a **circular solutions** for procurement and construction of bridges and viaducts.
+
+<!-- [^3]  -->
+<!-- [^3]: Namely: `r paste0(has_resilience$id, " - ", has_resilience$name)`. -->
+
+
+**2. _(RATIONALE): Maintenance is required because of assets' age_**  
+
+Another issue that was raised in the Policy Agenda is the urgent need for maintenance interventions prompted by the **age of the infrastructure stock**. This is reflected in `r  length( which( (casi$has_age == "x")))` cases that included such considerations in their purpose. 
+
+<!-- [^4] -->
+
+<!-- [^4]: Namely: `r paste0(has_age$id, " - ", has_age$name)`. -->
+
+**3. (CHALLENGES): Sectors are increasingly inderdependent** 
+
+Figure \@ref(fig:sectordot) offers another picture and adds some very intersting insight to what showed above in Figure \@ref(fig:sectordia).  By showing the actual sectors covered by the cases submitted actually, it indicates how **many initiatives cover multiple sectors**: `r sum(manysector$N)` over `r nrow(casi)`. As a matter of fact, we see almost every possible combination of the 6 covered sectors represented.  
+
+
+Incidentally, the Policy Agenda invites to consider maintenance an issue that demands to place people at the center (including future generations). A fair number of cases (`r sum(social$N)`) has a focus on social infrastructure. 
+
+> DA RIVEDERE/RIFARE! 
+
+
+```{r  sectordot, out.width="100%", fig.cap = "Distribution of cases by sector", echo=FALSE}
+knitr::include_graphics(here::here("images", "6_sectordot_ACTUAL_plot.png"))
+```
+
+**4. _(CHALLENGES): Data as an inescapable prerequisite_** 
+A fair number of the selected cases (`r  length( which( (casi$has_data_collec == "x")))`) include some sort of **survey or data collection effort**, often at the onset of the initiative to inform subsequent policy decisions. 
+
+<!-- [^5] -->
+
+<!-- [^5]: Namely: `r paste0(has_data_collec$id, " - ", has_data_collec$name)`. -->
+
+
+**5. _(SOLUTIONS): Macro policy N. 1) Planning & regulation_** 
+In line with what highlighted by the Policy Agenda, many cases (`r  length( which( (casi$has_plan_guidelines_std == "x")))`) included some form of **planning/guidelines revision effort**, while some others (`r  length( which( (casi$has_regulatory_innovation == "x")))`) documented **regulatory innovations**.
+
+<!-- [^6][^7] -->
+
+<!-- [^6]: New planning proposed: `r paste0(has_plan_guidelines_std$id, " - ", has_plan_guidelines_std$name)`.  -->
+<!-- [^7]: New regulations introduced: `r paste0(has_regulatory_innovation$id, " - ", has_regulatory_innovation$name)` -->
+
+```{r include=FALSE}
+has_plan_guidelines_std <- casi[ which( (casi$has_plan_guidelines_std == "x")), c(4,6)]
+has_plan_guidelines_std
+paste0(has_plan_guidelines_std$id, " - ", has_plan_guidelines_std$name)
+```
+
+> SI PUO' Approfondire analizzando meglio le sub_policy indicate: •	# cross-agency collaboration? 
+•	in # cases we see institutional capacity (creation of committess etc) 
+•	in NO cases we see efforts to _improve maintenance expenditure reporting in public accounts_
+
+
+**6. _(SOLUTIONS): Macro policy N. 2) A role for the private sector in funding_**
+ 
+When looking at the solutions to secure funding and financing, `r  length( which( (casi$has_priv == "x")))` cases illustrate initiatives that involved the private sector in the form of PPP, concessions or other contribution from private operators. 
+
+<!-- [^8]  -->
+<!-- [^8]: New regulations introduced: `r paste0(has_priv$id, " - ", has_priv$name)` -->
+
+> SI PUO' Approfondire LE sub_policy SOTTO FUNDING 
+•	NAtional funds... 
+•	TAX REVENUE ...
+ 
+**7. _(SOLUTIONS): Macro policy N. 3)  A role for technology and knowledge sharing in improving delivery_** 
+When looking at the solutions to improve implementation and delivery of maintenance projects, `r  length( which( (casi$has_tech40 == "x")))` cases illustrate initiatives that involved new technology solutions. Notably, there were also `r  length( which( (casi$has_knowshar == "x")))` cases with an explicit component dedicated to knowledge sharing efforts. 
+
+<!-- [^9][^10] -->
+
+<!-- [^9]: New regulations introduced: `r paste0(has_tech40$id, " - ", has_tech40$name)` -->
+<!-- [^10]: New regulations introduced: `r paste0(has_knowshar$id, " - ", has_knowshar$name)` -->
+
+## --- (BENEFITS): HIGHLIGHTS ABOUT BENEFITS BROUGHT (DIRECT AND INDIRECT) 
+As posited by the Policy Agenda, benefits can be obtained at both the "micro" and "macro" level. 
+Indeed, `r  length( which( (casi$"has_O&M_costs_reduction" == "x")))`
+
+> DA FARE: riempire una tabella che riflette BENEFITS in Pol Agenda .... 
+
+ 
+# 6) CASE STUDIES IN DETAIL
+
+# Appendix I - Template
+
+# Appendix II - Annotated Glossary 
+
+

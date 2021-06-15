@@ -1,9 +1,9 @@
 ---
-title: "Maintenance of infrastructure systems"
-subtitle: "Literature Review"
+title: "Manuscript"
+subtitle: "Generated using RMarkdown"
 author:
-- Luisa M. Mimmi^1^, Authorr II^2^
-- ^1^Independent Consultant, ^2^ Other University
+- Thea Knowles^1^, Thea Knowles' Alter Ego^2^
+- ^1^University at Buffalo, ^2^Western University
 date: "Last updated: `r format(Sys.time(), '%d %B, %Y')`"
 output:
   bookdown::html_document2:
@@ -16,7 +16,7 @@ output:
     toc: yes
 include.latex: TRUE
 csl: ../apa.csl
-bibliography: ../Maintenance-Resilience.bib
+bibliography: ../starwars_refs.bib
 ---
 
 ```{r setup, include=FALSE}

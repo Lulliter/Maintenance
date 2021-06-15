@@ -1,0 +1,559 @@
+---
+title: "TABLE PREP - all case studies one by one"
+subtitle: "...."
+author:
+- Luisa M. Mimmi^1^ 
+- ^1^Economics Advisor at Ministry of Economics & Finance (MEF) - G20
+date: "Last updated: `r format(Sys.time(), '%d %B, %Y')`"
+output:
+  bookdown::word_document2:
+    fig_caption: yes
+    md_extensions: +footnotes
+    reference_docx: ../custom_reference.docx
+    toc: no
+  bookdown::html_document2:
+    toc: yes
+    toc_depth: 3
+    toc_float: TRUE
+    number_sections: no
+    code_folding: hide
+include.latex: TRUE
+---
+
+# Set up + colors
+Ho schiarito i colori light x word (ma non cambia )
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)# include R source code in the output 
+
+# Load required packages
+if (!require("pacman")) install.packages("pacman")
+p_load(here,fs,# dir managmnt
+       captioner, # allows you to store figure and table captions and print them later.
+       citr, # RStudio Addin to Insert Markdown Citations
+       tidyverse, # dplyr,tidyr, ggplot2,readr, purr, stringr, forcats
+       magrittr,
+       janitor, scales,
+       emo, # emojy
+       gt,
+       readxl,
+       ggpubr,
+       eulerr , # for venn diagram
+       viridis, patchwork, hrbrthemes, fmsb,colormap, # 4 radar chart 
+       flextable, #framework for easily create tables for reporting and publications (WORD)
+       colortools,
+       officer # helper functions for tables 4 flextable in word
+       )
+
+
+
+# Preparing to make figure and table captions using the captioner package
+figs <- captioner(prefix="Figure")
+tbls <- captioner(prefix="Table")
+
+#   colori                                                             
+	bluMEFprinc	<- "#2D337C"        # "#2D337CFF" (alpha = 1) OR rgb(45/255, 51/255, 124/255, 1)
+	 
+	gialloMEFprinc <- "#BD8723"       # "#BD8723FF" (alpha = 1) OR rgb(189/255, 135/255, 35/255, 1)
+ 	gialloMEFlight <- "#BD872333"       # "#BD8723FF" (alpha = 1) OR rgb(189/255, 135/255, 35/255, 0.4)
+ 
+	bluMEFsec	<- "#455A8B"         # "#455A8BFF" (alpha = 1) OR rgb(69/255, 90/255, 139/255, 1)
+	bluMEFsec_light	<- "#455A8B33"   
+	bordeaux	<- "#854442"       # "#854442FF" (alpha = 1) OR rgb(133/255, 68/255, 66/255, 1)
+  bordeaux_light	<- 	"#85444233"
+	verde	<- "#285E60"       # "#285E60FF" (alpha = 1) OR rgb(40/255, 94/255, 96/255, 1)
+	verde_light	<- "#285E6033"   
+	marrone	<-  "#866445"       # "#866445FF" (alpha = 1) OR rgb(134/255, 100/255, 69/255, 1)
+		marrone_light	<-  "#86644533" 
+	grigio	<-"#A6A6A6"       # "#A6A6A6FF" (alpha = 1) OR rgb(166/255, 166/255, 166/255, 1)
+	
+	grigioSfondo	<-"#F2F2F2"       # "#F2F2F2FF" (alpha = 1) OR rgb(242/255, 242/255, 242/255, 1)
+ 
+	
+	# col2rgb( "#854442")
+	
+	palette_g20 <- c("#455A8B", "#854442", "#285E60", "#866445",  "#A6A6A6" )
+	palette_g20_light <- c(rgb(69/255, 90/255, 139/255, 0.4), rgb(133/255, 68/255, 66/255, 0.4), rgb(40/255, 94/255, 96/255, 0.4), 
+	                      rgb(134/255, 100/255, 69/255, 0.4),  rgb(166/255, 166/255, 166/255, 0.4) )
+ 
+
+blue_scale <- 	colortools::sequential(rgb(45/255, 51/255, 124/255, 1),what = "alpha")
+blue_comp <- 	colortools::tetradic(rgb(45/255, 51/255, 124/255, 1) )
+bordeaux_scale	<- 	colortools::sequential(rgb(133/255, 68/255, 66/255, 1) , what = "alpha" )
+bordeaux_comp	<- 	colortools::tetradic(rgb(133/255, 68/255, 66/255, 1)   )
+
+verde_scale	<- 	colortools::sequential(rgb(40/255, 94/255, 96/255, 1) , what = "alpha" )
+verde_comp	<- 	colortools::tetradic(rgb(40/255, 94/255, 96/255, 1)  )
+marrone_scale	<- 	colortools::sequential(rgb(134/255, 100/255, 69/255, 1), what = "alpha" )
+marrone_comp	<- 	colortools::tetradic(rgb(134/255, 100/255, 69/255, 1))
+
+marrone_scale	<- 	colortools::sequential(rgb(134/255, 100/255, 69/255, 1), what = "alpha" )
+marrone_comp	<- 	colortools::tetradic(rgb(134/255, 100/255, 69/255, 1))
+
+
+grigio_scale	<- 	colortools::sequential(rgb(166/255, 166/255, 166/255, 1), what = "alpha" )
+# grigio_comp	<- 	colortools::tetradic(rgb(166/255, 166/255, 166/255, 1)))
+
+	# flextable stuff 
+	brdr <- fp_border(color = bluMEFprinc, width = 1.5)
+	brdr_in <- fp_border(color = "white", width = 1.5)
+```
+
+##### ------ (load files ) 
+```{r}
+# Load necessary file (prepared in "maintenance_paper/03_Maint_G20cases_PREP.Rmd")
+load(here::here("maintenance_paper", "casi.Rdata"))
+casi$has_resilience  <- casi$`has_resilience (energy efficiency, natural hazard risk et)`
+# Source helper (data cleaning and basic analyses) 
+# (if you have more .R files, each will source the previous, then the .Rmd sources the last) 
+
+# source("../r_scripts/helper.R")
+#rmarkdown::render(here::here("maintenance_paper", "03_Maint_G20cases_PREP.Rmd"))
+
+# create sample 
+sample <- sample_n(casi, 5)
+```
+
+##### ------ function to fit FT in Table in Word page 
+```{r}
+    FitFlextableToPage <- function(ft, pgwidth = 7){
+          ft_out <- ft %>% autofit()
+          ft_out <- width(ft_out, width = dim(ft_out)$widths*pgwidth /(flextable_dim(ft_out)$widths))
+          return(ft_out)
+    }
+   
+
+
+```
+
+
+# (TABLE CASES AT A GLANCE) - just for exe 
+
+Prepare a Table that shows the BASIC (flag, id name, policy, sector)
+
+```{r eval=FALSE, include=FALSE}
+sample_glance <- sample %>% 
+  dplyr::select(country, flag, name, policy, sector) %>% 
+  dplyr::arrange(country) #%>%   filter(country != "FFF (from EU)"	)
+
+
+class(sample_glance)
+ 
+# Turn to ft and add format 
+ft_glance_s <- sample_glance %>%  
+  flextable()  %>% 
+  compose( j = "flag",
+           value = as_paragraph(
+             as_chunk(""), 
+             as_image(src = flag, width = 0.3, height = 0.2),
+             as_chunk("")
+           ))  %>% 
+  autofit() %>% 
+  bold( bold = TRUE, j = "name", part = "body") %>% 
+  bold( bold = TRUE,   part = "header") %>% 
+  color( color = "white",   part = "header") %>% 
+  bg( bg = bluMEFprinc,   part = "header") %>% 
+  bg( bg = grigioSfondo, part = "body", source = j) %>% 
+  border_outer(border = brdr) %>% 
+  border_inner(border = brdr_in)
+
+# --- see output in viewer 
+ft_glance_s
+save_as_image(x = ft_glance_s, path =  here::here("images", "0_ft_glance_s.png")) # OK!
+
+# ---  save it in Word picture 
+# change to prepare with custom function 
+  ft_glance_s_w <- FitFlextableToPage(ft_glance_s)
+
+# save in format 
+save_as_docx(x = ft_glance_s_w, path =  here::here("images", "0_ft_glance_s_w.docx"))  
+
+# dim_pretty(ft_glance_s)
+```
+
+
+
+# TABLE for loop no flag (long) 
+
+https://epirhandbook.com/tables-for-presentation.html
+https://ardata-fr.github.io/flextable-gallery/gallery/2021-03-26-tennis-players/
+https://ardata-fr.github.io/flextable-book/rendering.html#simple-export
+
+## a) (SAMPLE)  
+```{r eval=FALSE, include=FALSE, results='asis'}
+sampleN <- sample %>% 
+  dplyr::rename(
+     #newname = old name
+  "Name"  = "name", 
+  "Country"  = "country", 
+  "Sector/s"  = "sector",	
+  "Sub-sector/s"  = "sub_sectors",	
+  "Administrative level"  = "admin",
+  "Key agencies in charge"  = "key_stakes",	#"key_stakes_types",	
+  "Policy macro area/s"  = "policy",	
+  "Policy specific tool/s"  = "sub_policy_clean",	
+    # "launched",
+    #	"desc_objective"	,"name"	,
+  "Highlights"  = "purpose", 	
+  "Intended/achieved outcome/s"  = "intended_outcomes",	
+  "Status & timeline"  = "status",	
+    # "has_regulatory_innovation",	"has_plan_guidelines_std",	"has_O&M_costs_reduction",	
+    # "has_priv",	"has_data_collec",	"has_tech40",	"has_resilience", 
+    # "has_knowshar",	"has_age",
+  "Additional References"  = "link"
+    
+  )
+
+                                          
+
+
+for (i in 1:nrow(sampleN)){
+  onecase <- sampleN[i,c("Name", 
+                         "Country",  # "id", 
+                         # "flag", 
+                      "Sector/s",
+                      "Sub-sector/s",	
+                      "Administrative level", 
+                      "Key agencies in charge",	#"key_stakes_types",	
+                      "Policy macro area/s",	
+                      "Policy specific tool/s",	
+                      "Highlights" , 	
+                      "Intended/achieved outcome/s",	
+                      "Status & timeline",	
+                       "Additional References")]
+      # attempt header with case name (NON VIENE!) 
+      #one_name <- onecase[, 3]
+      # print(one_name)}
+      
+      # attempt flag
+      #flag <- onecase$flag[i]
+
+
+      onecase %>% 
+        head() %>% 
+        t() %>% 
+        as.data.frame() %>% 
+        tibble::rownames_to_column() %>% 
+        flextable %>% 
+        set_header_labels ( "rowname" = "Info", "V1" = "Details") %>% 
+        bold( bold = TRUE, i = 1, j= 2,  part = "body") %>% 
+        bold( bold = TRUE,  j= 1,  part = "body") %>% 
+        bold( bold = TRUE,   part = "header") %>% 
+        
+        color( color = "white",   part = "header") %>% 
+        bg( bg = bluMEFprinc,   part = "header") %>% 
+        bg( bg = grigioSfondo, part = "body", source = j) %>% 
+        bg(bg = gialloMEFlight, i = 1 , part = "body") %>% 
+                bg(bg = verde_light, i = c(9,11) , part = "body") %>% 
+                  bg(bg = bordeaux_light, i = 10 , part = "body") %>% 
+                # bg(bg = gialloMEFlight, i = 1 , part = "body") %>% 
+        border_outer(border = brdr) %>% 
+        border_inner(border = brdr_in) %>% 
+        # fontsize(  size = 14, part = "header") %>% 
+        fontsize(  size = 11, part = "all") %>% 
+        
+        # compose( i = 3, j= 2, value = as_paragraph(
+        #   as_chunk(""),
+        #   as_image(src = onecase$flag[i], width = 0.3, height = 0.2),
+        #   as_chunk("")
+        # )) %>% 
+        width(j = 1, 3 ) %>% 
+        width(j = 2, 10 ) %>%
+        autofit()  -> onecase_ft 
+      
+  # --- 1) see output in viewer 
+  onecase_ft
+  
+  # PRINT (useful when you want to generate flextable in a loop?  / results='asis'
+  flextable_to_rmd(onecase_ft)  # --- html output 
+ 
+  # rmarkdown::word_document() # ---- WORD OUTPUT 
+  # print (onecase_ft, preview = "docx") # ---- WORD OUTPUT 2 (no format )
+  # print(x = ft, target = here::here( "image", "example_table_powerpoint.docx")) #---- WORD OUTPUT 3 (no format )
+
+# ---  2) save each in Word picture 
+# change to prepare with custom function 
+onecase_ft_w <- FitFlextableToPage(onecase_ft)
+
+# save in format WORD individually 
+dir <-   here::here("images/word/")
+
+# sect_properties <- prop_section(colwidths = c(1,7)#,
+#                               # page_size = page_size(orient = "portrait",
+#                               #                       width = 8.3, height = 11.7),
+#                               # type = "continuous",
+#                               # page_margins = page_mar()
+#                               )
+
+ 
+save_as_docx(x = onecase_ft_w, path =  paste0(dir, "case", i,".docx") 
+             #,pr_section = sect_properties
+             )  
+
+}
+```
+
+## ------ combine all word case in 1 single word 
+```{r eval=FALSE, include=FALSE}
+#docfiles <- list.files(path = dir, pattern = '\\.docx$') 
+docfiles <- list.files(path = here::here("images", "word"), pattern=glob2rx("^cas*.docx$"),full.names = TRUE) 
+ docfiles
+ docfiles[1]
+
+ out_dir <- here::here("images", "word")
+ target_w <- paste0(out_dir, "/", "allcase.docx")
+ 
+ 
+ # Combine all docx
+my_doc_all <- read_docx() %>% 
+  body_add_docx(src = docfiles[1]) %>%
+  body_add_docx(src = docfiles[2]) %>%
+  body_add_docx(src = docfiles[3]) %>% 
+    body_add_docx(src = docfiles[4]) %>%
+  body_add_docx(src = docfiles[5])
+ 
+ 
+ 
+# Print combined docx to computer
+print(my_doc_all, target = target_w)
+```
+
+## b) FOR REALZ 
+
+ALL THE SINGLE TABLES ;) 
+```{r  results='asis'}
+casiN <- casi %>% 
+  dplyr::rename(
+    #newname = old name
+    "Name"  = "name", 
+    "Country"  = "country", 
+    "Sector/s"  = "sector",	
+    "Sub-sector/s"  = "sub_sectors",	
+    "Adminstrative level"  = "admin",
+    "Key agencies in charge"  = "key_stakes",	#"key_stakes_types",	
+    "Policy macro area/s"  = "policy",	
+    "Policy specific tool/s"  = "sub_policy_clean",	
+    # "launched",
+    #	"desc_objective"	,"name"	,
+    "Highlights"  = "purpose", 	
+    "Intended/achieved outcome/s"  = "intended_outcomes",	
+    "Status & timeline"  = "status",	
+    # "has_regulatory_innovation",	"has_plan_guidelines_std",	"has_O&M_costs_reduction",	
+    # "has_priv",	"has_data_collec",	"has_tech40",	"has_resilience", 
+    # "has_knowshar",	"has_age",
+    "Additional References"  = "link"
+    )
+
+                                        
+# FOR LOOP TO MAKE 1 TABLE FOR EACH OBS 
+for (i in 1:nrow(casiN)){
+  onecase <- casiN[i,c(#"Name", 
+                        "Country",  # "id", 
+                       # "flag", 
+                       "Sector/s",
+                       "Sub-sector/s",	
+                       "Adminstrative level", 
+                       "Key agencies in charge",	#"key_stakes_types",	
+                       "Policy macro area/s",	
+                       "Policy specific tool/s",	
+                       "Highlights" , 	
+                       "Intended/achieved outcome/s",	
+                       "Status & timeline",	
+                       "Additional References")]
+  # attempt header with case name (NON VIENE!) 
+  #one_name <- onecase[, 3]
+  # print(one_name)}
+  
+  # attempt flag
+  #flag <- onecase$flag[i]
+
+   onecase_ft <- onecase %>% 
+        head() %>% 
+        t() %>% 
+        as.data.frame() %>% 
+        tibble::rownames_to_column() %>% 
+        flextable %>% 
+  # GIVE TITLE 1
+        set_header_labels ( "rowname" = "Info", "V1" = "Details") %>%
+        bold( bold = TRUE, i = 1, j= 2,  part = "body") %>%
+        bold( bold = TRUE,   part = "header") %>%
+        color( color = "white",   part = "header") %>%
+        bg( bg = bluMEFprinc,   part = "header") %>%
+  # GIVE TITLE   2
+     set_caption(caption =  paste0(casiN[i,c("Country")], " - ", casiN[i,c("Name")]),# add title
+                 autonum = NULL, ) %>%  
+        fontsize( i = 1, size = 12, part = "header") %>% 
+        bold( bold = TRUE, i = 1,   part = "header")  %>% 
+
+        bold( bold = TRUE,  j= 1,  part = "body") %>% 
+        bg( bg = grigioSfondo, part = "body", source = j) %>% 
+       # bg(bg = gialloMEFlight, i = 1 , part = "body") %>% 
+                bg(bg = verde_light, i = c(8,10) , part = "body") %>% 
+                  bg(bg = bordeaux_light, i = 9 , part = "body") %>% 
+                # bg(bg = gialloMEFlight, i = 1 , part = "body") %>% 
+        border_outer(border = brdr) %>% 
+        border_inner(border = brdr_in) %>% 
+        # fontsize(  size = 14, part = "header") %>% 
+        fontsize(  size = 11, part = "all") %>% 
+#FLAG        
+        # compose( i = 3, j= 2, value = as_paragraph(
+        #   as_chunk(""),
+        #   as_image(src = onecase$flag[i], width = 0.3, height = 0.2),
+        #   as_chunk("")
+        # )) %>% 
+     
+# LAYOUT      
+        # width(j = 1, 3 ) %>% 
+        # width(j = 2, 10 ) %>% 
+     # autofit() %>%  NOT WITH WORDS  !!!!!!!!! 
+  fontsize(  size = 10, part = "body") %>% 
+  line_spacing(space =1, part = "body") %>% 
+  set_table_properties(width =1, layout = "autofit")    # OK FOR WORD !!!!!!!!!!!!!1111 
+   # --- 1) see output in viewer 
+  onecase_ft
+  
+  # PRINT (useful when you want to generate flextable in a loop?  / results='asis'
+  #flextable_to_rmd(onecase_ft)  # --- html output 
+ 
+  # rmarkdown::word_document() # ---- WORD OUTPUT 
+  # print (onecase_ft, preview = "docx") # ---- WORD OUTPUT 2 (no format )
+  # print(x = ft, target = here::here( "image", "example_table_powerpoint.docx")) #---- WORD OUTPUT 3 (no format )
+
+# ---  2) save each in Word picture 
+# change to prepare with custom function 
+# onecase_ft_w <- FitFlextableToPage(onecase_ft)
+
+# save in format WORD individually 
+dir <-   here::here("images/word/")
+
+# sect_properties <- prop_section(colwidths = c(1,7)#,
+#                               # page_size = page_size(orient = "portrait",
+#                               #                       width = 8.3, height = 11.7),
+#                               # type = "continuous",
+#                               # page_margins = page_mar()
+#                               )
+
+ 
+save_as_docx(x = onecase_ft, path =  paste0(dir, "case", i,".docx") 
+             #,pr_section = sect_properties
+             )  
+
+} # END LOOP
+```
+
+## ------ combine all word case in 1 single word 
+```{r}
+#docfiles <- list.files(path = dir, pattern = '\\.docx$') 
+docfiles <- list.files(path = here::here("images", "word"), pattern=glob2rx("^cas*.docx$"),full.names = TRUE) 
+ docfiles
+ docfiles[1]
+
+ out_dir <- here::here("images", "word")
+ target_w <- paste0(out_dir, "/", "allcase.docx")
+ 
+ 
+ # Combine all docx
+my_doc_all <- read_docx() %>% 
+  body_add_docx(src = docfiles[1]) %>%
+  body_add_docx(src = docfiles[2]) %>%
+  body_add_docx(src = docfiles[3]) %>% 
+    body_add_docx(src = docfiles[4]) %>%
+  body_add_docx(src = docfiles[5]) %>% 
+
+  body_add_docx(src = docfiles[6]) %>%
+  body_add_docx(src = docfiles[7]) %>%
+  body_add_docx(src = docfiles[8]) %>% 
+    body_add_docx(src = docfiles[9]) %>%
+  body_add_docx(src = docfiles[10])%>%
+  
+   body_add_docx(src = docfiles[11]) %>%
+  body_add_docx(src = docfiles[12]) %>%
+  body_add_docx(src = docfiles[13]) %>% 
+    body_add_docx(src = docfiles[14]) %>%
+  body_add_docx(src = docfiles[15])%>%
+   
+    body_add_docx(src = docfiles[16]) %>%
+  body_add_docx(src = docfiles[17]) %>%
+  body_add_docx(src = docfiles[18]) %>% 
+    body_add_docx(src = docfiles[19]) %>%
+  body_add_docx(src = docfiles[20])%>%
+    
+     body_add_docx(src = docfiles[21]) %>%
+  body_add_docx(src = docfiles[22]) %>%
+  body_add_docx(src = docfiles[23]) %>% 
+    body_add_docx(src = docfiles[24]) %>%
+  body_add_docx(src = docfiles[25])%>%
+     
+      body_add_docx(src = docfiles[26]) %>%
+  body_add_docx(src = docfiles[27]) %>%
+  body_add_docx(src = docfiles[28]) %>% 
+    body_add_docx(src = docfiles[29]) %>%
+  body_add_docx(src = docfiles[30])%>%
+      
+       body_add_docx(src = docfiles[31]) %>%
+  body_add_docx(src = docfiles[32]) %>%
+  body_add_docx(src = docfiles[33]) %>% 
+    body_add_docx(src = docfiles[34]) %>%
+  body_add_docx(src = docfiles[35])%>%
+       
+        body_add_docx(src = docfiles[36]) %>%
+  body_add_docx(src = docfiles[37]) %>%
+  body_add_docx(src = docfiles[38]) %>% 
+    body_add_docx(src = docfiles[39]) %>%
+  body_add_docx(src = docfiles[40])%>%
+        
+         body_add_docx(src = docfiles[41]) %>%
+  body_add_docx(src = docfiles[42]) %>%
+  body_add_docx(src = docfiles[43]) 
+
+ 
+ 
+# Print combined docx to computer
+print(my_doc_all, target = target_w)
+```
+
+
+
+
+# NOPE! - TABLE for loop yes flag (wide) 
+Error in (function (img_raster, width, height)  : 
+  this format is not implemented
+```{r eval=FALSE, include=FALSE, results='asis'}
+for (i in 1:nrow(sample)){
+  onecase <- sample[i,c("id","country", "name",  "flag",
+                      "sector",	"sub_sectors",	"admin",
+                      "key_stakes",	#"key_stakes_types",	
+                      "policy",	"sub_policy_clean",	
+                      "launched",
+                      #	"desc_objective"	,"name"	,
+                      "purpose", 	"intended_outcomes",	"status",	
+                      # "has_regulatory_innovation",	"has_plan_guidelines_std",	"has_O&M_costs_reduction",	
+                      # "has_priv",	"has_data_collec",	"has_tech40",	"has_resilience", 
+                      # "has_knowshar",	"has_age",
+                      "link")]
+  
+  onecase %>% 
+    head() %>% 
+     t() %>% 
+    as.data.frame() %>% 
+    tibble::rownames_to_column() %>% 
+    flextable %>% 
+    compose( j = 2, # BOH 
+              i = 4, # BOH 
+            value = as_paragraph(
+              as_chunk(" "), 
+              as_image(src = flag, width = 0.5, height = 0.33)) 
+            
+    ) %>% 
+    autofit()  -> ft 
+  
+   flextable_to_rmd(ft)  # --- html output 
+  
+  # rmarkdown::word_document() # ---- WORD OUTPUT 
+  # print (ft, preview = "docx") # ---- WORD OUTPUT 2 (no format )
+  # print(x = ft, target = here::here( "image", "example_table_powerpoint.docx")) #---- WORD OUTPUT 3 (no format )
+}
+```
+
+
+

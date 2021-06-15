@@ -1,0 +1,726 @@
+---
+title: "Maintenance of infrastructure systems"
+subtitle: "Literature Review"
+author:
+- Luisa M. Mimmi^1^, Author II^2^
+- ^1^Economics Advisor at Ministry of Economics & Finance (MEF) - G20, ^2^ Other University
+date: "Last updated: `r format(Sys.time(), '%d %B, %Y')`"
+output:
+  bookdown::word_document2:
+    fig_caption: yes
+    md_extensions: +footnotes
+    reference_docx: ../custom_reference.docx
+    toc: yes
+  bookdown::html_document2:
+    toc: yes
+    toc_float: TRUE
+    number_sections: no
+include.latex: TRUE
+csl: ../apa.csl
+bibliography: ../Maintenance-Resilience.bib
+abstract: |
+  **Background:** Put
+  **Methods:** Your
+  **Results:** Abstract
+  **Conclusions:** Here
+keywords: "bla bla bla"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+# Load required packages
+library(tidyverse)
+library(captioner) # You may have to download this
+
+# Preparing to make figure and table captions using the captioner package
+figs <- captioner(prefix="Figure")
+tbls <- captioner(prefix="Table")
+
+# Source helper (data cleaning and basic analyses) 
+# (if you have more .R files, each will source the previous, then the .Rmd sources the last) 
+source("../r_scripts/helper.R")
+```
+
+> other tricks [here](https://yongfu.name/Rmd_ref/#7_bibliographies__citations)
+
+<!-- This is a comment in RMarkdown main body text. Note how it differs from comments in R code (#). -->
+
+# 1 INTRODUCTION
+<!-- a bit of context and origin story of this effort  -->
+>identify your topic 
+
+There are X common themes in the literature on maintenance  in several academic fields. [@hassink_regional_2020, _GREAT LIT REV EXAMPLE!!!!!_]
+
+#### -- Spending on maintenance
+
+>, some discussion of the significance of that topic and a thesis statement that outlines what conclusion you will draw from your analysis and synthesis of the literature.
+
+...a dearth of reserch on the specific topic ... although there is an exception to be made for the transport sector ... 
+`r emo::ji("question") `
+`r emo::ji("paperclip")`
+
+
+
+#### -- REGISTERS/CENSUS/MONITORING of ASSETS 
+A root cause of the issues that we will be discussing is in the faulty record keeping on public assets that affects many government. Conversely, it would be of fundamental importance having some _“maintenance backlog”_ metrics revealing _“the amount of unfulfilled demands at a given point of time in explicit reference to the predefined standards to be achieved"_. Maintenance backlog can be expressed in functional (non-monetary) or monetary terms and it refers to single components, sub-assets or to the whole road infrastructure asset of a given (road) network” - to borrow from [@weninger-vycudil_effect_2017]. Interestingly, they are able to establish a relationship linking the annual average maintenance budget with the increase of decrease of _“maintenance backlog”_ (% of unfulfilled maintenance demand)
+
+IMF, PIMA low score on _Monitoring of Public Assets institution_ usually correlates with maintenance funding @imf_well_2020[pp. 277]
+
+#### -- POOR DATA &/OR COMPARABILITY &/OR LINK-AWARE REPORTING  
+-	lack of reliability and quality of data on assets inventory/usage/performance/spending
+-	difficult matching of data from different sources to reflect highly relevant sectors’ interlinks (e.g. energy-water generation, power outages-forestry management, road safety-hospitalization, etc.)
+-	incoherent recording of maintenance spending in national accounts, alternatively filed as investment (which should include construction, renewal and major rehabilitation) or intermediate consumption (ordinary maintenance and repairs).   
+-	the responsibility for maintenance (of road network) may be allocated to numerous bodies, such as national ministries, regional or local authorities, which (especially at local level) may not have resources to accurately record the budget allocated and/or spent
+
+
+# 2 DEFINITIONS AND CHOSEN VANTAGE POINT to look at INFRASTRUCTURE MAINTENANCE
+
+### -- define infrastructure, maintenance and(resilience)
++ defining **infrastructure** 
+  + ECONOMIC infrastructure
+    - drinking water systems
+    - waste water systems
+    - waste recycling and treatment facilities
+    - urban transport
+    - roads
+    - bridges
+    - railways and terminals
+    - river and sea ports
+    - waterways
+    - airports
+    - telecommunicaitions
+    - power/electricity systems
+    - pipelines
+    
+  + SOCIAL **infrastructure**
+    - schools
+    - libraries
+    - hospitals
+    - housing
+    - courthouses
+    - penitentiary facilities
+    - civic buildings
+    - sports venues
+
++ why **_maintenance_** i.e. put efforts into keeping existing infrastructure in working order??  
+> because of **aging, overuse, exposure, misuse, mismanagement, and neglect**, many of these systems are deteriorating and becoming more vulnerable to catastrophic failure, particularly when earthquakes, hurricanes, and other natural hazards strike. They must be renewed in an intelligent manner, which includes the prudent and effective use of our economic, material, and human resources, and which focuses on optimizing the performance of both individual subsystems and of the civil infrastructure systems complex as a whole. ...  How systems interact is often poorly assessed, and maintenance has often been inadequate [@uddin_public_2013]
+  
++ related to **_resilience_** which - incidentally - is mentioned in SDG 9 "Build resilient infrastructure, promote inclusive and sustainable industrialization and foster innovation."  [@gallego-lopez_introducing_2016]  [@world_bank_natural_2010]
+
++ “Resilience covers both ‘physical and societal systems’ through four ‘R’ principles:
+    • Robustness: the inherent strength or resistance in a system to withstand external demands without degradation or loss of functionality;
+    • Redundancy: system properties that allow for alternate options, choices, and substitutions under stress;
+    • Resourcefulness: the capacity to mobilize needed resources and services in emergencies; and
+    • Rapidity: the speed with which disruption can be overcome.” (Bruneau et al, 2003)
+
++ **_reliability_** is another relevan angle (resilience is too often just associate to climate change) 
+
++ related to **_asset management_** [@ebrd_art_2019 "a set of disciplines and methods for delivering a desired level of service to customers at the lowest whole-life cost while managing risk at an acceptable level."]
+
++ see glossary inputs here: ([@world_bank_operation_2020], )
+
+### -- how is estimate of spending done (roads)
+(for transport at least)
+
++ revenues come from sources that are  *fixed* (vehicle purchase and registration taxes, insurance taxes, vignettes - annual road user charges-) and *variable* taxes (fuel tax and road tolls).
+
++  "Estimating the economic costs of transport infrastructure including depreciation, interest on capital and running costs can either be done using: 
+
+1. the capitalisation of historical expenditure data **(Perpetual Inventory Method - PIM)** which calculates the annual depreciation costs by distributing the initial investments over the asset’s lifetime. Emerges from from the tradition of keeping national accounts by depreciating expenses (by activity or type of asset) over time and adding interest costs to the calculated remaining net capital stock.
+2. The **Synthetic method** ( assessment of the future financing needs) in contrast, compiles and values an inventory of currently existing assets using their actual replacement values by taking into account age, physical condition and past and projected traffic loads. [@doll_road_2008 p 18]
+
+
+
+
+# 3 (INSUFFICIENT) SPENDING ON INFRASTRUCTURE 
+
+
+### -- declining maintenance spending -> deteriorating infrastructure 
+
+**TRENDS**:
+the Global Infrastructure Hub has shown a decade-long decline in private investment in new infrastructure, to about US$100 billion in 2019. 
+
+(all over except China NOW AND CEEC between 2003-2011 also thanks to EU funds [@schroten_overview_2019])
+2019 OCSE data shows Public investment declined on average, (transport infrastructure, military defence systems, public buildings and other tangible or intangible assets) in OECD governments - 2017 average of 3.1% of their GDP was a 0.5 p.p. decrease from 2007 (U.S.   [@ocse_government_2020]
+
+ALso public maintenanc espending in roads declinging between 2007 - 2017 [@international_transport_forum_evolution_2019]
+
+```{r OECD-govspend, fig.cap = "Government investment as percentage of GDP, 2007, 2017 and 2018", echo=FALSE}
+knitr::include_graphics("../images/g02-47.png")
+```
+
+In transport [@schroten_overview_2019] explain well the measurement and data issues (esp _COSTS V EXPENDITURE_) and its details figures (broken down to the level of O&M show confirm: 
+> In 2016, the EU28 countries spent together about € 38 billion on the O&M of their road networks. This is slightly lower than in 1995. O&M expenditures in the EU28 have been rather stable in the period 1995-2003, after which they increased till 2009. In the period 2009-2016 they are steadily decreasing, such that the current O&M expenditures are just 86% of the expenditures in 1995.
+
+
+**REASONS**:
+for several reasons: (1) the underinvestment in public works programs; (2) the lack of good management systems for infrastructure; (3) failure to recognize the importance to the future economy of maintaining a sound physical infrastructure; (4) cutbacks that have slashed public- works budgets; (5) failure to replace the infrastructure as fast as it wears out; (6) failure to realize that lack of physical infrastructure seriously impacts the level and types of services government can provide to their citizens; (7) tendency by national, state, and local officials to defer the maintenance of public infrastructure; and (8) increased costs to taxpayers to repair and rebuild the obsolescent public infrastructure.
+
+> A number of factors contribute to inadequate provision for O&M expenditure. A shortage of funds for existing O&M and for newly completed projects may arise from overall budgetary pressures owing to limited resources, and/or excessive levels of expenditure on other programs. Also, O&M expenditures often have a low priority in government budgets as they are politically less appealing and visible than new investment projects. In addition, since poor maintenance and inadequate operations have delayed consequences or less obvious effects, expenditure on these items tends to get postponed. Moreover, external donors have facilitated the efforts of countries to mount ambitious investment projects while providing little support for recurrent costs, thus creating the basis for subsequent O&M problems. Inadequate understanding of the costly downstream consequences of neglecting maintenance, lack of local expertise, and unclearly delegated responsibilities and accountability also contribute to the problem of inadequate O&M expenditure and inefficient use of O&M funds.
+[@imf_viii_1991]
+
+
+**FUTURE EXECTATIONS**:
+Although there are recent pledges to invest more in infrastructure (EU's stimulus package including Next Generation EU recovery fund, UK's £100 billion ($133 billion) infrastructure initiative, including the establishment of a new national infrastructure bank, Biden's pledge to make infrastructure a priority, with a strong emphasis on sustainability and combating climate change )
+
+
+infrastructure spending in advanced economies has been declining intermittently for decades. (China, which is at a very different stage of development, is of course another story entirely.) see @imf_well_2020 (" _public investment (general government new acquisition of nonfinancial assets) has steadily declined from an average of 2.4 percent of GDP in the 1990s to a historic low of less than 2 percent after 2010_ "),  , , etc  
+
+`r emo::ji("question") `
+`r emo::ji("1234")`
+
+###  -- which capital spending fraction goes to MAINT?
+Historically, over the past 60 years, the capital spending curve has flattened while the non-capital spending one (including mainten) has become steeper. 
+
+Of the above %, what goes to maintenance is probably about 1% of global GDP 
+[Edwin Lau at @oecd_meeting_nodate]
+
+
++ USA congressional budget office 
+
++ EU comparison roads: also from this attempt it is clear the difficulti to compare (including for different topological /climate conditions) . One insight from @doll_road_2008 was  that unit cost (km) for motorways are roughly ten times higher than those for trunk or urban roads (they are not always reported in disaggregated form by road class). It advises to start a EU initiative to develop a **unic road cost accounting tool**
+```{r roadexp, fig.cap = "Road Maintenance Exp", echo=FALSE}
+road_maint_cost <- readr::read_csv( here::here("tables", "road_maint_cost.csv" ))
+
+
+road_maint_cost %>% 
+  gt() %>%
+ gt::tab_header(
+   title = md("**Road maintenance expenditure**"),
+    subtitle = md("Different sources /years")
+  )
+  
+```
+
+
+[Source: @fondazione_caracciolo_il_2018, @doll_road_2008, p13]
+
+###  -- Accounting / Financial Reporting (tricky) 
+
++ CAPITAL INVESTMENT  v CURRENT SPENDING
+
+[@ocse_government_2020] also [@frisoni_eu_2014] that looked at road maintenance investment in EU confirms the "degree of homogeneity of available data on road maintenance and investment expenditure across the different MS is minimal,"
+
+```{r OECD-investexpend, fig.cap = "5.1. Distinction between capital and current expenditure requests, 2018", echo=FALSE}
+knitr::include_graphics("../images/g05-01.png")
+```
+
+###  -- The investment-maintenance trade-off 
+
+[@kornejew_well_2019, [@easterly_walking_nodate; @rioja_filling_2003; @rioja_what_nodate]]
+
+IDB: A logical source of information about investment in new assets and maintenance would be countries’ national accounts. However, countries use different methodologies that complicate the identification and reporting of maintenance expenditures. This explains why data on infrastructure investment do not report spending on maintenance.
+
+Callenge of defining and measuring maintenance spending: One complication is due to inconsistent recording of maintenance interventions, whose costs may not be recorded separately, but subsumed within other spending items. either as capital investment or current spending. Further the line between repairs and routine maintenance (that should count as current expenditure) versus major renovations or enlargements (that should count as capital investment) is not easy to draw in many countries.
+ Box 14.1. [@imf_well_2020]
+
+###  -- Who and how is the spending decision made? 
+
+it depends, in ANNEX 1 we build the Italy case... 
+
+
+# 4 SOME ARGUMENTS IN THE LITERATURE (to spend more/better) 
+
+Its's worth noting that the maintenance aspect cuts across the acedemic divide in macro and micro economic (... ) not to mention the technical/engineering-like aspects that have a huge impact on the design/delivery aspects. 
+
+A **macroeconomic perspective** is relevant in the sense that a lifecycle perspective in the investment and sub-sequent management of infrastructure assets will necessarily affect the present and future public spending allocation, as well as productivity, competitiveness, sustainability of growth and development. What is more traditionally associated with a **microeconomic perspective** is equally determinant in that an approach that typically moves within a projec-by-project perspective is where the literature is exploring all the opportunities to manage O&M in a smarter, more efficiently and cost-effective ways with associated costs and benefits. 
+
+Given the above, we try to keep our focus on maintenance as much as possible, without a strict separation of macro/micro. 
+
+
+## a. [MACRO] _Impacts of infrastructure spending on long-run GDP and/or welfare and productivity_. 
+<!-- what I DO {NOT} INTEND TO COVER {if not very lightly} -->
+these are some of the key questions that the macroeconomic literature of the last XX [ _Aschauer 89, Queiroz 92 in US and also ....?_ ] decades have investigated (mostly based on time series, narrative, or natural experiment  identification  using  samples  determined  by  historical  happenstance):
+
+Theory explain multipliers will depend on: 
+  1) the persistence of the change; 
+  2) the type of spending or taxes that changed; 
+  3) how the policy was financed; 
+  4) whether it was anticipated; 
+  5) how the policy  was  distributed  across  potentially  heterogeneous  agents;  
+  6)  how  monetary  policy reacted; 
+  7) the state of the economy when the policy took effect; and 
+  8) other features that characterize the economy such as level of development, exchange rate regime, and openness. 
+  
+[@imf_well_2020 pp.267] also reports a few studies justifying 
+>"that neglecting maintenance holds back the economic outcomes provided by infrastructure, and that there is an optimal ratio of maintenance to new invest- ment to maximize economic growth."
+
++ studies on _Spillover effect_ depends on a number of factors, such as quality of infrastructure, interconnectivity with other infrastructure with neighboring regions or countries, population density, type of infrastructure (i.e., water supply, roads, railways, etc.), income, access to finance, education, etc. [@t20_quality_2020; @yoshino_financing_2021]
+
++ impact on infrastructure on firms / welfare / education [see various works by Yoshino@adb_financing_2018]
+  
+## b. [MACRO] _Impacts of infrastructure spending in the short-run_ 
+
+  + (i) the effects of time-to-build delays and 
+  + (ii) the propensity of government investment to crowd out private spending more than govern- ment consumption does.
+See [@ramey_macroeconomic_2020] or [@stupak_economic_2018]
+
+> curious how there have not been even a fraction of the above posing the flip side of this question: how much is the (long term/short term) loss if we DON"T invest?!?!?!
+
+## c.  [MICRO] Maintenance CHALLENGES: _various BARRIERS, CONSTRAINTS AND CONDITIONS_
+
+###  --  FACT: deferred (unfunded) maintenance 
+> "the extent of maintenance, repair, rehabilitation, etc, that is needed to bring capital assets from a sub-par condition up to at least a minimum-acceptable service levels (does not include improvements in assets' capacity/capability compared to originally intended). It is normally expressed as the cost to bring assets back to an acceptable physical condition (Gordon)"
+[@gordon_federal_1994; @summers_bridges_2017; @center_for_an_urban_future_caution_2014 and @center_for_an_urban_future_caution_2019]
+
++ (perhaps SOGR = State of Good repair, sometimes used in North America, corresponds to that minimum-acceptable service levels)
+
++ e.g. navigating difficult right-of-way issues, environmental concerns, and objections from apprehensive citizens representing a variety of interests.
+ 
++ lack of a _project pipeline_  (that would require proper Inventory/conditions assessment + priority setting / planning )
+
++ Common  _risks_ in infrastructure projects [@bipartisan_policy_center_bridging_2016]
+
+  + _Construction_ risk 
+  + _Land Acquisition_ risk 
+  + _Permitting risk_ (delays due to permitting and _environmental_ reviews) 
+  + _Financing_ risk
+  + _Political risk_
+  + _Usage/Demand risk_
+  + _O&M risk_
+  + _Taxation risk_
+  + _convincing stakeholders (NIMBY)_
+      
++ _COST OVERRUNS_ 
+see [@flyvbjerg_five_2018, @cavallo_dia_2020]
+
+
+## d. [MICRO-MACRO] Maintenance fact: _... NEGLECTING Maint has costs_
+
+see 
+@gordon_federal_1994
+@summers_bridges_2017, 
+@bipartisan_policy_center_bridging_2016, 
+@hallegatte_lifelines_2019 (disruptions), 
+@asce_failure_2016 (CUMULATIVE ECONOMIC IMPACTS OF FAILING TO INVEST
+          - Business Effects
+          - Household Effects Outcomes
+          - Aggregate Economic Impacts)
+etc.
+
+(indirect) effects on growth of disasters [@onuma_short-_2020]
+
+AS introduced before, the weakest link seems to be infromation about estimates because of lacking determination of minimum standards and (consequently) of implications of maintenance deferral. It is perhaps more frequent in certain sectors (e.g. for highways and roads, there are detarioration curves that can predict road surface quality, which, in turn, is related to safety, driving costs etc. 
+Many advocate that governments and their agencies should be asked to provide information on the _implications_ of continued deferral (to the extent feasible): amount of added cost that would be incurred / impacts on service quality, health and safety @gordon_federal_1994)
+
+### -- posponing -> higher $$ needed
+> A clear relation was found between the duration of the do-nothing-period and the additional investments to compensate the deterioration of the pavement and the reduction of the asset value occurred in the meantime. These additional budgetary needs range between 25% after a do-nothing-period of 5 years and 150% after 9 years. [@weninger-vycudil_effect_2017]
+
+Figure \@ref(fig:FAA-maintcurve) below demonstrates that $1 spent for preventative maintenance early in the pavement life is equivalent to $4 to $5 spent later in the pavement life. (i.e. there is a different return to maintenance at different times) . 
+
+
+```{r FAA-maintcurve, fig.cap = "Typical Pavement Live Cycle Curve", echo=FALSE}
+knitr::include_graphics("../images/maintenance-curve.jpg")
+```
+
+## e. [MACRO-MICRO] _What is the RETURN from spending on maintenance and repair?_ 
+
+While in advanced economies, the most productive burst from infrastructure investment may have been already enjoyed in the past (although there is still potential in areas like improving the electricity grid or providing universal internet access), public-finance specialists largely agree that, in advanced economies, maintenance and repair offers the highest return from infrastructure investment. This was recognized by `r emo::ji("question") ` `r emo::ji("paperclip")` and reiterated at OECD conference [@oecd_meeting_nodate]
+
+  + **BENEFITS OF DOING** 
+  @imf_well_2020 [p.68] says that key benefits of maintenance are 
+  
+  
+### -- to increase the efficiency of infrastructure investment, 
+All infrastructure assets are subject to gradual wear or aging. This depreciation in the value of the asset occurs at varying speeds, depending on its nature (A.k.a. is not linear) -> 
+
+
+(examples of loss of productivity, quality in @imf_well_2020[pp. 268])
+[see list of revenue options here @bipartisan_policy_center_bridging_2016, p 64]
+    + _life_ "most generation technologies have a life of 20–30 years, a well-maintained hydropower facility can operate for more than 100 years" [@world_bank_operation_2020]
+
+### -- to reduce the burden of repair for future generations  
+
+
+### --  to reduce several negative externalities associated to insufficient maintenance.
+
+[@hallegatte_lifelines_2019; @imf_well_2020]
+  • User costs. 
+  • Human costs.
+  • Ecological costs.
+
+### --  to increase output of clean energy generated
+Althesys per Utilitalia documented how "semplicemente ammodernando e svolgendo operazioni di manutenzione dell’attuale parco impianti sarebbe possibile un aumento di potenza di 5.772 MW entro il 2030 da aggiungere agli odierni 18,9 GW. Un efficientamento che si tradurrebbe in +4,4 TWh di produzione elettrica rinnovabile nei prossimi 10 anni senza alcun nuovo impatto ambientale e -2,1 milioni di tonnellate di CO2 equivalenti entro il 2030." [@marangoni_lidroelettrico_2018]
+  
+      
+  + ...
+  
+## f. [MACRO-MICRO]  + **... COMPARATIVE RETURN of maintenance v new/recontruction** 
+  
+  FANTASTIC [@gibson_public_2017]
+  
+  > "Investment  in  maintaining high quality infrastructure  and  removing capacity  bottlenecks  is  also  likely  to  be  more  beneficial  to  the economy  than  investment  in  new  infrastructure  unless  patterns  of  demand  are  expected  to  change significantly. This  is  because  relieving  congestion  produces  immediate  benefits  and  such  projects  are much less subject to uncertaintythan new infrastructure. Moreover, investment in maintenance prevents physical  deterioration  of  infrastructure  which  at  a  certain  point  becomes  irreversible. At  the  same  time pricing  strategies  to  internalise  congestion  costs  may  yield  greater  welfare  gains  than removing bottlenecks" [@oecd_itf_strategic_2017; @rioja_what_2013]
+
+> IMF FIscal monitor / Well Spent 
+
+(examples of The US Federal Aviation Administration2 assesses that USD1 spent for preventative maintenance early in the airfield pavement life is equivalent to USD4 or USD5 spent later, making it more eco- nomical to spend on maintenance when the condition of the asset is relatively good.  @imf_well_2020[pp. 269] taken from ) From the same source "According to World Bank (World Development Report of 1994), timely road maintenance expenditure of USD12 billion in Africa in the mid-1980s could have prevented a USD45 billion reconstruction cost in the subsequent decade."
+
+
+## g. [MACRO-MICRO-TECH] _OPTIMAL level of infrastructure INVESTMENT/SPENDING_ [both MACRO AND MICRO question]
+
+>"While the microeconomic approach yields clear policy tools for selecting infrastructure projects, the macroeconomic approach (whose objectives are either stabilization or growth) often yields only general advice to spend more on infrastructure during a downturn. A much-needed reconciliation of the two approaches could start with a clear quantification of the macroeconomic externalities associated with providing different forms of infrastructure."[@glaeser_economic_2020]
+
+Decision making involving risk (CBA, probabilistic decision making, scenario thinking, etc) and best practices in infrastructure planning i.e. UK National infrastructure Commission (mainten?)/ AUS' Infrastructure Australia [@oecd_itf_strategic_2017]
+
+Rozenberg and Fay [2019] estimates that between 1 and 3 percentage points of GDP of annual maintenance spending will be needed to reach the Sustainable Development Goals in key infrastructure sectors by 2030 (Figure 14.3)
+
++ [PLANNING NEEDED] Identify Maintenance Requirements as Part of the Investment Decision
++ UNCERTANTIES 
+
++ Quality is just as important as quantitiy (lenghtiness of repair, bizantine permits, more CBA,  [@summers_bridges_2017]
+
+### --  HOW MUCH: include *maintenance* in CBA  
+microeconomists, who usually through _cost-benefit analysis tools_, they may be more circumspect in defining impacts 
+Identifying maintenance costs in a CBA contributes to the composition of a budget. A budget would be incomplete without the provision of maintenance costs. 
+
+[@imf_well_2020, Box 14.2, anche menzionato @summers_bridges_2017 as opposed to "pork barrel" politics ] on Maintenance Guidelines for Public Infrastructure in South Africa
+
++ PROBLEM: Appraisal, selection and construction are often initiated with underestimated costs, overestimated revenue, undervalued environmental asn social impacts or overvalued economic development or spillover effects (@t20_quality_2020)
+
+### --  RAPIDITY: "The goal of building rapidly at minimum cost should be the primary objective in infrastructure procurement. Deviations from this principle should take place only with compelling justification." @summers_bridges_2017
+Carpaneto idea of bulk bid for a concessionaire instead of project by project.  
+
+
+### --  WHICH SOURCES: to secure sustainable acceess to funding 
+```{r IMF-funds, fig.cap = "Modalities to Fund Infrastructure Maintenance: Strengths and Weaknesses (IMF)", echo=FALSE}
+knitr::include_graphics("../images/maintFund.png")
+```
+
+(@t20_quality_2020): most infrastructure investment are either debt- or tax- financed by the governemnt, therefor overinvesting in unproductive projects results in debt buildup, governemnt budget instability, and monetary expansion if the debt was purchased by the central bank (caused mostly by inconducive institutional environments and limited capacity) 
+
+@summers_bridges_2017: "modern technology makes possible much more pricing of infrastructure usage (transponder technology) ... formulas can be found to introduce congestion pricing
+
++ Spillover TAX revenue [@adb_financing_2018; @t20_quality_2020]
+
++ risk managemetn insurance [@willis_towers_watson_ageing_2018]
+
+## h. [MICRO-TECH] _WHO should be providing infra management_?
+[@ocse_government_2020]
+
+```{r OECD-plans, fig.cap = "5.2. Existence of long-term strategic infrastructure plans, 2018", echo=FALSE}
+knitr::include_graphics("../images/g05-02.png")
+```
+
+
+>in many cases, the problems are quite different and it may well be optimal to split these roles between federal and local government or between public and private entities. [@glaeser_economic_2020]
+TENSION: while planning may require higher oversight, maintenance may benefit from local attention
+
++ What can the _private sector_ bring? ... capital, specialized project expertise, cost-saving ideas and innovations, reduction of risks currently on the balance sheets of public agencies
+  + municipal bond market
+  + PPPs (which can take a variety of forms along a spectrum of responsibilities and risk-sharing)
+    + Conventional
+    + Design-Build
+    + Design-Build-Operate-Maintain (DBOM)
+    + Design-Build-Finance-Operate-Maintain (DBFOM)
+    + Private Ownership
+    
++ From a _technical_ point of view, Liden (surveying railway maintenance experst in Sweden [@liden_railway_2015] points out that  along with the deregulation in Europe since the 1980s (opening up with commercial competition) came a more extensive use of _maintenance contractors_ , which raises more concerns regarding contractual forms, public procurement as well as planning.   
+
+
+
+
+## i. [MICRO] _Making infra maintenance spending more EFFICIENT_
+
+see [@engel_dealing_2020] and also [@engel_when_2020] on PPPs and obsolescence
+
++ better governance for better spending? [@kornejew_well_2019]
+
+## l. [MICRO] _Making infra maintenance spending more EFFECTIVE_
+
+Maintenance spending should be scheduled to maintain an acceptable asset condition (and hence risk of failure), whilst not intervening too frequently. [@noauthor_ageing_2018]
+```{r sawdia, fig.cap = "Timing and effect of maintenance on asset condition", echo=FALSE}
+knitr::include_graphics("../images/sawdiagram.png")
+```
+
+
+see [@engel_dealing_2020] and also [@engel_when_2020] on PPPs and obsolescence
+
+
+> How to align incentives to achieve cost-effective decisions? (PPPs... @bipartisan_policy_center_bridging_2016, 
+@hallegatte_lifelines_2019, Action 3.2)
+
+  + Data
+  
+  + Institutions
+  
+  + Regulation 
+  
+  + Financial incentives 
+
+
+
+## l. [TECH-MICRO] _Exploit innovation and technologyin maintenance_
+
+"A combination of the highly competitive nature of the infrastructure construction industry, the difficulty of disseminating new technologies, negative incentives for adopting new technologies, and excessive litigation has impeded technological advances in the industry" [@uddin_public_2013, p. 29 of Exec Summary]
+
+
+# 6 NEW TOPIC: Spending on maintenance in a post-crisis situation
+
+In [@frisoni_eu_2014, pp.54]   that looked at road maintenance investment in EU, they find that "here is no clear correlation between the pattern of road expenditure in the EU MS and the 2008 economic crisis.(...) but  The extent to which the crisis has affected road investment and maintenance activities depends on the _structure of the funding mechanism_ adopted in the different countries and on _the political choices made by decision makers_. "
+
+see postsriptum in @glaeser_economic_2020
+
+>"The European Union’s proposed €1.8 trillion ($2.2 trillion) stimulus package – comprising the new €1.15 trillion seven-year budget and the €750 billion Next Generation EU recovery fund – has a major infrastructure component, particularly benefiting the economically weaker southern member states." [@rogoff_infrastructure_2020]
+
++ Reasons why Macroeconomists broadly agree that productive infrastructure spending is welcome after a deep recession  [@rogoff_infrastructure_2020]
+
++ ? REASONS WHY IT MAY MAKE SENSE TO SELECT MAINT INVESTMENT AS PART OF STIMULUS PACKAGES AFTER A CRISIS 
+>"Counter-recessionary maintenance spending is easier to manage than outlays on new projects, but even then there may be some social losses from basing maintenance schedules on the state of aggregate employment rather than the condition of the infrastructure capital stock. New large-scale projects are particularly hard to initiate during downturns."[@glaeser_economic_2020] 
+
+  ++ "The stimulus package specifically targeted “shovel-ready” projects because of the urgency for imme- diate government spending."[@ramey_macroeconomic_2020]
+
++ (Pinuccio DIXIT) come nella scienza far parlare ricerca e progetti // diffondere i dati 
+
++ IMF presentation 9 feb IWG 
+  Why invest in maintenance? 
+    + good return on investment
+    + great timnming during lockdown
+    + job creation (labour intensive, )
+    + high need 
+
+# 7 Conclusions 
+
+>The conclusion should provide a summary of YOUR findings from the literature review. Explain what your analysis of the material leads you to conclude about the overall state of the literature, what it provides and where it is lacking. You can also provide suggestions for future research or explain how your future research will fill the gaps in the existing body of work on that topic.
+
+1. It is a macro & micro approach that is needed
+
+2. BE (mindfully) STRATEGIC 
+As per [@gordon_federal_1994 and others??? ] the analytical steps that would allow to tackle in a more evidence-based the problem are 
+
+(1) assessment of the condition of the assets
+(2) determination of a minimum acceptable condition level for each type of assets _(rarely done!)_
+(3) estimation of the cost to bring those assets back to acceptable condition
+(4) estimation of the consequences of deferring maintenance _(rarely done!)_
+
+3. Figure out how to reconcile the tension between an oversight that has to be strategically centralized, versus an attention to needs/opportunities/constrainted that benefits from being localized 
+@gordon_federal_1994 reports the interveiews mention how the governemnt and its agencies need to establish common groundrules /guidelines (e.g. for establishing minimum acceptable conditions) 
+
+
+4. Figure out how to incorporate technical consideration in a decision system that works for public administration 
+> "Although there is an extensive body of civil engineering literature (e.g., Chang et al., 2017; National Research Council, 1990; Saha & Ksaibati, 2016), there are no solid theoretical and empirical models for understanding the determinants of asset maintenance spending, beyond technical factors, from a public administration or financial management perspective. This study is a first step toward building asset maintenance theory in public capital budgeting. " [@kim_asset_2020-1]
+
+In other words, "Quantifiable performance measures tied to realistic policy objectives and implementation targets." [@uddin_public_2013] 
+
+5. Jurina
+BEllissimo che ci sia l'eccellenza del ponte di Genova, pero si procede a macchia di leopardo... meglio allora fare verifiche piu costanti anche se superficiali 9metodo CIAS Linee Guida, primo livello, secondo livello ecc) 
+Stessa cosa per i terremoti dopo che ne succede uno gli ingegneri se ne dimenticano... sistematicita di controlli diagnostici ragionevoli invece che super eccelleza sporadica 
+> copiare intelligentemente il triage dell'emergency room 
+
+# ____ STOP 
+# Methods {#methods}
+Here is the methods section. Refer to this section in the manuscript.Rmd file to see how we:
+
+1. Input a table that does not use R code
+2. Insert a figure that does not use R code
+3. Insert an equation
+4. Insert a footnote
+
+## Insert Markdown tables
+The following table similarly demonstrates absolutely nothing useful except how to generate a simple table in RMarkdown.
+
+Here are some ways of inserting Markdown tables:
+
+1. By hand using standard Markdown syntax
+2. Using a [Tables Generator website](https://www.tablesgenerator.com/markdown_tables)
+3. Using the [`remedy` RStudio addin](https://github.com/ThinkR-open/remedy)
+
+|  Year|  Movie|  Rotten Tomatoes Score|
+|--:|--:|--:|
+|  2019|  The Rise of Skywalker|  53|
+|  2016|  Rogue One|  83|
+|  2002|  Episode II: Attack of the Clones|  65|
+
+
+## Insert a figure
+
+```{r sw-logo, fig.cap = "Starwars logo", echo=FALSE}
+knitr::include_graphics("../images/starwars.png")
+```
+
+<!-- ![](../images/starwars.png) -->
+
+
+## Insert equations
+Here is a nifty equation that shows absolutely nothing except how to include an equation: 
+
+<!-- COMMENTS! -->
+<!-- The text enclosed in dollar signs $ $ will be treated as LaTex math (an equation), and will be formatted especially for this -->
+
+George Lucas' income = $\frac{N\ times\ people\ have said\ May\ the\ Force\ Be\ With\ You}{Carrie\ Fisher}* \$ 1\ bazillion$. 
+
+## Insert footnotes.
+Because we specified footnotes in the markdown extensions in our YAML[^1], we can now include them in the text.
+
+[^1]: This is the footnote.
+
+# Results
+
+This is where most of our R code will be, relying heavily on the contents of `helper.R.`
+You can embed figures and tables directly in this section, or you can save them to another location. Every journal has slightly different requirements, so you may have to tweak your workflow depending on where you're submitting.
+
+## Inserting a figure in R
+
+We can embed figures just like we did in the summary document by using R code chunks. We can also include extra information to include captions and to be able to cross reference them. 
+
+```{r fig-sw, fig.cap = "Mass by Height for all species", echo = FALSE, fig.align='center'}
+sw_plot
+```
+
+We can also just redo the plot
+```{r fig-sw2, echo=FALSE, message=FALSE, warning=FALSE}
+starwars %>% 
+        ggplot(aes(x=height,y=mass)) + 
+        geom_point(aes(color=species,
+                       size=height)) +
+        geom_smooth(method="lm") +
+        labs(x = "Height (cm)",
+             y = "Mass (kg)")+
+  guides(color=FALSE)+
+  theme_bw()
+```
+
+## Cross referencing figures and tables
+
+You can cross-reference figures and tables. This is a bit more complicated, but the benefit is that you don't have to remember which figure/table was in which position (especially helpful if you are adding/removing figs/tables during editing phase). You simply refer to the figure by its chunk label. 
+
+See Figures \@ref(fig:fig-sw) and \@ref(fig:fig-sw2) above.
+Figure \@ref(fig:fig-sw-human) is shown below. 
+
+```{r fig-sw-human, echo=FALSE, fig.cap="Mass by Height for humans vs. non-humans", fig.height=12, fig.width=10}
+sw_plot_human
+```
+
+
+See Table \@ref(tab:tab-sw-human).
+
+```{r tab-sw-human, results='asis', echo = FALSE}
+sw_summary_human %>% knitr::kable( 
+             booktabs=T, 
+             caption="Average height and mass for humans vs. non-humans")
+```
+
+**Caution**: Notice cross-referencing tables worked for the `knitr::kable()` option, but out markdown table above did not get automatically numbered. If you want to include both R and non-R tables, I'd suggest either 1) converting markdown tables to R code or 2) using the `flextable` package to generate captions and cross-references.
+
+### Using inline R code to refer to values in tables
+Here I will include a little extra embedded R code to clean up our model results, but I won't include this code to be shown. In the next paragraph, I'll refer directly to the contents of my model output using in-line R code. For this, we don't use embedded chunks, but rather the syntax  \`\ r someCodeHere \`. See the next paragraph in the results.Rmd file for an example.
+
+
+```{r, echo = FALSE, message = FALSE}
+
+mod2_summary <- summary(mod2)
+mod2_coefs <- mod2_summary$coefficients %>% 
+  as.data.frame()
+# You can refer to the contents of mod2_coefficients by referencing the index of the cell you want to use. This is in the form mod2_coefs["row", "column"]. See the paragraph below.
+
+# Specify which column to grab for the p-vals 
+# (syntax = [row,column]; if row is empty, it means just take the column)
+
+# beta estimates
+mod2_b <- mod2_coefs %>% select(1) %>% round(3)
+# t-vals
+mod2_t <- mod2_coefs %>% select(3) %>% round(3)
+# p-vals, including renaming the column and including a conditional to report very small p-vals as "<0.001" instead of 0. You could also turn this into a function.
+mod2_p <- mod2_coefs %>% 
+  rownames_to_column('var') %>%
+  select(p = "Pr(>|t|)", var) %>% 
+  mutate(p = ifelse(p <0.001, "<0.001", as.character(round(p,3)))) %>%
+  column_to_rownames('var')
+
+```
+
+With Jabba the Hut removed, there was a significant main effect of height on mass 
+($\hat\beta$ = `r mod2_b["height",1]`,
+$t$ = `r mod2_t["height",1]`,
+$p$ = `r mod2_p["height",1]`).
+
+
+
+<!-- Note: the inline R code to include the model coefficients is a little wordy. While it comes out cleanly in the output, when you're working in the .Rmd file, you can separate the code on separate lines. These won't appear as line breaks in the output; for that, you would have to enter a blank line in between. -->
+
+
+### Printing a table
+Here I will reference \@ref(tab:mod2-coefs) 
+
+```{r mod2-coefs, echo=FALSE}
+mod2_coefs %>% as.data.frame() %>% 
+  rownames_to_column("Var") %>% 
+  knitr::kable(caption = "This is the caption for my model coefficients table.") 
+```
+
+
+# Discussion
+Discuss. 
+
+# Limitations
+Beat reviewer \#2 to the punch!
+
+# ANNEX 1 ITALY: Maintenance management and spending 
+
+> I haven't seen many studies examining the practical configuration of public asset management, except this at local US county level [@kim_asset_2020-1]
+
+## ---- Water
+See [@marangoni_lidroelettrico_2018 oppoertunita per rinnovabili ; @reopen__spl_acqua_rifiuti_trasporti_lo_2020 complessita istituzionale ]
+
+## ---- TRANSPORT 
++ see also [@fondazione_caracciolo_il_2018]
++ (nei trasporti e forse anche acqua) **_inherent presence of a lot of artworks (bridges, opere in sopraelevazione, etc)_** due to geomorphological craracteristics with a lot of complexities
+
++ rete stradale [@merendi_sicurezza_2021]
+  + In Italia ci sono 1.500.000 km di _strade_ (provinciali e comunali le più disastrate). A livello di investimenti rispetto alla UE su 28 Paesi siamo solo al 19° posto (fonte: World Economic Forum 2019). 
+  + Il nostro paese ha 50% delle gallerie dell'intera UE
+  + Per quanto riguarda i _ponti_, in Italia ce ne sono 1,5 milioni di cui solo 60.000 monitorati. 
+    + Tra ponti e viadotti in calcestruzzo armato oltre 10.000 sono a rischio (fonte: Unione Province Italiane 2019).
+    + circa 1.400 viadotti non hanno un gestore specifico e, di conseguenza, non sono per nulla monitorati
+    + critica la situazione dei ponti gestiti dalle Province (5931), che – grazie ad una incompleta e poi abbandonata riorganizzazione delle Province – hanno meno fondi di prima ma continuano a doversene occupare.
+ 
+    + rete autostradale Italiana:
+      + 7.000 km (di cui intorno a 6.000 soggetti a pedaggio)
+      + i diversi tratti di rete autostradali sono regolati come monopoli naturali - dunque regolabili tramite _affidamento attraverso una gara_ e una _regolazione tariffaria incentivante_ 
+    
+    + Chi sono i gestori ? 
+        + comuni / province (patrimonio enorme ma manutenz fatto con assenza di pianificazione e rincorsa all'emergenza)
+        + ANAS 939 km autostrade gestite direttamente (30mila km di strade e autostrade nazionali)
+        + 25 concessionarie autostradali (6000 km di autostrade) di cui 19 che fanno capo a Atlantia (55.3%) e ASTM (21.6%)
+    
++ ...come hanno operato? 
+  + tra 2009-2018 sono aumentati i ricavi (+13% in termini reali), ma scesi gli investimenti e spese manutenzione (- 51% in termini reali)
+  + Tra il 2009 e il 2018 si sono spesi in Italia in media circa **690 milioni di euro all’anno per la manutenzione ordinaria**, con un rapporto tra spese per manutenzione e investimenti pari a circa 0,44
+  + **CAUSE**: poca concorrenza (asimmetrie informative) // incertezza sui tempi di ricupero investimenti // incentivi perversi che si determinano in prossimità della scadenza della concessione// proroghe di concessioni scadute 
+  + regolamenti che stanno migliorando con il legge 2016 Contratti pubblici +  DL 109/2018 [@noauthor_indagine_2020]
+  + recentemente introdotta Autorita Regolazione TRasport (**ART**, ex presid Andrea Camanzi) creata nel 2011 che dovrebbe definire condizioni minime di qualità dei servizi di trasporto e dei contenuti minimi dei diritti degli utenti nei confronti dei gestori dei servizi e delle infrastrutture di trasporto
+
++ Questo e' un problema in se (vedi Annone) si litiga in tribunale se il ponte era della prov di Lecco o di ANAS... nessuno fa una riunione per dire valutiamo che e' responsabile (anche se nel 2001 si era emanato un decreto _catasto delle strade_ che imponeva (ma senza sanzioni) alle PA di fare un catasto)
+    
++ (sensato percio) archivio informatico nazionale delle opere pubbliche (**_AINOP_**, art.13), presso il MIT, suddiviso in sezioni e sottosezioni, per specifiche opere pubbliche, cioè:
+    a) ponti, viadotti e cavalcavia stradali;
+    b) ponti, viadotti e cavalcavia ferroviari;
+    c) strade - archivio nazionale delle strade;
+    d) ferrovie nazionali e regionali - metropolitane;
+    e) aeroporti;
+    f) dighe e acquedotti;
+    g) gallerie ferroviarie e gallerie stradali;
+    h) porti e infrastrutture portuali;
+    i) edilizia pubblica.
+( crucial but data filing is lagging )
+
++ **_ANSFISA_** (art.12), acronimo di Agenzia nazionale per la sicurezza delle ferrovie e delle infrastrutture stradali e autostradali, sarà operativa dal 1° gennaio 2019 con compiti di vigilanza tecnica sull'esecuzione dei lavori, predisposizione di un piano nazionale per l’adeguamento e lo sviluppo delle infrastrutture stradali e autostradali nazionali ai fini del miglioramento degli standard di sicurezza, attività di studio, ricerca e sperimentazione in materia di sicurezza delle infrastrutture stradali e autostradali. (tarda a costituirsi) 
+
++ **_OPEN-BDAP_** -> Monitoraggio Opere Pubbliche della Banca Dati delle Amministrazioni Pubbliche for further analysis see here @open_bdap_dataset_nodate (at the attribute "Tipologia investimenti" can select _manutenzione_). Here is the bureaucratic logit of OPERE PUBBLICHE [@mef_monitoraggio_2014]
+
++ the big issue of the fragmented allocation of responsibility - especially concerning maintenance of roads (**_il groviglio di competenze_**    [@fondazione_caracciolo_il_2018]) along with the complex normative platform 
+
++ **_SILOS_** -> lista infrastrutture strategiche etc [@noauthor_silos_nodate]
+
+**_Osservatorio dei contratti pubblici (ANAC)_**
+- Monitoraggio Opere Pubbliche della Banca Dati delle Amministrazioni Pubbliche (BDAP-MOP)
+
++ spending (es manutenzione Autostrade) 
+[@caprino_autostrade_2020]
+
+# ANNEX 2 - Follow the permit CASE STUDY
+
+> take 1 project in Italy and look at its normative/permit seeking iter .... 
+
+# References
+

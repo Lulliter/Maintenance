@@ -1,0 +1,217 @@
+---
+title: "Scarti"
+author: "Luisa M Mimmi"
+date: "5/25/2021"
+output: html_document
+---
+
+
+## -   (not used) VEnn by sector
+```{r eval=FALSE, include=FALSE}
+sect_combo <- c(transportation = sum(as.numeric(casi_sect_split$transportation)),	
+                WaterWaste = sum(as.numeric(casi_sect_split$water_waste)), 	
+                energy = sum(as.numeric(casi_sect_split$energy)),		
+                social = 	sum(as.numeric(casi_sect_split$social)), 
+                ICT = sum(as.numeric(casi_sect_split$ICT)),	 
+                other = sum(as.numeric(casi_sect_split$other)),
+               # filled manually 
+                "energy&ICT&social" =	1, 
+                "energy&transportation" = 	3, 
+                "energy&transportation&other" = 	1, 
+                "energy&WaterWaste" =	1, 
+                "energy&WaterWaste&transportation&ICT&social&other" = 	1, 
+                "energy&WaterWaste&transportation&ICT&other" =	1,  
+                "ICT&social" =	2, 
+                
+                "transportation&ICT" =	4, 
+                "transportation&social" = 4,  
+                "transportation&social&other"=	2, 
+               # "transportation&social&sustainability" = 	1, 
+                "transportation&WaterWaste" =	1, 
+                "WaterWaste&transportation&other" = 1,
+               "WaterWaste&transportation&social" = 	2)
+
+  
+  plot(euler(sect_combo),
+     # legend = list(side = "right")
+     # quantities = list(type = "percent")
+     quantities = list(type = "counts"),
+     main = "Cases by sector - with multiple sectors"
+)  
+  
+  # plot with no intersection
+sect_alone <- c(transportation = sum(as.numeric(casi_sect_split$transportation)),	
+                WaterWaste = sum(as.numeric(casi_sect_split$water_waste)), 	
+                energy = sum(as.numeric(casi_sect_split$energy)),		
+                social = 	sum(as.numeric(casi_sect_split$social)), 
+                ICT = sum(as.numeric(casi_sect_split$ICT)),	 
+                other = sum(as.numeric(casi_sect_split$other))
+)
+
+   plot(euler(sect_alone),
+     # legend = list(side = "right")
+     # quantities = list(type = "percent")
+     quantities = list(type = "counts"),
+     main = "Cases by sector - no multiple sectors"
+)  
+```
+
+
+
+## - Venn Diagram Sector (a prescindere)
+```{r venn, eval=FALSE, include=FALSE}
+# # separated occurrencies
+# single <-  c(transportation = 46,	water_waste = 14, 	energy = 12,		social = 	13, ICT = 7 ,	 other = 4)
+# plot(eulerr::euler(single) )    
+# 
+# # couple occurrencies #choose 2 out of 6 ->  15
+# couples <- c("transportation&water_waste" = 7,
+#              "transportation&energy" = 6,
+#              "transportation&social" = 7,
+#              "transportation&ICT" = 6,
+#              "transportation&other" = 0,
+#              "energy&water_waste" = 3,
+#              "energy&social" = 1 ,
+#              "energy&ICT" = 2 ,
+#              "energy&other" =  0,
+#              "water_waste&social" = 3,
+#              "water_waste&ICT" = 2,
+#              "water_waste&other" = 0,
+#              "social&ICT" = 6,
+#              "social&other" = 0, 
+#              "other&ICT" = 0 )
+# plot(euler(couples) )   
+# 
+# # all possible combination occurrencies (CONTROLLARE I #!!!!! ) 
+# 
+# # A                   B                   C               D             E         F
+# all <-  c(transportation = 52 ,	water_waste = 14, 	energy = 13,		social = 	10, ICT = 7, other = 4 ,
+#           # 6
+#           "transportation&water_waste&energy&social&ICT&other" = 0 , # all 6 possibilities 
+#           
+#           # choose 5 out of 6 -> 6  
+#           "transportation&water_waste&energy&social&ICT" = 0 , #  5 possibilities - other  ABCDE
+#           "transportation&water_waste&energy&social&other" = 4 , #  5 possibilities -ICT   A ,B,C,D F 
+#           "transportation&water_waste&energy&ICT&other" = 0 , #  5 possibilities  - social  A,B,C,EF 
+#           "transportation&water_waste&social&ICT&other" = 0 , #  5 possibilities - energy  A,B,D,E F
+#           "transportation&energy&social&ICT&other" =0 , # A,C,D,E,F
+#           "water_waste&energy&social&ICT&other" = 0 ,#   B,C,D,E,F
+#           
+#           #choose 4 out of 6 -> 15 
+#           "transportation&water_waste&energy&social" = 1 , # -&ICT& other A,B,C,D
+#           "transportation&water_waste&energy&ICT" = 0 , # - social&ICT& A,B,C,E
+#           "transportation&water_waste&energy&other" = 1 , # - energy&social A,B,C,F
+#           "transportation&water_waste&social&ICT" = 0 , # - &water_waste &energy A,B,D,E
+#           "transportation&water_waste&social&other" = 0 , # - transportation& water_waste& A,B,D,F
+#           "transportation&water_waste&ICT&other" = 0 , #- &social&ICT A,B,E,F
+#           "transportation&energy&social&ICT"  = 0,      #  A,C,D,E
+#           "transportation&energy&social&other"  = 0,       #  A,C,D,F
+#           "transportation&energy&ICT&other"  = 0,        #  A,C,E,F
+#           "transportation&social&ICT&other" = 0,  #  A,D,E,F
+#           
+#           "water_waste&energy&social&ICT" =0 , #  B,C,D,E
+#           "water_waste&energy&social&other" =0 ,  #  B,C,D,F
+#           "water_waste&energy&other&ICT" =0 ,  #  B,C,E,F
+#           "water_waste&social&other&ICT"  = 0, #  B,D,E,F
+#           "energy&social&ICT&other"  = 0, #  C,D,E,F
+#           
+#           #choose 3 out of 6 ->  20
+#           "transportation&water_waste&energy" = 2,           #  A&B&C
+#           "transportation&water_waste&social" = 3,           #  A&B&D
+#           "transportation&water_waste&ICT" = 0,           #  A&B&E
+#           "transportation&water_waste&other" = 2,           #  A&B&F
+#           "transportation&energy&social" = 1,           #  A&C&D
+#           "transportation&energy&ICT" = 0,           #  A&C&E
+#           "transportation&energy&other" = 2,           #  A&C&F
+#           "transportation&social&ICT" = 0,           #  A&D&E
+#           "transportation&social&other" = 1,           #  A&D&F
+#           "transportation&ICT&other" = 0,           #  A&E&F
+#           "water_waste&energy&social" = 1,           #  B&C&D
+#           "water_waste&energy&ICT" = 0,           #  B&C&E
+#           "water_waste&energy&other" = 1,           #  B&C&F
+#           "water_waste&social&ICT" = 0,           #  B&D&E
+#           "water_waste&social&other" = 0,           #  B&D&F
+#           "water_waste&ICT&other" = 0,           #  B&E&F
+#           "energy&social&ICT" = 1,           #  C&D&E
+#           "energy&social&other" = 0,           #  C&D&F
+#           "energy&ICT&other" = 0,           #  C&E&F
+#           "social&ICT&other" = 0,           #  D&E&F
+#           #choose 2 out of 6 ->  15
+#           "transportation&water_waste" = 6,
+#           "transportation&energy" = 6,
+#           "transportation&social" = 9,
+#           "transportation&ICT" = 4,
+#           "transportation&other" = 1,
+#           
+#           "energy&water_waste" = 3,
+#           "energy&social" = 2 ,
+#           "energy&ICT" = 1 ,
+#           "energy&other" =  2,
+#           
+#           "water_waste&social" = 3,
+#           "water_waste&ICT" = 0,
+#           "water_waste&other" = 2,
+#           
+#           "social&ICT" = 3,
+#           "social&other" = 1, 
+#           "other&ICT" = 0 
+#           )
+# 
+# plot(euler(all),
+#      # legend = list(side = "right")
+#      # quantities = list(type = "percent")
+#      quantities = list(type = "counts"),
+#      main = "Cases by sector - with multiple sectors"
+# )  
+```
+
+
+## - Venn Diagram Sector (mirato)
+```{r eval=FALSE, include=FALSE}
+sect_combo <- c(transportation = sum(as.numeric(casi_sect_split$transportation)),	
+                WaterWaste = sum(as.numeric(casi_sect_split$water_waste)), 	
+                energy = sum(as.numeric(casi_sect_split$energy)),		
+                social = 	sum(as.numeric(casi_sect_split$social)), 
+                ICT = sum(as.numeric(casi_sect_split$ICT)),	 
+                other = sum(as.numeric(casi_sect_split$other)),
+               # filled manually 
+                "energy&ICT&social" =	1, 
+                "energy&transportation" = 	3, 
+                "energy&transportation&other" = 	1, 
+                "energy&WaterWaste" =	1, 
+                "energy&WaterWaste&transportation&ICT&social&other" = 	1, 
+                "energy&WaterWaste&transportation&ICT&other" =	1,  
+                "ICT&social" =	2, 
+                
+                "transportation&ICT" =	4, 
+                "transportation&social" = 4,  
+                "transportation&social&other"=	2, 
+               # "transportation&social&sustainability" = 	1, 
+                "transportation&WaterWaste" =	1, 
+                "WaterWaste&transportation&other" = 1,
+               "WaterWaste&transportation&social" = 	2)
+
+  
+  plot(euler(sect_combo),
+     # legend = list(side = "right")
+     # quantities = list(type = "percent")
+     quantities = list(type = "counts"),
+     main = "Cases by sector - with multiple sectors"
+)  
+  
+# plot with no intersection
+sect_alone <- c(transportation = sum(as.numeric(casi_sect_split$transportation)),	
+                WaterWaste = sum(as.numeric(casi_sect_split$water_waste)), 	
+                energy = sum(as.numeric(casi_sect_split$energy)),		
+                social = 	sum(as.numeric(casi_sect_split$social)), 
+                ICT = sum(as.numeric(casi_sect_split$ICT)),	 
+                other = sum(as.numeric(casi_sect_split$other))
+)
+
+   plot(euler(sect_alone),
+     # legend = list(side = "right")
+     # quantities = list(type = "percent")
+     quantities = list(type = "counts"),
+     main = "Cases by sector - no multiple sectors"
+)  
+```

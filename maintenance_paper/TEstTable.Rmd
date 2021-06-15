@@ -1,0 +1,236 @@
+---
+title: "TestTable"
+author: "Luisa M Mimmi"
+date: "5/18/2021"
+output: 
+  officedown::rdocx_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, fig.cap = TRUE)
+
+# Load required packages
+if (!require("pacman")) install.packages("pacman")
+p_load(here,fs,# dir managmnt
+       captioner, # allows you to store figure and table captions and print them later.
+       citr, # RStudio Addin to Insert Markdown Citations
+       tidyverse, # dplyr,tidyr, ggplot2,readr, purr, stringr, forcats
+       magrittr,
+       janitor,
+       emo, # emojy
+       gt,
+       readxl,
+       eulerr , # for venn diagram
+       viridis, patchwork,hrbrthemes, fmsb,colormap, # 4 radar chart 
+       flextable, #framework for easily create tables for reporting and publications (WORD)
+       # flagon,
+       officedown # You will need package officedown to be able to embed images in flextable with R Markdown for Word
+)
+
+casi <- readxl::read_excel(here("tables", "__Classifica CASI.xlsx"))
+
+# add flags to casi
+flag_path <- fs::path_dir("flags")
+flag_path
+casi <- casi %>%  
+  dplyr::mutate(flag = case_when(
+    country == "AUS" ~ paste0(here::here("flags/"), "au.png"),
+    country == "BRA" ~ paste0(here::here("flags/"), "br.png"),
+    country == "CAN" ~ paste0(here::here("flags/"), "ca.png"),
+    country == "CHE" ~ paste0(here::here("flags/"), "ch.png"), #Switz
+    country == "CHN" ~ paste0(here::here("flags/"), "cn.png"),
+    country == "GER" ~ paste0(here::here("flags/"), "de.png"),
+    country == "EGY (from EIB)" ~ paste0(here::here("flags/"), "eg.png"), # Egypt
+    
+    country == "ESP" ~ paste0(here::here("flags/"), "es.png"),
+    country == "ESP (from EIB)" ~ paste0(here::here("flags/"), "es.png"),
+    country == "ETH (from EU)" ~ paste0(here::here("flags/"), "et.png"),
+    country == "FRA" ~ paste0(here::here("flags/"), "fr.png"),
+    country == "GBR" ~ paste0(here::here("flags/"), "gb.png"),
+    country == "IDN" ~ paste0(here::here("flags/"), "id.png"), # indone
+    country == "IND" ~ paste0(here::here("flags/"), "in.png"),
+    country == "ITA" ~ paste0(here::here("flags/"), "it.png"),
+    country == "KOR" ~ paste0(here::here("flags/"), "kr.png"),
+    country == "JPN" ~ paste0(here::here("flags/"), "jp.png"),
+    country == "NLD" ~ paste0(here::here("flags/"), "nl.png"),
+    country == "RUS" ~ paste0(here::here("flags/"), "ru.png"),
+    country == "SAU" ~ paste0(here::here("flags/"), "sa.png"),
+    country == "SGP" ~ paste0(here::here("flags/"), "sg.png"),
+    country == "TUR" ~ paste0(here::here("flags/"), "tr.png"),
+    country == "USA" ~ paste0(here::here("flags/"), "us.png"),
+    country == "ZAF" ~ paste0(here::here("flags/"), "za.png")
+  ) )
+```
+
+
+
+# example 
+```{r eval=FALSE, include=FALSE}
+#img.file <- file.path( R.home("doc"), "html", "logo.jpg" )
+
+myft <- flextable( head(iris))
+
+myft <- compose( myft, i = 1:3, j = 1,
+                 value = as_paragraph(
+                   as_image(src = img.file, width = .20, height = .15),
+                   " blah blah ",
+                   as_chunk(Sepal.Length, props = fp_text(color = "red"))
+                 ),
+                 part = "body")
+
+autofit(myft)
+```
+
+
+# TABLE CASES AT A GLANCE
+
+Prepare a Table that shows the BASIC (flag, id name, policy, sector)
+
+```{r}
+case_glance <- casi %>% 
+  dplyr::select(country, flag, name, policy, sector) %>% 
+  dplyr::arrange(country)
+
+
+class(case_glance)
+# TURN TO FLEXTABLES W/ FLAGS !!!!!
+ft <- case_glance %>% 
+  # head() %>% 
+  # t()  %>% 
+  # as.data.frame()%>% 
+  # tibble::rownames_to_column()  %>% 
+  # rename("Cases" = "rowname") %>% 
+  flextable() %>% 
+    compose(j = "country",
+            value = as_paragraph(
+              as_chunk(" "), 
+              as_image(src = flag, width = 0.5, height = 0.33)
+              )
+            )%>% 
+  autofit()
+ 
+ ft
+```
+# my case OK wide 
+
+```{r ft}
+
+case_test  <- casi[(3:6),c("id","country", "name", "flag", "sector",	"sub_sectors",	"admin",
+                       "key_stakes",	#"key_stakes_types",	
+                       "policy",	#"sub_policy",	
+                       "launched",
+                       #	"desc_objective"	,"name"	,
+                       "purpose", 	"intended_outcomes",	"status",	
+                       # "has_regulatory_innovation",	"has_plan_guidelines_std",	"has_O&M_costs_reduction",	
+                       # "has_priv",	"has_data_collec",	"has_tech40",	"has_resilience", 
+                       # "has_knowshar",	"has_age",
+                       "link")]
+case_test
+
+# NOT TRANSPOSED OK !!!!!
+ft <- case_test %>% 
+  # head() %>% 
+  # t()  %>% 
+  as.data.frame()%>% 
+  tibble::rownames_to_column()  %>% 
+  rename("Key Info" = "rowname") %>% 
+  flextable() %>% 
+  compose(j = "country",
+          value = as_paragraph(
+            as_chunk(" "), 
+            as_image(src = flag, width = 0.5, height = 0.33)) 
+  
+          ) %>% 
+  autofit()
+    
+ft
+```
+
+
+# my case transpo ??? 
+```{r}
+# transposed ??? 
+ft <- case_test %>% 
+  # head() %>% 
+   t()  %>% 
+  as.data.frame()%>% 
+  tibble::rownames_to_column()  %>% 
+  rename("Key Info" = "rowname") %>% 
+  flextable()  %>% 
+  compose(i = 2 ,
+          j = 2:3,
+          value = as_paragraph(
+            as_image(src = case_test$flag, width = 0.5, height = 0.33)) 
+  
+          ) %>% 
+  autofit()
+ 
+
+
+ft 
+
+ftflag <- compose ( x= ft, # a flextable object
+                    i = 2, # selection rows (country)
+                    j = 2:5, # column selection
+                 value = as_paragraph( # concatenation of text and image 
+                   as_image(src = ft[["body"]][["dataset"]][["V1"]][["flag"]], width = .20, height = .15), # 
+                   "")
+                 ,
+                 part = "body",
+                 
+                 )
+
+```
+
+```{r}
+case_glance <- casi %>% 
+  dplyr::select(country, flag, name, policy, sector) %>% 
+  dplyr::arrange(country) #%>%   filter(country != "FFF (from EU)"	)
+
+
+class(case_glance)
+# TURN TO FLEXTABLES W/ FLAGS !!!!!
+ft_glance <- case_glance %>% 
+  # head() %>% 
+  # t()  %>% 
+  # as.data.frame()%>% 
+  # tibble::rownames_to_column()  %>% 
+  # rename("Cases" = "rowname") %>% 
+  flextable() 
+
+ft_glance_fl <- compose(ft_glance,
+                        j = "flag",
+                        value = as_paragraph(
+                          as_chunk(""), 
+                          as_image(src = flag, width = 0.3, height = 0.2),
+                          as_chunk("")
+                        ))  %>% 
+  autofit() %>% 
+  bold( bold = TRUE, j = "name", part = "body") %>% 
+  bold( bold = TRUE,   part = "header") %>% 
+  color( color = "white",   part = "header") %>% 
+  bg( bg = bluMEFprinc,   part = "header") %>% 
+  bg( bg = grigioSfondo, part = "body", source = j) 
+
+
+ 
+ft_glance_fl
+# ft_glance_fl2 <- void(ft_glance_fl, ~  flag)
+ 
+ # print(ft_glance_fl, preview= "docx")
+  save_as_image(x = ft_glance_fl, path =  here::here("images", "0_ft_glance_fl.png"))
+  
+  sect_properties <- prop_section(
+    page_size = page_size(orient = "landscape",
+                          width = 8.3, height = 11.7),
+    type = "continuous",
+    page_margins = page_mar()
+  )
+  
+  save_as_docx(x = ft_glance_fl, path =  here::here("images", "0_ft_glance_fl.docx"), 
+               pr_section = sect_properties) #spaginato
+  save_as_pptx(x = ft_glance_fl, path =  here::here("images", "0_ft_glance_fl.pptx")) # 
+ 
+  
+  
+```

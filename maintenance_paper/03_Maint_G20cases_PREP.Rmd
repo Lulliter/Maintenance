@@ -1,0 +1,1638 @@
+---
+title: "PREP ANNEX 1 - case studies"
+subtitle: "...."
+author:
+- Luisa M. Mimmi^1^ 
+- ^1^Economics Advisor at Ministry of Economics & Finance (MEF) - G20
+date: "Last updated: `r format(Sys.time(), '%d %B, %Y')`"
+output:
+  bookdown::html_document2:
+    toc: yes
+    toc_depth: 3
+    toc_float: TRUE
+    number_sections: no
+    code_folding: hide
+  bookdown::word_document2:
+    fig_caption: yes
+    md_extensions: +footnotes
+    reference_docx: ../custom_reference.docx
+    toc: yes
+include.latex: TRUE
+---
+
+# Set up + colors
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+# Load required packages
+if (!require("pacman")) install.packages("pacman")
+p_load(here,fs,# dir managmnt
+       captioner, # allows you to store figure and table captions and print them later.
+       citr, # RStudio Addin to Insert Markdown Citations
+       tidyverse, # dplyr,tidyr, ggplot2,readr, purr, stringr, forcats
+       magrittr,
+       janitor, scales,
+       emo, # emojy
+       gt,
+       readxl,
+       ggpubr,
+       eulerr , # for venn diagram
+       viridis, patchwork, hrbrthemes, fmsb,colormap, # 4 radar chart 
+       flextable, #framework for easily create tables for reporting and publications (WORD)
+       colortools,
+       officer # helper functions for tables 4 flextable in word
+       )
+
+
+
+# Preparing to make figure and table captions using the captioner package
+figs <- captioner(prefix="Figure")
+tbls <- captioner(prefix="Table")
+
+#   colori                                                             
+	bluMEFprinc	<- "#2D337C"        # "#2D337CFF" (alpha = 1) OR rgb(45/255, 51/255, 124/255, 1)
+	
+	gialloMEFprinc <- "#BD8723"       # "#BD8723FF" (alpha = 1) OR rgb(189/255, 135/255, 35/255, 1)
+ 	gialloMEFlight <- "#BD872399"       # "#BD8723FF" (alpha = 1) OR rgb(189/255, 135/255, 35/255, 0.4)
+ 
+	bluMEFsec	<- "#455A8B"         # "#455A8BFF" (alpha = 1) OR rgb(69/255, 90/255, 139/255, 1)
+	bluMEFsec_light	<- "#455A8B99"   
+	bordeaux	<- "#854442"       # "#854442FF" (alpha = 1) OR rgb(133/255, 68/255, 66/255, 1)
+  bordeaux_light	<- 	"#85444299"
+	verde	<- "#285E60"       # "#285E60FF" (alpha = 1) OR rgb(40/255, 94/255, 96/255, 1)
+	verde_light	<- "#285E6099"   
+	marrone	<-  "#866445"       # "#866445FF" (alpha = 1) OR rgb(134/255, 100/255, 69/255, 1)
+		marrone_light	<-  "#86644599" 
+	grigio	<-"#A6A6A6"       # "#A6A6A6FF" (alpha = 1) OR rgb(166/255, 166/255, 166/255, 1)
+	
+	grigioSfondo	<-"#F2F2F2"       # "#F2F2F2FF" (alpha = 1) OR rgb(242/255, 242/255, 242/255, 1)
+ 
+	
+	# col2rgb( "#854442")
+	
+	palette_g20 <- c("#455A8B", "#854442", "#285E60", "#BD8723", "#866445",  "#A6A6A6" )
+	palette_g20_light <- c(rgb(69/255, 90/255, 139/255, 0.4), 
+	                       rgb(133/255, 68/255, 66/255, 0.4), 
+	                       rgb(40/255, 94/255, 96/255, 0.4), 
+	                       rgb(189/255, 135/255, 35/255, 0.4),
+	                      rgb(134/255, 100/255, 69/255, 0.4),  rgb(166/255, 166/255, 166/255, 0.4) )
+ 
+
+blue_scale <- 	colortools::sequential(rgb(45/255, 51/255, 124/255, 1),what = "alpha")
+blue_comp <- 	colortools::tetradic(rgb(45/255, 51/255, 124/255, 1) )
+bordeaux_scale	<- 	colortools::sequential(rgb(133/255, 68/255, 66/255, 1) , what = "alpha" )
+bordeaux_comp	<- 	colortools::tetradic(rgb(133/255, 68/255, 66/255, 1)   )
+
+verde_scale	<- 	colortools::sequential(rgb(40/255, 94/255, 96/255, 1) , what = "alpha" )
+verde_comp	<- 	colortools::tetradic(rgb(40/255, 94/255, 96/255, 1)  )
+marrone_scale	<- 	colortools::sequential(rgb(134/255, 100/255, 69/255, 1), what = "alpha" )
+marrone_comp	<- 	colortools::tetradic(rgb(134/255, 100/255, 69/255, 1))
+
+marrone_scale	<- 	colortools::sequential(rgb(134/255, 100/255, 69/255, 1), what = "alpha" )
+marrone_comp	<- 	colortools::tetradic(rgb(134/255, 100/255, 69/255, 1))
+
+
+grigio_scale	<- 	colortools::sequential(rgb(166/255, 166/255, 166/255, 1), what = "alpha" )
+# grigio_comp	<- 	colortools::tetradic(rgb(166/255, 166/255, 166/255, 1)))
+
+	# flextable stuff 
+	brdr<-fp_border(color = bluMEFprinc, width = 1.5)
+	brdr_in<-fp_border(color = "white", width = 1.5)
+```
+
+# UPDATED FILE loading 
+```{r copyTOCVDIR, message=FALSE, warning=FALSE, include=FALSE}
+here::here()
+
+# ObjectiFY SubDirs	
+from <- "./../../../Desktop/MEF/2021_ITA_DELIVERABLES/WBG_resilience-maintenance/CASI_ALL/"
+from.dir <- fs::path_abs(from)
+from.dir 
+
+# sporca ma OK!
+to   <- "./tables" # "/Users/luisamimmi/GoogleDrive/source/content/cv",
+to.dir  <- fs::path_abs(to)
+to.dir
+
+# List Files 
+files <- list.files(path = from.dir, 
+						  pattern='\\.xlsx$', # an optional regular expression. (ends with
+						  full.names = TRUE, # If TRUE, the directory path is prepended to the file names 
+						  recursive = FALSE) # Should the listing recurse into directories?
+	
+# all_munge <- list.files(path = "./03_Munge/", pattern = '\\.R$' , 
+#                         all.files = FALSE,  # def (= only visible)
+#                         full.names = FALSE, # def (= no dir name prepended)
+#                         recursive = FALSE,  # def  (= no inside sub-dir )
+#                         ignore.case = TRUE, #    (= pattern-matching be case-insensitive)
+#                         include.dirs = FALSE, # def (subdirectory names NOT be included in recursive listings)
+#                         no.. = FALSE) # def (both "." and ".." be excluded also from non-recursive listings)
+
+files_needed <- files[1]
+#files_needed2 <- files[1:2]
+
+# function to MOVE (funzionasolo con Knit non con execute )
+for (f in files_needed) file.copy(from = f , to = to.dir,	 overwrite = T, copy.date = T)
+
+```
+ 
+# `casi` cleaning / manip / flag
+
+https://stackoverflow.com/questions/24173194/remove-parentheses-and-text-within-from-strings-in-r
+FLAGS from: https://github.com/RobertMyles/flagfillr/tree/master/country-flags/png100px
+```{r data, include=FALSE}
+# make it a data frame
+casi0 <- readxl::read_excel(here("tables", "__Classifica CASI.xlsx"))
+# View(casi)
+
+# delete what is in parenthesis of subpolicy 
+casi0$sub_policy_clean <- gsub(pattern = "\\s*\\([^\\)]+\\)",
+                              replacement = "",
+                              x = as.character(casi0$sub_policy))
+
+casi0 <- casi0 %>% 
+  # dplyr::select(1:14,30,15:29) %>% 
+  # solo selez
+  dplyr::filter(in_annex == "x")
+
+check<- casi0[10:12,c("sub_policy","sub_policy_clean")]
+
+casi0 <- casi0 %>%  
+  # add flag col
+  dplyr::mutate(flag = case_when(
+    country == "AUS" ~ paste0(here::here("flags/"), "au.png"),
+    country == "BRA" ~ paste0(here::here("flags/"), "br.png"),
+    country == "CAN" ~ paste0(here::here("flags/"), "ca.png"),
+    country == "CHE" ~ paste0(here::here("flags/"), "ch.png"), #Switz
+    country == "CHN" ~ paste0(here::here("flags/"), "cn.png"),
+    country == "GER" ~ paste0(here::here("flags/"), "de.png"),
+    country == "EGY (from EIB)" ~ paste0(here::here("flags/"), "eg.png"), # Egypt
+
+    country == "ESP" ~ paste0(here::here("flags/"), "es.png"),
+     country == "ESP (from EIB)" ~ paste0(here::here("flags/"), "es.png"),
+    country == "ETH (from EU)" ~ paste0(here::here("flags/"), "et.png"),
+    country == "FFF (from EU)" ~ paste0(here::here("flags/"), "FFF.png"),
+    country == "FRA" ~ paste0(here::here("flags/"), "fr.png"),
+    country == "GBR" ~ paste0(here::here("flags/"), "gb.png"),
+    country == "IDN" ~ paste0(here::here("flags/"), "id.png"), # indone
+    country == "IND" ~ paste0(here::here("flags/"), "in.png"),
+    country == "ITA" ~ paste0(here::here("flags/"), "it.png"),
+        country == "KOR" ~ paste0(here::here("flags/"), "kr.png"),
+           country == "MEX" ~ paste0(here::here("flags/"), "mx.png"),
+    country == "JPN" ~ paste0(here::here("flags/"), "jp.png"),
+    country == "NLD" ~ paste0(here::here("flags/"), "nl.png"),
+    country == "RUS" ~ paste0(here::here("flags/"), "ru.png"),
+    country == "SAU" ~ paste0(here::here("flags/"), "sa.png"),
+    country == "SGP" ~ paste0(here::here("flags/"), "sg.png"),
+    country == "TUR" ~ paste0(here::here("flags/"), "tr.png"),
+    country == "USA" ~ paste0(here::here("flags/"), "us.png"),
+    country == "ZAF" ~ paste0(here::here("flags/"), "za.png")
+  ) )  %>% 
+  # Add admin_type col
+  dplyr::mutate (admin_type = as_factor( case_when(
+    admin == "federal" ~  "federal/national",
+    admin == "national" ~  "federal/national",
+    admin == "federal; national" ~  "federal/national",
+    TRUE ~ admin))
+    )  %>% 
+  # add year_laun col
+  dplyr::mutate(year_laun = as.integer( launched) )  
+
+      # check warning 
+      skimr::n_missing(casi$launched)
+      skimr::n_missing(casi$year_laun) #OK ? "ongoing"   etc
+
+      # change order 
+casi0$admin_type <- forcats::fct_relevel( casi$admin_type, 
+                        "supranational; national",
+                        "supranational; national; region; city",
+                        "federal/national",
+                        
+                        "national; state; region; city",
+                        "national; region; city",
+                        "national; city; other",
+                        "national; region",
+                        "region",
+                        "city"  )
+
+  table( casi0$admin)
+  skimr::skim( casi0$admin_type)
+  skimr::n_missing( casi0$admin_type)
+  
+```
+
+
+# SAVE casi
+```{r}
+###=== 8)   save FINAL results
+casi <- casi0
+save(casi, file = here::here("maintenance_paper", "casi.Rdata"))
+```
+
+# TABLE CASES AT A GLANCE
+
+Prepare a Table that shows the BASIC (flag, id name, policy, sector)
+
+```{r}
+# Load quello gia pulito e salvato sopra 
+load(file = here::here("maintenance_paper", "casi.Rdata"))
+
+case_glance <- casi %>% 
+  dplyr::select(country, flag, name, policy, sector) %>% 
+  dplyr::arrange(country) #%>%   filter(country != "FFF (from EU)"	)
+
+class(case_glance)
+```
+
+### --- as image (split in 2) 
+```{r}
+# first half 
+ft_glance1 <- case_glance[1:21 ,] 
+
+ft_glance_fl1 <- ft_glance1 %>%  flextable()  %>% 
+  compose( j = "flag",
+                        value = as_paragraph(
+                          as_chunk(""), 
+                          as_image(src = flag, width = 0.3, height = 0.2),
+                          as_chunk("")
+                        ))  %>% 
+  autofit() %>% 
+  bold( bold = TRUE, j = 3, part = "body") %>% 
+  bold( bold = TRUE,   part = "header") %>% 
+  color( color = "white",   part = "header") %>% 
+  bg( bg = bluMEFprinc,   part = "header") %>% 
+  bg( bg = grigioSfondo, part = "body", source = j) %>% 
+  border_outer(border = brdr) %>% 
+  border_inner(border = brdr_in)
+
+ft_glance_fl1
+# ft_glance_fl2 <- void(ft_glance_fl, ~  flag)
+# print(ft_glance_fl, preview= "docx")
+# save in format 
+save_as_image(x = ft_glance_fl1, path =  here::here("images", "0_ft_glance_fl1.png")) # OK!
+
+# second half 
+N <- nrow(case_glance)
+ 
+ft_glance2 <- case_glance[22:N,] 
+
+ft_glance_fl2 <- ft_glance2 %>%  flextable()  %>% 
+  compose( j = "flag",
+                        value = as_paragraph(
+                          as_chunk(""), 
+                          as_image(src = flag, width = 0.3, height = 0.2),
+                          as_chunk("")
+                        ))  %>% 
+  autofit() %>% 
+  bold( bold = TRUE, j = 3, part = "body") %>% 
+  bold( bold = TRUE,   part = "header") %>% 
+  color( color = "white",   part = "header") %>% 
+  bg( bg = bluMEFprinc,   part = "header") %>% 
+  bg( bg = grigioSfondo, part = "body", source = j) %>% 
+  border_outer(border = brdr) %>% 
+  border_inner(border = brdr_in)
+
+ft_glance_fl2
+# ft_glance_fl2 <- void(ft_glance_fl, ~  flag)
+# print(ft_glance_fl, preview= "docx")
+# save in format 
+save_as_image(x = ft_glance_fl2, path =  here::here("images", "0_ft_glance_fl2.png")) # OK!
+```
+
+## ---  save it in WORD picture (in 1) 
+
+Using [help](https://stackoverflow.com/questions/57175351/flextable-autofit-in-a-rmarkdown-to-word-doc-causes-table-to-go-outside-page-mar)
+```{r}
+# the whole dataset  
+ft_glance_flall <- case_glance  %>%  flextable()  %>% 
+  compose( j = "flag",
+                        value = as_paragraph(
+                          as_chunk(""), 
+                          as_image(src = flag, width = 0.3, height = 0.2),
+                          as_chunk("")
+                        ))  %>% 
+      line_spacing( space = 1, part = "body") %>% 
+  bold( bold = TRUE, j = "name", part = "body") %>% 
+  bold( bold = TRUE,   part = "header") %>% 
+  color( color = "white",   part = "header") %>% 
+  bg( bg = bluMEFprinc,   part = "header") %>% 
+  bg( bg = grigioSfondo, part = "body", source = j) %>% 
+  border_outer(border = brdr) %>% 
+  border_inner(border = brdr_in) %>% 
+  # autofit() %>%  NOT WITH WORDS 
+  fontsize(  size = 10, part = "all") %>% 
+  line_spacing(space =1, part = "all") %>% 
+  set_table_properties(width =1, layout = "autofit") # OK FOR WORD
+  
+# a) save in format 
+save_as_docx(x = ft_glance_flall, path =  here::here("images", "0a_ft_glance_fl_all.docx"))  
+
+
+# b) function to fit in page 
+  FitFlextableToPage <- function(ft, pgwidth = 7){
+        ft_out <- ft %>% autofit()
+        ft_out <- width(ft_out, width = dim(ft_out)$widths*pgwidth /(flextable_dim(ft_out)$widths))
+        return(ft_out)
+  }
+ 
+#change to prepare 
+ft_glance_flw <- FitFlextableToPage(ft_glance_flall)
+ 
+ 
+# save in format 
+save_as_docx(x = ft_glance_flw, path =  here::here("images", "0b_ft_glance_fl_all.docx"))  
+
+```
+
+
+
+##  Key agency/agencies in charge of the intervention  
+
+--xxx 
+-- xxx 
+
+## --- Wrangle stakes
+```{r stake}
+stake <- casi %>% 
+  dplyr::select(id, name, key_stakes,key_stakes_types)  
+
+names(casi)
+stake  %>% count(key_stakes)
+casi$key_stakes_types
+
+
+# split 
+casi %>% group_by(key_stakes_types) %>%
+  filter(str_detect(key_stakes_types, "ministry of infrastructure/transportation")) %>%
+  summarize(N = n()) -> ministri
+
+# split 
+casi %>% group_by(key_stakes_types) %>%
+  filter(str_detect(key_stakes_types, "ministry of finance")) %>%
+  summarize(N = n()) -> mof
+
+casi %>% group_by(key_stakes_types) %>%
+  filter(str_detect(key_stakes_types, "fund")) %>%
+  summarize(N = n()) -> fund
+
+casi %>% group_by(key_stakes_types) %>%
+  filter(str_detect(key_stakes_types, "regulator")) %>%
+  summarize(N = n()) -> regu # 3
+
+casi %>% group_by(key_stakes_types) %>%
+  filter(str_detect(key_stakes_types, "authority")) %>%
+  summarize(N = n()) -> auto
+auto # 6 
+
+casi %>% group_by(key_stakes_types) %>%
+  filter(str_detect(string = key_stakes_types, pattern =  "local|city|region|subnational" )) %>%
+  summarize(N = n()) -> local 
+local # 7
+ 
+casi %>% group_by(key_stakes_types) %>%
+  filter(str_detect(string = key_stakes_types, pattern =  "city" )) %>%
+  summarize(N = n()) -> city 
+city # 2
+
+casi %>% group_by(key_stakes_types) %>%
+  filter(str_detect(string = key_stakes_types, pattern =  "local" )) %>%
+  summarize(N = n()) -> region 
+region # 2
+
+    printloc <- toString( local[,1],  trim = TRUE  )
+    printloc
+
+casi %>% group_by(key_stakes_types) %>%
+  filter(str_detect(string = key_stakes_types, pattern =  "private corporation" )) %>%
+  summarize(N = n()) -> private 
+private # 
+
+casi %>% group_by(key_stakes_types) %>%
+  filter(str_detect(string = key_stakes_types, pattern =  "government-owned corporation" )) %>%
+  summarize(N = n()) -> govown 
+govown # 
+
+# There's more !!! 
+ casi %>% group_by(key_stakes_types) %>%
+  filter(str_detect(key_stakes_types, regex(".;.", dotall = TRUE) )) %>%
+  summarize(N = n()) -> more 
+ 
+# There's more !!! 
+ casi %>% group_by(key_stakes_types) %>%
+  filter(str_detect(key_stakes_types, ".;.", negate =TRUE)) %>%
+  summarize(N = n()) -> one 
+```
+
+## --- TABLE complex Key Agencies 
+```{r stake_table}
+stake_type <- stake  %>% group_by(key_stakes_types ) %>% 
+  summarise (N = n()) %>%
+   mutate(Percent = paste0(round(N/sum(N)*100,1),"%")) %>% 
+  # adorn percentages 
+  # mutate(across( c("Percent"), ~ percent_format(accuracy = 0.1, scale = 1)(.))) %>% 
+  # mutate(across(everything(), ~replace_na(., "…"))) %>% 
+  # non capisce che sono n 
+  arrange(desc(N), key_stakes_types)  %>% 
+  # adorn_percentages(  denominator = 'row', na.rm = TRUE) %>%
+  flextable() %>% 
+   flextable::set_header_labels(key_stakes_types = "Type of agencies involved", N = "N. of cases") %>% 
+ #  fontsize( i = NULL, j = NULL, size = 11, part = "body") %>% 
+  bold( bold = TRUE,   part = "header") %>% 
+  color( color = "white",   part = "header") %>% 
+  bg( bg = bluMEFprinc,   part = "header") %>% 
+  bg( bg = grigioSfondo, part = "body", source = j) %>% 
+  border_outer(border = brdr) %>% 
+  border_inner(border = brdr_in) %>%
+  bg(bg = bordeaux_light, i = ~  key_stakes_types %in% c("government-owned corporation", "ministry of infrastructure/transportation; government-owned corporation"), part = "body") %>% 
+  bg(bg = verde_light, i = ~  key_stakes_types %in% c("regulator (multi sector)", "regulator (water sector)", "ministry of development; local government agency; regulator (subnational); other government agencies"), part = "body") %>% 
+  bg(bg = marrone_light, i = ~  key_stakes_types %in%  c ("city government; ministry of environment/urbanization", "city government; ministry of finance/tresury; ministry of environment/urbanization; ministry of disaster/emergency; other city agencies", "local government agency", "local government agency;  other government agency", "ministry of development; local government agency; regulator (subnational); other government agencies", "ministry of development; ministry of energy; local government agency; ministry of transport; other government agencies"), part = "body") %>% 
+ bg(bg =gialloMEFlight, i = ~  key_stakes_types %in%  c ( "private corporation; government agencies; authority (energy)", "private corporation; government agency", "ministry of infrastructure/transportation; private corporation; think tank"), part = "body") %>% 
+   fontsize(  size = 14, part = "header") %>% 
+  fontsize(  size = 12, part = "body") %>% 
+  autofit() 
+
+stake_type
+# save in format 
+save_as_image(x = stake_type, path =  here::here("images", "1_stake_type.png")) # OK!
+```
+
+
+## --- Wrangle Key agencies [simplified ]
+Questa e' costruita semi-manualmetne con `tribble`
+```{r}
+# (tolgo le percentuali che confondono)
+simpli_agents <- tribble(
+    ~`Type of agencies most frequently involved`, ~`N. of cases`, # ~`Percent of cases`,
+  "ministry of infrastructure/transportation", sum(ministri$N), # NA,
+  "ministry of finance/treasury", sum(mof$N), # NA,
+  "regulatory entity", sum(regu$N),  # NA,
+  "authority entity", sum(auto$N) , # NA ,
+  "region/province/city government", sum(local$N)  , # NA ,
+    # "other local government agency",  ,  ,  
+  "government-owned corporation",  sum(govown$N)  , # NA ,
+  "private corporation",  sum(private$N)  , # NA ,
+  "more than 1 agency involved", sum(more$N)    # NA 
+)  %>%   
+# mutate(`Percent of cases` = paste0(round(`N. of cases`/sum(`N. of cases`)*100,0),"%")) %>% 
+  arrange(desc(`N. of cases`))
+```
+
+
+## --- TABLE Key agencies [simplified ]
+
+```{r}
+simpli_agents_ft <- simpli_agents %>% 
+  # adorn_percentages(  denominator = 'row', na.rm = TRUE) %>%
+  flextable() %>% 
+    flextable::set_header_labels(key_stakes_types = "Type of agencies most frequently involved", N = "N. of cases") %>% 
+  bold( bold = TRUE,   part = "header") %>% 
+  color( color = "white",   part = "header") %>% 
+  bg( bg = bluMEFprinc,   part = "header") %>% 
+  bg( bg = grigioSfondo, part = "body", source = j) %>% 
+  fontsize( i = NULL, j = NULL, size = 11, part = "body") %>% 
+  border_outer(border = brdr) %>% 
+  border_inner(border = brdr_in) %>%
+ bg(bg =bordeaux_light, i = ~  `Type of agencies most frequently involved` %in%  c ( "more than 1 agency involved" ), part = "body") %>% 
+  fontsize(size = 14, part = "header") %>% 
+  fontsize(size = 12, part = "body") %>% 
+  autofit() 
+
+simpli_agents_ft
+# save in format 
+save_as_image(x = simpli_agents_ft, path =  here::here("images", "1b_stake_type.png")) # OK!
+
+
+```
+
+## --- CHART Key agencies [simplified ]
+```{r}
+simpli_agents2 <- tribble(
+    ~`Type of agencies most frequently involved`, ~`N. of cases`, # ~`Percent of cases`,
+  "ministry of infrastructure/transportation", sum(ministri$N), # NA,
+  "ministry of finance/treasury", sum(mof$N), # NA,
+  "regulatory entity", sum(regu$N),  # NA,
+  "authority entity", sum(auto$N) , # NA ,
+  "region/province/city government", sum(local$N)  , # NA ,
+    # "other local government agency",  ,  ,  
+  "government-owned corporation",  sum(govown$N)  , # NA ,
+  "private corporation",  sum(private$N)  , # NA ,
+  "more than 1 agency involved", sum(more$N) , # NA 
+    "only 1 agency involved", sum(one$N)   # NA 
+)  %>%   
+# mutate(`Percent of cases` = paste0(round(`N. of cases`/sum(`N. of cases`)*100,0),"%")) %>% 
+  arrange(desc(`N. of cases`)) %>% 
+  rename(type_agent = `Type of agencies most frequently involved`,  
+         N = `N. of cases`
+    ) %>% 
+  mutate (highlights = NA )
+
+
+
+simpli_agents2$highlights[simpli_agents2$type_agent == "more than 1 agency involved"] <-  "n of agencies"
+simpli_agents2$highlights[simpli_agents2$type_agent == "only 1 agency involved"] <- "n of agencies"
+
+simpli_agents2$highlights[simpli_agents2$type_agent ==  "ministry of infrastructure/transportation"] <-  "ministry"
+simpli_agents2$highlights[simpli_agents2$type_agent ==  "ministry of finance/treasury"] <- "ministry"
+
+simpli_agents2$highlights[simpli_agents2$type_agent == "government-owned corporation"] <-  "corporation"
+simpli_agents2$highlights[simpli_agents2$type_agent == "private corporation"] <-  "corporation"
+
+simpli_agents2$highlights[simpli_agents2$type_agent == "region/province/city government"] <-  "local agency"
+
+simpli_agents2$highlights[simpli_agents2$type_agent == "regulatory entity"] <-  "regulatory/authority"
+simpli_agents2$highlights[simpli_agents2$type_agent == "authority entity"] <-  "regulatory/authority"
+
+simpli_agents2
+
+# ----- Define the order I want for technology category vars
+print(simpli_agents2$type_agent)
+
+simpli_agents2$type_agent <-factor(simpli_agents2$type_agent, 
+                                         levels = c("more than 1 agency involved",
+                                                    "only 1 agency involved",
+                                                    
+                                                    "ministry of infrastructure/transportation",
+                                                    "ministry of finance/treasury",
+                                                    
+                                                    "government-owned corporation" , 
+                                                     "private corporation" ,
+                                                    
+                                                    "region/province/city government", 
+                                                    
+                                                    "regulatory entity",  
+                                                    "authority entity" ) )
+
+table(simpli_agents2$type_agent)
+simpli_agents2$highlights <-factor(simpli_agents2$highlights, 
+                                        # levels = c("1", "2","3" ,"4" ,"5" ), # order
+                                        levels = c("n of agencies",
+                                                   "ministry",
+                                                   "corporation",
+                                                   "local agency",
+                                                   "regulatory/authority"))
+
+simpli_agents2
+```
+
+## --- BarPlot stakes 
+```{r}
+stake_bar <- ggplot(simpli_agents2) + 
+    aes(x =  type_agent , y = N , fill = highlights)  + 
+    geom_bar(stat = "identity", position="identity",width = 0.9,) +
+  # wroap long x labels (flipped ) !!!
+  scale_x_discrete(labels = function(x) str_wrap(x, width = 20)) +
+    # count inside bars
+    geom_text(aes(label=N), color = "white", hjust=2)+
+    theme( axis.text.x = element_text(size=11), # they are flipped!!!
+           axis.text.y = element_text(size=10,face="bold"),
+           legend.position=  c(0.7,0.8) , # "bottom", # legend 
+           plot.title.position = "plot" # move title to left 
+           ) + 
+    # labs(title="Types of agencies most frequently involved in cases" #,
+    #      # subtitle = "(Includes when type_agent is in construction)"
+    #      ) + 
+    labs(x = "", y = "N. of cases" ) + 
+    # rename LEGEND labels
+    guides(fill=guide_legend(title="Highlights by \nagencies involved",
+                             # mandare a capo la legenda
+                             nrow=5,byrow=TRUE)) + 
+    # reference line to show tot N of sample
+    # geom_hline(yintercept=43, color = "#616161", size=0.3) +
+    # geom_text(aes(x= 5, label = "Tot. N. of cases = 43", y=43), colour="#616161", angle=90, vjust = 1.2 ) +
+   scale_fill_manual(values = palette_g20 # c("#999999", "#E69F00", "#56B4E9")
+                     ) +
+    coord_flip()     
+
+# ----- save 
+stake_bar  
+# ggsave( stake_bar, filename =here::here("images", "1c_stake_bar.png") )
+```
+
+### --- save png
+```{r}
+# SAVE image set 
+png (filename = here::here("images", "1c_2_stake_bar.png")#,
+     # width = 601, height = 488# ,units = "cm" 
+     )
+ 
+stake_bar
+ 
+# SAVE image UNset 
+dev.off()
+```
+
+--- 
+
+## The administrative level of interventions 
+
+## --- Wrangle admin level 
+```{r admin}
+admin <- casi %>% 
+  dplyr::select(id, name, admin, admin_type)  
+
+#names(casi)
+admin  %>% count(admin)
+admin  %>% count(admin_type)  
+
+admin_type <- admin  %>% 
+  dplyr::group_by(admin_type ) %>% 
+  dplyr::summarise (N = n()) %>% 
+  #, Percent  
+  dplyr::mutate(Percent = paste0(round(N/sum(N)*100,1),"%")) %>% 
+  dplyr::arrange( desc(N), 
+                  admin_type )   
+  # adorn_percentages(  denominator = 'row', na.rm = TRUE) %>%
+
+# There's more !!! 
+ casi %>% group_by(admin_type) %>%
+  filter(str_detect(admin_type, regex(".;.", dotall = TRUE) )) %>%
+  summarize(N = n()) -> more_ad  # 12
+ 
+# There's more !!! 
+ casi %>% group_by(admin_type) %>%
+  filter(str_detect(admin_type, ".;.", negate =TRUE)) %>%
+  summarize(N = n()) -> one_ad  # 4 
+ 
+ casi %>% group_by(admin_type) %>%
+  filter(str_detect(admin_type, "city|region|local|state") & !str_detect(admin_type, "supranational|national|federal") ) %>%
+  summarize(N = n()) -> subnational 
+subnational # 6 
+
+ casi %>% group_by(admin_type) %>%
+  filter(str_detect(admin_type, "supranational")  ) %>%
+  summarize(N = n()) -> supranational 
+supranational # 2
+
+# aggiungo more + one alla tabella recap 
+admin_type <- admin_type %>% 
+  dplyr::select(-Percent) %>% 
+  tibble::add_row(admin_type  = "more admin. levels" , N = sum(more_ad$N)  )  %>% 
+  tibble::add_row(admin_type  = "one admin. level" , N = sum(one_ad$N)  ) %>% 
+  tibble::add_row(admin_type  = "subnational admin. level(s)" , N = sum(subnational$N)  ) %>% 
+ tibble::add_row(admin_type  = "supranational" , N = sum(supranational$N)  )  
+ 
+admin_type2 <- admin_type[ which (admin_type$admin_type %in%  c("federal/national","more admin. levels", "one admin. level","subnational admin. level(s)", "supranational" )), ]
+
+admin_type2
+```
+
+## --- TABLE admin level 
+```{r admin_ft}
+# FlEXTABLE 
+admin_type_ft <- admin_type %>% flextable() %>% 
+  set_header_labels(admin_type = "Administrative level", N = "N. of cases") %>%
+  bold( bold = TRUE,   part = "header") %>% 
+  color( color = "white",   part = "header") %>% 
+  bg( bg = bluMEFprinc,   part = "header") %>% 
+  bg( bg = grigioSfondo, part = "body", source = j) %>% 
+  bg(bg = bordeaux_light, i = ~  admin_type %in% "federal/national", part = "body") %>% 
+  bg(bg = verde_light, i = ~  admin_type %in% c("region", "city", "region; city"), part = "body") %>% 
+  
+  border_outer(border = brdr) %>% 
+  border_inner(border = brdr_in)%>% 
+  fontsize(  size = 14, part = "header") %>% 
+  fontsize(  size = 12, part = "body") %>% 
+  autofit() 
+
+admin_type_ft
+
+# save in format 
+save_as_image(x = admin_type_ft, path =  here::here("images", "2_admin_type.png")) # OK!
+```
+
+
+
+## --- BarPlot admin level 
+
+Plot prep
+```{r}
+# already in LONG form 
+admin_type_prep <- admin_type2 %>% 
+  # add empty col for highlights
+  mutate (highlights = NA )
+
+admin_type_prep
+
+
+# ----- Define the order I want 
+admin_type_prep$admin_type <- factor(admin_type_prep$admin_type, 
+                                     levels = c(
+                                       "supranational",
+                                       "federal/national",
+                                       "subnational admin. level(s)",
+                                       
+                                       "more admin. levels",
+                                       "one admin. level" 
+                                     ))
+# ----- Define the highlights  
+admin_type_prep$highlights[admin_type_prep$admin_type == "supranational"] <-  "By admin. level"
+admin_type_prep$highlights[admin_type_prep$admin_type == "federal/national"] <-  "By admin. level"
+admin_type_prep$highlights[admin_type_prep$admin_type == "subnational admin. level(s)"] <-  "By admin. level"
+
+admin_type_prep$highlights[admin_type_prep$admin_type == "more admin. levels"] <-  "By N. of admin. levels"
+admin_type_prep$highlights[admin_type_prep$admin_type == "one admin. level"] <-  "By N. of admin. levels"
+
+
+# level of highlights 
+admin_type_prep$highlights <- factor (admin_type_prep$highlights,
+                                      levels = c("By admin. level",
+                                        "By N. of admin. levels"
+                                      ))
+
+admin_type_prep
+```
+
+Plot 
+```{r}
+admin_bar <- ggplot(admin_type_prep) + 
+    aes(x =  admin_type , y = N , fill = highlights)  + 
+    geom_bar(stat = "identity", position="identity") + 
+    # wroap long x labels (flipped ) !!!
+  scale_x_discrete(labels = function(x) str_wrap(x, width = 20)) +
+ # count inside bars
+    geom_text(aes(label=N), color = "white", hjust=2)+
+    theme( axis.text.x = element_text(size=10), # they are flipped!!!
+           axis.text.y = element_text(size=10,face="bold"),
+           legend.position=  c(0.75,0.15) ,  # legend legend.position="bottom",
+           plot.title.position = "plot") + # move title to left ) + 
+    # labs(title="Administrative levels most frequently involved in cases " #,
+    #      # subtitle = "(Includes when admin_type is in construction)"
+    #      ) + 
+    labs(x = "", y = "N. of cases" ) + 
+    # rename legend labels
+    guides(fill=guide_legend( title="Highlights \nby admin. level",
+           # mandare a capo la legenda
+                             nrow=2,byrow=TRUE)) + 
+    # reference line to show tot N of sample
+    geom_hline(yintercept=43, color = "#616161", size=0.3) +
+    geom_text(aes(x= 3, label = "Tot. N. of cases = 43", y=43), colour="#616161", angle=90, vjust = 1.2 ) +
+   scale_fill_manual(values = palette_g20 # c("#999999", "#E69F00", "#56B4E9")
+                     ) +    coord_flip()     
+
+# ----- save 
+admin_bar  
+ggsave( admin_bar, filename =here::here("images", "2b_admin_bar.png"))
+
+```
+
+### --- save png
+```{r}
+# SAVE image set 
+png (filename = here::here("images", "2c_admin_bar.png")#,
+     # width = 601, height = 488# ,units = "cm" 
+     )
+ 
+admin_bar
+ 
+# SAVE image UNset 
+dev.off()
+```
+
+
+--- 
+## Status and recent launch for most cases  
+
+> Problem x axis !!!!!!!!!!1
+
+•	Over 50% of cases launched in the last decade
+```{r}
+casi_year <- casi  %>% 
+  select(id, launched, year_laun) %>% 
+  group_by( year_laun) %>% 
+  summarise( N = n())   %>% 
+  dplyr::mutate (decade = case_when(
+    year_laun < 2000 ~ "1990s",
+    year_laun >= 2000 & year_laun < 2010    ~ "2000s",
+    year_laun >= 2010 & year_laun < 2020    ~ "2010s",
+     year_laun >= 2020   ~ "2020s" , 
+     is.na(year_laun) ~ "missing",
+  )) 
+
+class(casi_year$year_laun)
+
+casi_year
+#Turn your 'treatment' column into a character vector
+#casi_year$year_laun <- as.character(casi_year$year_laun)
+table(casi_year$year_laun,casi_year$N )
+
+ 
+#Then turn it back into a factor with the levels in the correct order
+table(casi_year$year_laun, useNA = "always")
+levels(casi_year$year_laun) # [1] "1990" "2001" "2006" "2011" "2013" "2016" "2017" "2019" "2020" "2021"
+
+casi_year$year_laun <-  factor(casi_year$year_laun,
+                               levels = c("1990", 
+                                          "2000", "2001", "2006", "2009",
+                                          "2011", "2013", "2014", "2015", "2016","2017", "2018", "2019", 
+                                          "2020", "2021",
+                                          "missing"  ))
+
+casi_year$year_laun <-  fct_explicit_na(casi_year$year_laun, na_level = "missing")
+
+# casi_year <- casi_year %>%
+#   mutate(year_laun = fct_relevel(year_laun, "1990", "2001", "2006", "2011", "2013", "2016", "2017", "2019", "2020", "2021", "Missing yyy"))
+levels(casi_year$year_laun)
+ 
+ 
+# plot  
+yeardot <- ggpubr::ggdotchart(data =  casi_year, 
+           x =   "year_laun", 
+           y = "N"   ,
+           group =  "decade" ,
+           color = "decade" , 
+           palette = palette_g20, 
+           # sorting = "descending", 
+           add = "segments", 
+           ylab = FALSE, # rotated!
+           xlab = FALSE,
+           #title = "",
+           ggtheme = theme_pubclean(),
+           dot.size = 3
+           )  
+#+ geom_hline(yintercept = 31, linetype = 2, color = "lightgray") 
+  
+
+yeardot
+# ggsave(yeardot, filename = here::here("images", "3_yeardot.png") )
+```
+
+```{r}
+# Plot
+p <- ggplot(casi_year, aes(x=year_laun, y= N)) +
+  geom_segment( aes(x=year_laun, xend=year_laun, y=0, yend=N ),
+                color= ifelse(casi_year$year_laun %in% c( "missing"), bordeaux, "grey"),
+                size=ifelse(casi_year$year_laun %in% c( "missing"), 1.3, 0.7) ) +
+  geom_point( color= ifelse(casi_year$year_laun %in% c( "missing"), bordeaux, "grey"),
+              size=ifelse(casi_year$year_laun %in% c( "missing"), 5, 2) ) +
+  geom_segment( aes(x=year_laun, xend=year_laun, y=0, yend=N ),
+                color= ifelse(casi_year$year_laun %in% c( "2019") , bluMEFsec, "grey"),
+                size=ifelse(casi_year$year_laun %in% c( "2019"), 1.3, 0.7) ) +
+  geom_point( color=ifelse(casi_year$year_laun %in% c( "2019"), bluMEFsec, "grey"),
+              size=ifelse(casi_year$year_laun %in% c( "2019"), 5, 2) ) +
+ 
+  theme_ipsum() +
+  # coord_flip() +
+  theme(
+    legend.position="none"
+  ) +
+  xlab("") +
+  ylab("N. of cases") +
+  ggtitle("Case studies by year of launch")
+p
+
+# Add annotation
+pAnn <- p + 
+  annotate("text", x=grep("missing", casi_year$year_laun), 
+           y=casi_year$N[which(casi_year$year_laun=="missing")]*1.2, 
+                     label=paste0("N. = ",casi_year$N[which(casi_year$year_laun=="missing" )] , " \n(includes ongoing)") , 
+                     color=bordeaux, size=3 , angle=0, fontface="bold", hjust=1, vjust=1) + 
+  
+  annotate("text", x = grep("2019", casi_year$year_laun), 
+           y = casi_year$N[which(casi_year$year_laun=="2019")]*1.2, 
+           label = paste0("N. = ",casi_year$N[which(casi_year$year_laun=="2019")]  ) , 
+           color=bluMEFsec, size=3 , angle=0, fontface="bold", hjust=1, vjust=1) 
+
+pAnn
+```
+
+### --- save png
+```{r}
+# SAVE image set 
+png (filename = here::here("images", "3b_yeardot.png")#,
+     # width = 601, height = 488# ,units = "cm" 
+     )
+ 
+pAnn
+ 
+# SAVE image UNset 
+dev.off()
+```
+
+
+# SECTOR 
+## - Wrangle sector
+```{r df-prep, include=FALSE}
+casi_sect <- casi %>%  dplyr::select(id, sector)
+
+# explode sector multiple choice 
+casi_sect_split <- casi_sect %>% 
+  dplyr::mutate(
+    transportation = if_else( grepl ("transportation", x = sector), "1", "0" ) ,
+    energy = if_else( grepl ("energy", x = sector), "1", "0" ) ,
+    water_waste = if_else( grepl ("Water-Waste", x = sector), "1", "0" ) ,
+    ICT = if_else( grepl ("ICT", x = sector), "1", "0" ) ,
+    social = if_else( grepl ("social", x = sector), "1", "0" ) ,
+    other = if_else( grepl ("other", x = sector), "1", "0" ) 
+  )  %>% 
+  dplyr::select(-sector)  
+casi_sect_split
+
+# ALL my ACTUAL COMBINATIONS  (-> bar chart) 
+casi_sector_count <- casi  %>%  
+  # seleziona quelli con ";" (multiple)
+  # dplyr::filter (stringr::str_detect(sector, ";" ) )  %>%  
+dplyr::count (sector, sort = TRUE) 
+casi_sector_count
+
+
+# solo i singoli
+casi_sector_count_ind <- casi  %>%  
+  # seleziona quelli senza ";" (multiple)
+  dplyr::filter (stringr::str_detect(sector, ";" , negate = TRUE) )  %>%  
+dplyr::count (sector, sort = TRUE) 
+casi_sector_count_ind
+
+sect_alone <- c( 
+        casi_sector_count_ind [1,2]  ,# transportation    18
+        casi_sector_count_ind [2,2]  ,# energy    3
+        casi_sector_count_ind [3,2] ,# Water-Waste         3
+        NA  ,# transportation; ICT    4
+        NA  ,# transportation; social  4
+        NA  ,# energy; transportation    3
+        NA  ,# ICT; social       2
+        NA  ,# transportation; social; other (sustainability)  2
+        NA  ,# Water-Waste; transportation; social             2
+        NA  ,# energy; ICT; social                               1
+        NA  ,# energy; transportation; other                     1
+        NA  ,# energy; Water-Waste                              1
+        NA  ,# energy; Water-Waste; transportation; ICT; social; other  1
+        NA  ,# energy; Water-Waste; transportation; information and communications; other   1
+        casi_sector_count_ind [4,2]  ,# other                       1
+        NA ,# social                        1
+        NA  ,# transportation; Water-Waste      1
+        NA  # Water-Waste; transportation; other   1
+)
+  sect_alone
+class(sect_alone) # list 
+
+# Riprovo
+sect_alone_trans_name <- as.vector(t(as.matrix(casi_sector_count[,"sector"])))
+sect_alone_trans_name
+
+
+sect_alone_trans_n <- as.vector(t(as.matrix(casi_sector_count[,"n"])))
+sect_alone_trans_n
+
+sect_alone_trans <- as.data.frame(rbind(sect_alone_trans_name, sect_alone_trans_n ))
+class(sect_alone_trans) # "data.frame" + transposed
+sect_alone_trans  
+
+names(sect_alone_trans) <- as.matrix(sect_alone_trans[1, ])
+ sect_alone_trans <- sect_alone_trans[-1,]
+ 
+sect_alone_trans 
+  class(sect_alone_trans)
+# convert all col to numeric 
+# sect_alone_trans[] <- lapply(sect_alone_trans, function(x) type.convert(as.numeric(x)))
+# sect_alone_trans <- sapply( sect_alone_trans, as.numeric )
+ 
+```
+
+
+## - Diamond chart by sector  (individual all counted ) OK!
+```{r}
+# plot with no intersection
+sect_alone_counts <- c(transportation = sum(as.numeric(casi_sect_split$transportation)),	
+                WaterWaste = sum(as.numeric(casi_sect_split$water_waste)), 	
+                energy = sum(as.numeric(casi_sect_split$energy)),		
+                social = 	sum(as.numeric(casi_sect_split$social)), 
+                ICT = sum(as.numeric(casi_sect_split$ICT)),	 
+                other = sum(as.numeric(casi_sect_split$other))
+)
+
+# AS df + transpose 
+sect_alone_counts_df <- as.data.frame(t(as.matrix(sect_alone_counts)))
+ sect_alone_counts_df
+ class(sect_alone_counts_df)
+ 
+# sect chart prep
+sect_alone_prep <- rbind(  rep(33,6),
+                           rep(0,6),
+                           sect_alone_counts_df
+                           ) 
+sect_alone_prep
+rownames(sect_alone_prep) <- c( "max", "min",  "single sector")
+sect_alone_prep
+
+# Color vector rgb(red, green, blue, alpha)
+colors_border = bordeaux
+colors_in = bordeaux_light # piu transp
+
+vlabels = rownames(sect_alone_prep[-c(1,2),])
+
+# Custom the radarChart !
+par(mar=c(0,0,0,0))
+
+# fmsb::radarchart(sect_alone_prep)
+
+radarsect <- fmsb::radarchart(sect_alone_prep, 
+                             axistype = 1, 
+                             #custom polygon
+                              pcol= colors_border , # color polygon rgb(red, green, blue, alpha)
+                              pfcol= colors_in, # (0,0.2,.8,0.3), # color polygon filling (last is transparency)
+                             plwd=4 , 
+                             #custom the grid
+                             cglcol="grey", cglty=1, axislabcol="grey", 
+                             #caxislabels=seq(from = 0,to = 52,by = 5), 
+                             caxislabels= c(0,8,16,25,33), 
+                             cglwd=0.8,
+                             maxmin = TRUE ,
+                             #custom labels
+                             vlcex=0.9 
+                             #, title="Distribution by sector \n (not countingmultiple sectors)"
+)
+radarsect
+## Add a legend
+legend("bottomleft", 
+       yjust = 1,
+       legend = c("(count of individual \n sector mentions)"), 
+       bty = "n", 
+       pch=20 , 
+       col=colors_in , 
+       text.col = "#000000BF", #"grey", 
+       cex=1, 
+       pt.cex=3)
+```
+
+### --- save png
+```{r}
+# SAVE image set 
+png (filename = here::here("images", "5_radar_sect_ind_plot.png")#,
+     # width = 601, height = 488# ,units = "cm" 
+     )
+ 
+#image create 
+  radar_sect_ind <- fmsb::radarchart(sect_alone_prep, 
+                             axistype = 1, 
+                             #custom polygon
+                              pcol= colors_border , # color polygon rgb(red, green, blue, alpha)
+                              pfcol= colors_in, # (0,0.2,.8,0.3), # color polygon filling (last is transparency)
+                             plwd=4 , 
+                             #custom the grid
+                             cglcol="grey", cglty=1, axislabcol="grey", 
+                             #caxislabels=seq(from = 0,to = 52,by = 5), 
+                             caxislabels= c(0,8,16,25,33), 
+                             cglwd=0.8,
+                             maxmin = TRUE ,
+                             #custom labels
+                             vlcex=0.9 
+                             #, title="Distribution by sector \n (not countingmultiple sectors)"
+)
+radar_sect_ind
+## Add a legend
+legend("bottomleft", 
+       yjust = 1,
+       legend = c("(count of individual \n sector mentions)"), 
+       bty = "n", 
+       pch=20 , 
+       col=bordeaux_light, 
+       text.col = "#000000BF", #"grey", 
+       cex=1, 
+       pt.cex=3)
+# SAVE image UN set 
+dev.off()
+```
+
+
+
+
+```{r}
+# ALL POSSIBLE (single + COMBINATIONs) 
+sect_sums <- c( casi_sector_count[1,2],
+casi_sector_count[2,2], 
+casi_sector_count[3,2], 
+casi_sector_count[4,2], 
+casi_sector_count[5,2],
+casi_sector_count[6,2],
+casi_sector_count[7,2], 
+casi_sector_count[8,2],
+casi_sector_count[9,2],
+casi_sector_count[10,2],
+casi_sector_count[11,2],
+casi_sector_count[12,2],
+casi_sector_count[13,2],
+casi_sector_count[14,2],
+casi_sector_count[15,2]#,
+# casi_sector_count[16,2],
+# casi_sector_count[17,2],
+# casi_sector_count[18,2]
+  )
+
+
+# opzione 2 
+sect_sums_df <- as.data.frame(sect_sums)
+sect_sums_df[1]
+
+ names(sect_sums_df)[1] <-   toString( casi_sector_count[1,1])    # "transport"  
+ names(sect_sums_df)[2] <- toString( casi_sector_count[2,1]) 
+ names(sect_sums_df)[3] <- toString( casi_sector_count[3,1]) 
+ 
+ names(sect_sums_df)[4] <- toString( casi_sector_count[4,1]) 
+ names(sect_sums_df)[5] <- toString( casi_sector_count[5,1]) 
+ names(sect_sums_df)[6] <- toString( casi_sector_count[6,1]) 
+ names(sect_sums_df)[7] <- toString( casi_sector_count[7,1]) 
+ names(sect_sums_df)[8] <- toString( casi_sector_count[8,1]) 
+ names(sect_sums_df)[9] <- toString( casi_sector_count[9,1]) 
+ names(sect_sums_df)[10] <- toString( casi_sector_count[10,1]) 
+ names(sect_sums_df)[11] <- toString( casi_sector_count[11,1]) 
+ names(sect_sums_df)[12] <- toString( casi_sector_count[12,1]) 
+ names(sect_sums_df)[13] <- toString( casi_sector_count[13,1]) 
+ names(sect_sums_df)[14] <- toString( casi_sector_count[14,1]) 
+ names(sect_sums_df)[15] <- toString( casi_sector_count[15,1]) 
+ # names(sect_sums_df)[16] <-toString( casi_sector_count[16,1]) 
+ # names(sect_sums_df)[17] <- toString( casi_sector_count[17,1]) 
+ # names(sect_sums_df)[18] <- toString( casi_sector_count[18,1]) 
+
+  
+```
+
+
+## - sect prep 4  Diamond 
+```{r sect_prep}
+ max(casi_sector_count$n)
+
+# To use the fmsb package, I have to add 2 lines to the dataframe: the max and min of each topic to show on the plot!
+sect_prep <- rbind(rep(18, 15 ), #min(casi_pol_count$n)) , 
+                  rep(0,15) , # min  bound
+                  sect_sums_df, # multiple policy area
+                  sect_alone_trans
+                                    ) # only single policy area 
+sect_prep
+rownames(sect_prep) <- c( "max", 
+                          "min", 
+                          "multiple sector",
+                          "single sector"
+                          )
+sect_prep
+```
+
+
+
+## - (NOPE !) Diamond chart by sector  (actual combo + individual)
+TOP scorer: transportation, `sum(as.numeric(casi_sect_split$transportation))`why? more apparent than other sectors? 
+LEAST scorer ICT `sum(as.numeric(casi_sect_split$ICT))` why? more used as associated tech device 
+
+
+```{r eval=FALSE, include=FALSE}
+# Color vector rgb(red, green, blue, alpha)
+colors_border=c( rgb(0.8, 0.4, 0,0.9),  rgb(0,0.2,.8,0.9) )
+colors_in=c( rgb(1, 0.6, 0, 0.4),       rgb(0,0.2,.8,0.3) )
+
+vlabels = rownames(sect_prep[-c(1,2),])
+
+
+# Custom the radarChart !
+par(mar=c(0,0,0,0))
+
+
+radarpol <- fmsb::radarchart(sect_prep, 
+                             axistype=1, 
+                             #custom polygon
+                             pcol= colors_border, # rgb(0.8, 0.4, 0,0.9) , # color polygon rgb(red, green, blue, alpha)
+                             pfcol= colors_in, # rgb(0.8, 0.4, 0,0.5) , # color polygon filling (last is transparency)
+                             plwd=4 , 
+                             #custom the grid
+                             cglcol="grey", cglty=1, axislabcol="grey", 
+                             #caxislabels=seq(from = 0,to = 52,by = 5), 
+                             caxislabels= c(0,8,15,24,31), 
+                             cglwd=0.8,
+                             maxmin = TRUE ,
+                             #custom labels
+                             vlcex=0.5
+                             #, title="Distribution by sector \n (not countingmultiple sectors)"
+)
+radarpol
+## Add a legend
+legend("bottomleft", 
+       legend = c("including multiple policy focus", "only individual policy focus"), 
+       bty = "n", 
+       pch=20 , 
+       col=colors_in , 
+       text.col = "#000000BF", #"grey", 
+       cex=1, 
+       pt.cex=3)
+
+ 
+```
+
+
+##  - Dot chart (alternative for all sectors)
+https://medium.com/swlh/beautiful-charts-with-r-and-ggpubr-c94122d6b7c6
+
+```{r}
+# Option 2 
+sect_prep <-  casi_sector_count
+sect_prep$single_check <- ifelse(str_detect( sect_prep$sector, ";"),0, 1  )
+# need for grouping in chart
+sect_prep$single_check_discr <- as.factor(sect_prep$single_check)
+sect_prep$single_check_discr <- factor(sect_prep$single_check_discr,
+                                levels = c(0,1),
+                                labels = c("multple sector", "individual sector"))
+sect_prep
+
+sectordot <- ggdotchart(data =  sect_prep, 
+           x = "sector", 
+           y = "n" ,
+           group =  "single_check",
+           color = "single_check_discr", 
+           palette = palette_g20, 
+           sorting = "descending", 
+           add = "segments", 
+           ylab = FALSE, # rotated!
+           xlab = FALSE,
+           #title = "",
+           ggtheme = theme_pubclean(),
+            dot.size = 2 
+           ) + geom_hline(yintercept = 20, linetype = 2, color = "lightgray") 
+  
+
+# Change the plot orientation: horizontal
+sectordot2 <- ggpar(sectordot, legend.title = "Individual or multiple \nsector(s) checked", legend = "right"
+                   ,rotate = TRUE
+                   )
+sectordot2
+
+ggsave(sectordot2, filename = here::here("images", "6_sectordot_ACTUAL_plot.png") )
+```
+
+# POLICY
+
+## - wrangle policy
+```{r policy, include=FALSE}
+casi_pol <- casi %>%  dplyr::select(id, policy)
+
+# explode sector multiple choice 
+casi_pol_split <- casi_pol %>% 
+  dplyr::mutate(
+    planning = if_else( grepl ("planning", x = policy), "1", "0" ) ,
+    funding = if_else( grepl ("funding", x = policy), "1", "0" ) ,
+    delivery = if_else( grepl ("delivery", x = policy), "1", "0" )
+  )  
+
+casi_pol_split
+
+dplyr::count (casi_pol_split, planning  == 1)  
+sum(as.numeric(casi_pol_split$planning))
+
+dplyr::count (casi_pol_split, funding == 1) 
+sum(as.numeric(casi_pol_split$funding))
+
+dplyr::count (casi_pol_split, delivery == 1) 
+sum(as.numeric(casi_pol_split$delivery))
+
+# TUTTI 
+casi_pol_count <- casi  %>%  
+  # seleziona quelli con ";" (multiple)
+  #dplyr::filter (stringr::str_detect(policy, ";" ) )  %>%  
+dplyr::count (policy, sort = TRUE) 
+casi_pol_count
+
+# solo i singoli
+casi_pol_count_ind <- casi  %>%  
+  # seleziona quelli senza ";"  
+  dplyr::filter (stringr::str_detect(policy, ";" , negate = TRUE) )  %>%  
+dplyr::count (policy, sort = TRUE) 
+casi_pol_count_ind
+
+
+pol_alone <- c( NA , # planning + funding + delivery,
+               NA, # planning + delivery,
+                casi_pol_count_ind[1,2], #  delivery, 
+                casi_pol_count_ind[2,2], # planning, 
+                NA, #funding + delivery,
+                casi_pol_count_ind[3,2] # funding 
+                )
+pol_alone # list 
+
+pol_alone_trans <- as.data.frame(t(as.matrix(pol_alone))) # df transposed 
+ pol_alone_trans
+ 
+names(pol_alone_trans)[1] <-"planning + funding + delivery"
+names(pol_alone_trans)[2] <-"planning + delivery"
+names(pol_alone_trans)[3] <-"delivery"
+names(pol_alone_trans)[4] <-"planning"
+names(pol_alone_trans)[5] <-"funding + delivery"
+names(pol_alone_trans)[6] <-"funding"
+
+pol_alone_trans 
+class(pol_alone_trans)
+# convert all col to numeric 
+pol_alone_trans <- sapply( pol_alone_trans, as.numeric )
+
+
+# ALL POSSIBLE (single + COMBINATIONs) 
+pol_sums  <- c(planning_funding_delivery = casi_pol_count[1,2],	
+               planning_delivery = casi_pol_count[2,2], 	
+               delivery = casi_pol_count[3,2], 	
+               planning = 	casi_pol_count[4,2], 	
+               funding_delivery = casi_pol_count[5,2], 	
+               funding = casi_pol_count[6,2] 	
+               )
+pol_sums_df <- as.data.frame(pol_sums)
+pol_sums_df
+
+names(pol_sums_df)[1] <-"planning + funding + delivery"
+names(pol_sums_df)[2] <-"planning + delivery"
+names(pol_sums_df)[3] <-"delivery"
+names(pol_sums_df)[4] <-"planning"
+names(pol_sums_df)[5] <-"funding + delivery"
+names(pol_sums_df)[6] <-"funding"
+ pol_sums_df
+```
+
+## - Diamond chart by policy (actual combo + individual)
+
+
+```{r}
+# sequential("black", what = "alpha")
+
+max(casi_pol_count$n)
+round(max(casi_pol_count$n)*0.25, 0) 
+round(max(casi_pol_count$n)*0.5, 0) 
+round(max(casi_pol_count$n)*0.75, 0)
+
+# To use the fmsb package, I have to add 2 lines to the dataframe: the max and min of each topic to show on the plot!
+pol_prep <- rbind(rep(max(casi_pol_count$n)), #min(casi_pol_count$n)) , 
+                  rep(0,6) , # min  bound
+                  pol_sums_df, # multiple policy area
+                  pol_alone_trans) # only single policy area 
+pol_prep
+rownames(pol_prep) <- c( "max", "min", "multiple policy", "single policy")
+pol_prep
+
+# Color vector rgb(red, green, blue, alpha)
+# colors_border=c( rgb(0.8, 0.4, 0,0.9),  rgb(0,0.2,.8,0.9) )
+# colors_in=c( rgb(1, 0.6, 0, 0.4),       rgb(0,0.2,.8,0.3) )
+
+# Color vector MEF G20
+colors_border_b_g =  c( rgb(69/255, 90/255, 139/255,0.9), rgb(189/255, 135/255, 35/255, 1) ) # blue e giallo
+colors_in_b_g =  c( rgb(69/255, 90/255, 139/255, 0.4),  rgb(189/255, 135/255, 35/255, 0.4) ) #blu e giallo 
+
+ vlabels = rownames(pol_prep[-c(1,2),])
+ 
+
+# Custom the radarChart !
+par(mar=c(0,0,0,0))
+
+# print plot
+radar_policy_mult_ind <-  fmsb::radarchart(pol_prep, 
+                 axistype=1, 
+                 #custom polygon
+                 pcol= colors_border_b_g, # rgb(0.8, 0.4, 0,0.9) , # color polygon rgb(red, green, blue, alpha)
+                 pfcol= colors_in_b_g, # rgb(0.8, 0.4, 0,0.5) , # color polygon filling (last is transparency)
+                 plwd=4 , 
+                 #custom the grid
+                 cglcol="grey", cglty=1, axislabcol="grey", 
+                 #caxislabels=seq(from = 0,to = 52,by = 5), 
+                 caxislabels= c(0, 6, 12, 17,23) , 
+                 cglwd=0.8,
+                 maxmin = TRUE ,
+                 #custom labels
+                 vlcex=0.9 
+                  #, title="Distribution by sector \n (not countingmultiple sectors)"
+)
+ 
+radar_policy_mult_ind 
+ ## Add a legend
+legend("bottomleft", 
+       legend = c("including multiple policy focus", "only individual policy focus"), 
+       bty = "n", 
+       pch=20 , 
+       col=colors_in_b_g , 
+       text.col = "#000000BF",#"#00000080" , 
+       cex=.8, 
+       pt.cex=2)
+
+
+```
+
+### --- save png
+
+```{r}
+# Color vector MEF G20
+colors_border_b_g =  c( rgb(69/255, 90/255, 139/255,0.9), rgb(189/255, 135/255, 35/255, 1) ) # blue e giallo
+colors_in_b_g =  c( rgb(69/255, 90/255, 139/255, 0.4),  rgb(189/255, 135/255, 35/255, 0.4) ) #blu e giallo 
+
+# SAVE image set 
+png (filename = here::here("images", "4_radar_policy_mult+ind_plot.png"),
+     width = 601, height = 488# ,units = "cm" 
+     )
+ 
+#image create 
+# print plot
+radar_policy_mult_ind <-  fmsb::radarchart(pol_prep, 
+                 axistype=1, 
+                 #custom polygon
+                 pcol= colors_border_b_g, # rgb(0.8, 0.4, 0,0.9) , # color polygon rgb(red, green, blue, alpha)
+                 pfcol= colors_in_b_g, # rgb(0.8, 0.4, 0,0.5) , # color polygon filling (last is transparency)
+                 plwd=4 , 
+                 #custom the grid
+                 cglcol="grey", cglty=1, axislabcol="grey", 
+                 #caxislabels=seq(from = 0,to = 52,by = 5), 
+                 caxislabels= c(0, 6, 12, 17,23), 
+                 cglwd=0.8,
+                 maxmin = TRUE ,
+                 #custom labels
+                 vlcex=0.9 
+                  #, title="Distribution by sector \n (not countingmultiple sectors)"
+)
+  
+ ## Add a legend
+legend("bottomleft", 
+       legend = c("including multiple policy focus", "only individual policy focus"), 
+       bty = "n", 
+       pch=20 , 
+       col=colors_in_b_g , 
+       text.col = "#000000BF",#"#00000080" , "grey"
+       cex=.9, 
+       pt.cex=3)
+# SAVE image UN set 
+dev.off()
+ 
+```
+
+> COMMENT 
+interesting how few there are that are not multi-area !!
+
+## JOINED CHARTS 
+
+### -- 2 joined bars 
+```{r}
+ggpubr::ggarrange(stake_bar, admin_bar + rremove("x.text"), 
+          labels = c("Figure 1", "Figure 2"),
+          ncol = 2, nrow = 1)
+```
+
+
+### -- 2 joined diam 
+```{r}
+ggpubr::ggarrange(radar_sect_ind, radar_sect_ind ,# + rremove("x.text"), 
+          labels = c("Figure 3", "Figure 4"),
+          ncol = 2, nrow = 1)
+
+
+
+( stake_bar | admin_bar)
+( radar_sect_ind | radar_sect_ind)
+```
+
+# TABLE for loop no flag (long) 
+
+https://epirhandbook.com/tables-for-presentation.html
+https://ardata-fr.github.io/flextable-gallery/gallery/2021-03-26-tennis-players/
+https://ardata-fr.github.io/flextable-book/rendering.html#simple-export
+```{r  results='asis'}
+
+# add flags to casi
+ flag_path <- fs::path_dir("flags")
+flag_path
+
+for (i in 1:nrow(casi)){
+  onecase <- casi[i,c("id", # country, 
+                      "flag", "name", 
+                      "sector",	"sub_sectors",	
+                      "admin", "key_stakes",	#"key_stakes_types",	
+                      "policy",	"sub_policy_clean",	
+                      "launched",
+                      #	"desc_objective"	,"name"	,
+                      "purpose", 	"intended_outcomes",	"status",	
+                      # "has_regulatory_innovation",	"has_plan_guidelines_std",	"has_O&M_costs_reduction",	
+                      # "has_priv",	"has_data_collec",	"has_tech40",	"has_resilience", 
+                      # "has_knowshar",	"has_age",
+                      "link")]
+  # ft <- flextable(as.data.frame(t(onecase))) %>% 
+  #   autofit()
+  # # set_caption(ft, caption = casi[i,"name"])
+  # print(ft) # , preview = "docx")
+  # 
+  
+  onecase %>% 
+    head() %>% 
+    t() %>% 
+    as.data.frame() %>% 
+    tibble::rownames_to_column() %>% 
+    flextable %>% 
+    # i in selecting rows
+    # compose(#i = "country", 
+    #   i = "flag", 
+    #   value = as_paragraph(" ",
+    #                        as_image(src = flag, width = .5, height = 0.33),
+    #                        " ")
+    # ) %>%
+    autofit()  -> ft 
+  
+  # # compose to modify display value 
+  # ft2 <- flextable::compose(ft, 
+  #           i = i,
+  #           value = as_paragraph( " ",
+  #                                 as_image(src = flag, width = .5, height = 0.33),
+  #                                 " "
+  #           )
+  #   ) 
+  # 
+  # add flags
+  
+  
+  # PRINT? 
+  flextable_to_rmd(ft)  # --- html output 
+  
+  # rmarkdown::word_document() # ---- WORD OUTPUT 
+  # print (ft, preview = "docx") # ---- WORD OUTPUT 2 (no format )
+  # print(x = ft, target = here::here( "image", "example_table_powerpoint.docx")) #---- WORD OUTPUT 3 (no format )
+}
+
+ 
+```
+
+# TABLE for loop yes flag (wide) - NON VIENE
+Error in (function (img_raster, width, height)  : 
+  this format is not implemented
+```{r eval=FALSE, include=FALSE}
+for (i in 1:nrow(casi)){
+  onecase <- casi[i,c("id","country", "name",  "flag",
+                      "sector",	"sub_sectors",	"admin",
+                      "key_stakes",	#"key_stakes_types",	
+                      "policy",	"sub_policy_clean",	
+                      "launched",
+                      #	"desc_objective"	,"name"	,
+                      "purpose", 	"intended_outcomes",	"status",	
+                      # "has_regulatory_innovation",	"has_plan_guidelines_std",	"has_O&M_costs_reduction",	
+                      # "has_priv",	"has_data_collec",	"has_tech40",	"has_resilience", 
+                      # "has_knowshar",	"has_age",
+                      "link")]
+  
+  onecase %>% 
+    head() %>% 
+    # t() %>% 
+    as.data.frame() %>% 
+    tibble::rownames_to_column() %>% 
+    flextable %>% 
+    compose(j = "country",
+            value = as_paragraph(
+              as_chunk(" "), 
+              as_image(src = flag, width = 0.5, height = 0.33)) 
+            
+    ) %>% 
+    autofit()  -> ft 
+  
+   flextable_to_rmd(ft)  # --- html output 
+  
+  # rmarkdown::word_document() # ---- WORD OUTPUT 
+  # print (ft, preview = "docx") # ---- WORD OUTPUT 2 (no format )
+  # print(x = ft, target = here::here( "image", "example_table_powerpoint.docx")) #---- WORD OUTPUT 3 (no format )
+}
+```
+
+
+
+
+
+# TEST 
+```{r eval=FALSE, include=FALSE}
+onecaseT <- casi[1:2,c("id","country", "name", "flag", "sector",	"sub_sectors",	"admin",
+                      "key_stakes",	#"key_stakes_types",	
+                      "policy",	"sub_policy_clean",	
+                      "launched",
+                      #	"desc_objective"	,"name"	,
+                      "purpose", 	"intended_outcomes",	"status",	
+                      # "has_regulatory_innovation",	"has_plan_guidelines_std",	"has_O&M_costs_reduction",	
+                      # "has_priv",	"has_data_collec",	"has_tech40",	"has_resilience", 
+                      # "has_knowshar",	"has_age",
+                      "link")]
+onecaseT
+onecaseT %>% 
+  head() %>% 
+  t() %>% 
+  as.data.frame() %>% 
+  add_rownames() %>% 
+  flextable %>% 
+  compose(i = ~ seq_along(country),
+      j = "flag", 
+      value = as_paragraph(" ",
+                           as_image(src = flag, width = .5, height = 0.33),
+                           " ")
+    ) %>%
+    autofit()  -> ft 
+  ft
+  
+    autofit() -> ft
+
+  # ft <- flextable(as.data.frame(t(onecase))) %>% 
+  #   autofit()
+  # # set_caption(ft, caption = casi[i,"name"])
+  # 
+ ft  
+ 
+ # compose to modify display value 
+  ft2 <- flextable::compose(ft, 
+            i = "country",
+            value = as_paragraph( " ",
+                                  as_image(src = flag, width = .5, height = 0.33),
+                                  " "
+                                  
+            )
+    ) 
+ ft2 
+  # add flags
+```
+

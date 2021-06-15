@@ -1,0 +1,250 @@
+---
+title: "'Caution: road work ahead'"
+subtitle: "Italy in front of the challenge of infrastructure maintenance"
+author:
+- Luisa M. Mimmi^1^, Author II^2^
+- ^1^Independent Consultant, ^2^ Author II Affiliation
+date: "Last updated: `r format(Sys.time(), '%d %B, %Y')`"
+output:
+  bookdown::html_document2:
+    toc: yes
+    toc_float: TRUE
+    number_sections: no
+  bookdown::word_document2:
+    fig_caption: yes
+    md_extensions: +footnotes
+    reference_docx: ../custom_reference.docx
+    toc: yes
+include.latex: TRUE
+csl: ../apa.csl
+bibliography: ../Maintenance-Resilience.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+# Load required packages
+library(tidyverse)
+library(captioner) # You may have to download this
+
+# Preparing to make figure and table captions using the captioner package
+figs <- captioner(prefix="Figure")
+tbls <- captioner(prefix="Table")
+
+# Source helper (data cleaning and basic analyses) 
+# (if you have more .R files, each will source the previous, then the .Rmd sources the last) 
+source("../r_scripts/helper.R")
+```
+
+
+```{r color, include=FALSE}
+# a custom R function to insert the correct syntax depending on the output format using the is_latex_output() and is_html_output() functions in knitr as follows:
+colorize <- function(x, color) {
+  if (knitr::is_latex_output()) {
+    sprintf("\\textcolor{%s}{%s}", color, x)
+  } else if (knitr::is_html_output()) {
+    sprintf("<span style='color: %s;'>%s</span>", color, 
+      x)
+  } else x
+}
+
+# `r colorize("some words in red", "red")`
+# `r colorize("NEXT STEPS:", "orange")`
+
+# icons 
+# install.packages("devtools")
+# devtools::install_github("hadley/emo")
+
+#then in text 
+#`r emo::ji("white_check_mark")` = verde 
+#`r emo::ji("red_circle")` = rosso 
+#`r emo::ji("heavy_exclamation_mark")` = ! 
+```
+
+
+
+# 1) PROBLEM CONTEXT AND SPECIFICITY OF ITALY
+<!-- a bit of context and origin story of this effort  -->
+Outside of technical professional circles, maintenance of infrastructure often gets overlooked until disaster or failure hit and make it newsworthy. The 2018 collapse of the Genoa Morandi Bridge was the most egregious (sadly not isolated) transportation accident in recent years, bringing new resolve to take better care of the national existing infrastructure stock. FUrthermore, the increasing pressure exerted by the abrupt and global shock caused by the pandemic, with its repercussions for the demand and supply of infrastructure services, has made the case for resilient and reliable infrastructure systems even more compelling.
+To be fair, that's no easy feat, especially for a country confronted by a combination of challenges of various nature, including: vulnerability to natural hazards, the legacy of some poor choices of the past, plus the majority of its infrastructural stock being several decades old or near the end of asset life. More concretely: 80% of the highway network was built in the 1960s/70s (with older provincial and local roads that show the worst conditions). 60% of our water distribution network is over 30 years old (and partially responsible for wasting about 40% of our treated water along the distribution network) _[^4]_. In addition, the average age of our ~ 4300 hydroelectric plants (the primary source of renewable energy in Italy) is 70 years and, since their construction, they have lost a significant share of productivity also due to lack of needed maintenance and renovation _[^1]_.
+
+While, inadequate maintenance has definitevely been an issue, the uniquely diverse geomorphology of our country adds complication. It is estimated that hydrogeological issues affect 91% of Italy's municipalities _[^3]_.  Incidentally, the damage following floods and landslides are also related to neglected works of rivers embankement and urban drainage of meteoric water, under stress due to extreme weather events becoming more frequent. Furthermore, Italy's rich orographic and hydrographic features explain one of the most complex transportation network in the world: besides its many bridges (60,000 are only those with some form of monitoring) and viaducts, Italy apparently hosts 50% of all the tunnels in the EU _[^2]_ Beyond that, we must take into account vulnerability to sismic and vulcanic activity, that may raise the need for extraordinary interventions beyond the already significant demand of ordinary maintenance. 
+
+In front of such daunting set of challenges, it would be sensible to give maintenance of existing infrastructural systems the highest political and financial priority. Unfortunately, within a generalized, longstanding infrastructure investment gap (worsened after the GFC of 2008), **spending on maintenance has been far from adequate** _[^5]_.  This is true not only in Italy, but also in many other developed and emerging countries dealing with a similar mix of challenges _[^6]_. 
+
+What follows is an attempt to explain, in broad terms, why this is the case, as well as to offer glimpses of recent initiatives that, in turn, seem to be heading in the right direction. 
+
+# 2) WHY WE NEGLECT  + BEGINNING of an ANSWER 
+
+There are obviously many intertwined reasons that can respond to our question, but most could be ascribed to **3 main fallacies**: 1) an information deficit, 2) misguided policy approaches; 3) failure to treat infrastructure according to its essence.   
+
+## 2.a) AN INFORMATION DEFICIT 
+
+> _"In God we trust, all others bring data"_ (Dr. William Edwards Deming)
+
+The number one complaint that recurrently emerges in the dedicated literature is the difficulty to obtain "quality data" related to infrastructure maintenance: i.e. accurate information about the assets inventory (age, location, status, technical features), usage volumes and performance, degree of exposure and vulnerability to various hazards. Evidently, those data would also be vital for assessing the optimal level of expenditure required for ordinary and extraordinary maintenance and for works prioritization (which, in turn, is hard to disentangle from capital investments accounting). Most importantly, even when data are available (in some sectors, like transportation, more than in others), they often lack accessibility and/or comparability - which would be especially important for **budgeting and management decisions that should encompass a portfolio of assets**. `r colorize("LIT evidenzia lack of data...", "red")` In this sense, Italy has taken a fundamental step with the creation of `r colorize("AINOP", "blue")` ( _Archivio Informatico Nazionale delle Opere Pubbliche_ ), established by art. 13 of Law Decree n.109  of 28 septembre 2018, (so called _"Decreto Genova"_ ). While still at an early stage, it is very **promising to have a national repository of all public works-related data**, designed around the idea of platforms interoperability and knowledge sharing across different public administration entities. `r colorize("incentivi a riempire AINOP? ...", "red")`    
+
+Quantification of deferred maintenance (also referred to as **"maintenance backlog"**) is often mentioned (less often used) as a valid input for multi-year budgeting in that, if disclosed, it can reveal (in monetary terms) the amount of unfulfilled demands at a given point in time needed to secure a minimum acceptable standard _[^12]_. In fact, this analytical tool provide a compelling argument in the hands of operators and administrations when justifing the choice of spending on maintenance against other competing demands. `r colorize("It is for this motivation that the Austrian State Road Administrations commissioned a study that developed a model linking the available annual maintenance budgets to the size of road maintenance backlog [@weninger-vycudil_effect_2017].", "blue")`
+
+Another issue concerns the insufficient empirical evidence illustrating the actual effects of maintenance spending - or lack thereof. As studies illustrate (frequently applied to road pavement _[^7]_), there is a **different return to maintenance conducted at different points** in the asset's life cycle, which means early interventions can be more economical than those occurring after deterioration has advanced. In addition to such core costs (or the benefit of prolonging the asset's life), there are often under-reported _negative externalities_ imposed on the environment, the productive system and users (meaning the additional damage, to the extreme of loss of life). The sector of transportation (once again) offers some empirical evidence connecting neglected maintenance with road safety. For example, the Ministry of Infrastructure has provided estimates of the "social cost" of road accidents (i.e. an economic quantification of the damage to individuals, and to society). The total figure estimated for Italy in 2019 is € 15 billion related to all accidents (fatal or not) causing harm to people. A percentage between 5% and 20% of them [thus corresponding to social cost between € 75mln to 3mld ] `r colorize("pick: 5% or 20% ???", "red")` can be attributed to road conditions (poor signage, pavement issues and route anomalies) or, indirectly, to drivers' reactions to those. _[^8]_ These are hard-to-get estimates, but it is plausible that being able to **draw this sort of causal links (between maintenance and its direct and and indirect benefits/costs)** could potentially increase shared awareness and **steer maintenance planning and budgeting decisions according to a cost-benefit analysis spanning the whole life-cycle**. `r colorize("Italy has introduced (relatively recently compared to other EU countries) guidelines to encourage the adoption of ex ante evaluation (in the logic of cost-benefit analysis) of public works - 'D. Lgs. 228/2011: Linee Guida per la Valutazione degli Investimenti in Opere Pubbliche', while the new 'Codice degli appalti', approved by D.Lgs. 50/2016 ushered a stronger emphasis on technical and economical feasibility in light of stakeholders' needs", "blue")` _[^9]_
+  
+## 2.b) MISGUIDED POLICY APPROACHES
+
+As hinted above, data would be pointless without channels to **turn information into intelligence, then decisions, then actions**. Here is where we must shift our attention onto the set of laws, regulations, institutions and processes that can enable (or hamper) proper public infrastructure operation and spending. Rather than listing possible infrastructure governance issues and related solutions (which would be a huge, out of scope endeavour) _[^10]_ we can briefly mention certain aspects at the root of many governance problems. 
+
+## --- weak strategic planning
+Italy suffers from an overall **weakness of the strategic planning function** resulting in a fragmented, inefficient and slow approach to investment decision making, although various normative interventions have recently attempted to correct it _[^11]_. Some expert oberrvers (S. Cassese and Scandizzo) _[^17]_ attribute this from a progressive retreat /reduction of the institutional agencies in charge, or, more than that, from an insufficient presence of human resources in the public agencies with a technical profile. It is worth clarifying that better strategic planning does not necessarily equal "centralized", but it does require **a unified vision, transparency of the prioritization criteria, and strong coordination among the various entities (public and private, national or local) handling infrastructure investments and operations**. Ideally, this should translate into aligning priorities across ministries and between central and local authorities according to shared economic development goals, and having clear attribution of roles and competences (there are bridges with no clear "owner") and a consistent methodology for projects' evaluation. 
+
+Furthermore, if an asset (e.g. a highway tract under concession) is managed under a monopolistic configuration, proper oversight, along with tariff regulation, becomes paramount _[^14]_. Similarly, there are many legitimate arguments in favor of having infrastructure services provided by local entities (closer to the needs of their constituencies), but there have to be mechanisms in place to ensure that also **decentralized powers at the local level have sufficient resources** - human, financial, technical - to properly manage the assets _[^13]_. `r colorize("Canada offers a demonstration of how funding and financing of infrastructure maintenance can be supported effectively even when the vast majority of the national public infrastructure is under the purview of sub-national entities, with its recent [Municipal Asset Management Plan](https://www.ontario.ca/page/municipal-asset-management-planning) designed to improve asset management planning practices.", "blue")` In other words, **the real issue is not necessarily the asset ownership/management regime _per se_, but whether the necessary conditions are in place to uphold the interests of _all_ stakeholders**. 
+
+## --- regulators flying blind
+
+[@club_of_regulators_governance_2018, p.3 1st roundtable : Infrastructure Maintenance]!!!!!!
+
+## --- a vexing _ex-ante_ autorization iter (making up for lack of _ex-post_ evaluation?) 
+Besides the planning phase, in Italy, also the subsequent authorization, bidding and delivery phases suffer an excessive lenghtiness that must be addressed - even more so in light of the forthcoming resources linked to the NextGenerationEU and other stimulus instruments. The longstanding debate on the delay in the authorizative iter of public infrastructure projects blame: a labyrinthine and hypertrophic normative framework, the multiplicity of agencies involved (over 32 thousand procurement agencies) _[^18]_, an inefficent permit granting sequence (moving back and forth from agency to agency), insufficient technical capacity within public administrations and long payment periods. 
+>Secondo i rapporti del nucleo di valutazione dell’Agenzia per la coesione territoriale, infatti, per realizzare opere, anche piccolissime, sotto i 100 mila euro, servono in media due anni e tre mesi, mentre per le grandi opere si arriva a circa 15 anni e 8 mesi. Oltre la metà della durata dei lavori (il 54,3 per cento) è dovuta ai cosiddetti “tempi di attraversamento”, tempi morti tra la fine di un procedimento e l’inizio di quello successivo. [@immordino_infrastrutture_2020]
+
+There is a longstanding debate on this difficult, all-Italian phenomenon, but a recent report by Aspen Italia offered a compelling synthesis when it encouraged a shift to a "trust economy" (_'economia della fiducia'_) that should **focus on more rigorous and consistent monitoring function of infrastructure assets post-construction, rather than imposing a vexing and endless process for _ex-ante_ autorization**. The latter is responsible for a big chunk of the delays in projects constructions, which necessarily trigger also cost overrruns, if not the loss of allocated funds _[^15]_. It is certainly hard to balance a healthy competition and legitimate controls (against corruption, rent seeking, etc.) with minimizing the bureaucratic burden. One example is the "principle of rotation" to which Public Administrations' procurement is subject, intended to secure competition and access to opportunities for all construction firms. Sometimes, seeking fairness in public tenders can reduce local authorities's discretion to re-award contracts to firms that have proven quality and gained prior knowledge on a specific asset - thus bringing less efficient allocation of resources.  
+`r colorize ("Various significant measures intended to streamline these processes are layed out in Law n. 120, 11 Septemper 2020, «Decreto Semplificazioni»", "blue")`   
+
+No matter where you stand, (from government, to contractors) everybody would rather focus on new assets, whereas there is no "glamour" in maintenance, even more so when budgets are squeezed, inspection and maintenance can easily be postponed or neglected. Reasons for that are also related to the organization internal governance and reward incentives. Maintenance (especially ordinary) is filed under costs and is not considered an investment, which may not be perceived as urgent when the true state of deterioration of infrastructure is unknown and because its benefits may not be immediately apparent to stakeholders. Shifting the paradigm to a stronger ex-post monitoring and evalution make sense also in view of **promoting incentives to deliver results in terms of benefits that (as mentioned below) are often disregarded**: environmental externalities, equity effects, positive economic spillovers, and performance of the facility from both a user and infrastructure perspective far beyond what was anticipated. Going back the the initial information deficit idea, better tracking of performance would also be the premise of rewarding it. Incentives could also reward projects that are finished on time (e.g. borrowing fee increases for projects that are significantly late). `r colorize ("Esempi di Performance reward? lessons from PPPs ? WB?", "blue")`   
+
+## ---   seeking the _stakeholder support_
+One aspect that can be linked to the above-mentioned rewards is taking a multistakeholder engagement approach, actively communicating with communities in outreach campaigns and collaborating with local fellow operators and users to generate and capture a greater positive impact. 
+
+ 
+## 2.c) TACKLING INFRASTRUCTURE DISREGARDING ITS NATURE (METODO IMPOSTO DALL'OGGETTO)  
+
+## --- ROLE OF INFRA INTO PLANNNG 
+Recognizing the crucial role of infra for growth and economic development must lead to a necessary alignment of infrastructure investments with economic development goals. BTG has illustrated this better than anyone... 
+Scenario building approach 
+What is the geopolitical priority? What do I see for my urban centers? --> [Giovannini priorities](https://www.edilportale.com/news/2021/04/lavori-pubblici/codice-appalti-e-opere-del-recovery-plan-giovannini-dimezziamo-i-tempi_82085_11.html)
+1. al trasporto sul ferro. 
+2. mobilità sostenibile, con investimenti in mezzi pubblici non inquinanti, autobus nuovi con emissioni ridotte, e alla mobilità dolce delle ciclovie.
+3. ultimo miglio, cioè la connessione fra porti e aeroporti e la rete ferroviaria.
+
+## --- PEOPLE OVER SERVICE& SERVICE OVER ASSETS 
+Speaking of priorities there has to be a clear one 
+
+
+## --- le reti sono in rete 
+ having a systemwide (portfolio) perspective  + noi puoi risolvere l'esondazione solo con argini piu alti, devi parlarne a livello di bacino [@reopen__spl_acqua_rifiuti_trasporti_lo_2020]
+
+## --- we need triage of works 
+ + an example of that *CIAS*
+
+## --- le reti sono interdipendenti (network effect) 
+ il raggiungimento degli obiettivi per una buona gestione di acqua ed energia significherebbe ulteriori investimenti per circa 6,4 miliardi di euro: risorse che potrebbero far parte a pieno titolo del Piano nazionale di rilancio e resilienza (Pnrr) per accedere al Recovery fund. Tra le raccomandazioni suggerite dallo studio, c’è:
+  + **prima di tutto l’ultimazione delle opere incompiute**, In Italia vi sono 31 grandi opere idriche incompiute soprattutto al Sud (produzione elettrica addizionale di quasi 30 GWh all’anno, con una disponibilità idrica aggiuntiva di circa 850 milioni di metri cubi.)
+  + **il rinnovamento dei grandi bacini idroelettrici**, (4 TWh l’apporto aggiuntivo e in 900 milioni di metri cubi quello alla sicurezza idrica)
+  + **l’avvio del Piano invasi**, (già finanziato con 250 milioni di euro per 30 interventi individuati nel periodo 2018-2022)
+  + **il ricorso agli accumuli con impianti a pompaggio**, (supply security e soluzioni polivalenti) 
+  + **gli impianti di desalinizzazione** 
+  + **e le vasche di laminazione**. (eviterebbe invece allagamenti e inondazioni anche nei centri urbani)
+  [@althesys_energy_2020]
+
+## ---  _Collaboration across departments and breaking down of silos_
+
+
+
+  
+# 3) WHERE TO NOW 
+
+## --- + we have done great in 1 case  *Carpaneto*
+it is a gem because it showcases all the impressive potential of design with a cities needs in mind, all the potential of technology to enable predictive maintenance in the future, but what is almost miracolous in Italy is speed which was allowed by **Project Management**  
+
+## --- + tapping into opportunities like OLYMPICS AND Expo 2015 fir *A2A* and *IREN* or drawing motivation from disaster like *GEnova* or *NY city* after Sandy 
+
+## ---  SHIFTING GROUNDS 
+*Camanzi* (ex presidente dell’Autorità dei trasporti) 
+noted how amidst the ongoing transition towards more digitalization and sustainability, the approach to transportation has completely shifted focus: with capacity measurement and management moving from the container / mode of transportation towards the "content", i.e. global goods requiring smooth and integrated multimodal logistic and people expressing end-to-end mobility needs. 
+ 
+
+## --- while you at it (fixing) turning it to circular 
+
++ water (only 2% of waste water is reused) -> we must look into fit-for-purpuse water reuse 
+
+## --- although it is not gold what looks green (CHALLENGE AND/OR OPPORTUNITY)? 
+
+## --- ADN YET PUSHING FOR INNOVATION MAY SOLVE MORE THATN YOU BARGAIN FOR 
+
+
+# ____ STOP 
+# 7 CONCLUSIONS 
+
+>The conclusion should provide a summary of YOUR findings from the literature review. Explain what your analysis of the material leads you to conclude about the overall state of the literature, what it provides and where it is lacking. You can also provide suggestions for future research or explain how your future research will fill the gaps in the existing body of work on that topic.
+
+1. It is a macro & micro approach that is needed
+
+2. BE (mindfully) STRATEGIC 
+As per [@gordon_federal_1994 and others??? ] the analytical steps that would allow to tackle in a more evidence-based the problem are 
+
+(1) assessment of the condition of the assets
+(2) determination of a minimum acceptable condition level for each type of assets _(rarely done!)_
+(3) estimation of the cost to bring those assets back to acceptable condition
+(4) estimation of the consequences of deferring maintenance _(rarely done!)_
+
+3. Figure out how to reconcile the tension between an oversight that has to be strategically centralized, versus an attention to needs/opportunities/constrainted that benefits from being localized 
+@gordon_federal_1994 reports the interveiews mention how the governemnt and its agencies need to establish common groundrules /guidelines (e.g. for establishing minimum acceptable conditions) 
+
+
+4. Figure out how to incorporate technical consideration in a decision system that works for public administration 
+> "Although there is an extensive body of civil engineering literature (e.g., Chang et al., 2017; National Research Council, 1990; Saha & Ksaibati, 2016), there are no solid theoretical and empirical models for understanding the determinants of asset maintenance spending, beyond technical factors, from a public administration or financial management perspective. This study is a first step toward building asset maintenance theory in public capital budgeting. " [@kim_asset_2020-1]
+
+In other words, "Quantifiable performance measures tied to realistic policy objectives and implementation targets." [@uddin_public_2013] 
+
+5. Jurina
+BEllissimo che ci sia l'eccellenza del ponte di Genova, pero si procede a macchia di leopardo... meglio allora fare verifiche piu costanti anche se superficiali 9metodo CIAS Linee Guida, primo livello, secondo livello ecc) 
+Stessa cosa per i terremoti dopo che ne succede uno gli ingegneri se ne dimenticano... sistematicita di controlli diagnostici ragionevoli invece che super eccelleza sporadica 
+> copiare intelligentemente il triage dell'emergency room 
+
+
+## Insert footnotes.
+Because we specified footnotes in the markdown extensions in our YAML , we can now include them in the text.
+
+
+[^1]: [@marangoni_lidroelettrico_2018]
+
+[^2]: [@balassone_indagine_2020]
+
+[^3]: [@martinelli_spazio_nodate]
+
+[^4]: [@istat_statistiche_2021]
+
+[^5]: A report [@schroten_overview_2019] estimating transportation expenditure in the EU28 (including breaking down those for O&M) shows that road O&M expenditures in 2016 were 86% of 1995 (from 0.4% of GDP to just below 0.3% of GDP). // Looking at emerging countries, Rozenberg and Fay [@rozenberg_beyond_2019] estimated that between 1 and 3 percentage points of GDP of annual maintenance spending will be needed to reach the SDGs in key infrastructure sectors by 2030. // 2019 OCSE data shows Public investment declined on average, (transport infrastructure, military defence systems, public buildings and other tangible or intangible assets) in OECD governments: the 2017 average of 3.1% of their GDP was a 0.5 p.p. decrease from 2007 [@ocse_government_2020] // In the US, 2015, net government investment on (new) infrastructure minus the deterioration of old infrastructure – was close to 0.5% of GDP, far below the historical range of between 1% and 2% of GDP during 1970-2010. [@wessel_case_2017]. // Also public maintenancs espending in roads declinging between 2007 - 2017 [@international_transport_forum_evolution_2019]
+
+
+[^6]: In the United States (American Society of Civil Engineers 2017), where 44 percent of bridges are 40 years or older, about 9 percent of all bridges are considered to be structurally deficient (that is, requiring significant maintenance, rehabilitation, or replacement) In France, lack of maintenance spending on the rail network since the late 1970s (and a concomitant focus on the devel- opment of high-speed trains) has led in the past 10 years to the paradoxical doubling of the share of the network where trains can only move at low speed, creating delays and suboptimal traffic (Spinetta 2018). Poor maintenance of transmission lines has also historically been one of the possible reasons cited for causing electricity blackouts globally (Yu and Pollitt 2009). [@imf_well_2020].
+
+[^7]:  USD1 spent for preventative maintenance early in the pavement life is equivalent to USD4-5 spent later in the pavement life. (i.e. there is a different return to maintenance at different times) [@weninger-vycudil_effect_2017; @kornejew_well_2019; @federal_aviation_administration_airport_2020 Fig 1 'Typical Pavement Lifecycle Curve"]
+
+[^8]: [@polis-lombardia_lincidentalita_2020] Road safety <-  maintenance [@frisoni_eu_2014, e CRISPINO] 
+
+[^9]: Here is a report dedicated to discuss the benefit‐cost ratio of strengthening infrastructure resilience [@hallegatte_strengthening_2019] italy also approved _CBA_ use in 2011 D. Lgs. [@mit_notitle_nodate] and discussion of its implementation is here [@senato_valutazione_2017]. THe EU Commission, in 2014, issued also general References [@sartori_guide_2015]
+
+[^10]: [@imf_well_2020, p233 how to better integrate planning and budgeting // Public Investment Programs // Specialized infras agencies ] [@oecd_recommendation_2014]
+
+[^11]: Scandizzo spoke “projectization” = una proliferazione di piani senza progetti e progetti senza piani, a una riduzione degli investimenti netti e a una generale tendenza al declino della spesa produttiva in conto capitale [@gruppo_dei_20_pnrr_2021]. See also [@banca_ditalia_lefficienza_2012] 
+
+[^12]: See mention of it maintenance backlog in: [@dvorkin_infrastructure_2020; @gordon_federal_1994; @litzka_effect_2012; @summers_bridges_2017; @weninger-vycudil_effect_2017]
+
+[^13]: On governance / issues with coordination, see [@noauthor_improving_nodate; @oecd_recommendation_2014, @fondazione_caracciolo_il_2018 (the fragmentation of the competence attribution is especially intricate for O&M aspects, which may even end up into administrative contentious lawsuites)] // trasferimento strade ANAS a regioni/provincie (1998) poi iter di "rientro" iniziato ell'agosto 2017 - riforma Delrio con taglio delle province 
+
+[^14]: Discussing Italian concessions [@balassone_indagine_2020] 
+
+[^15]: See  [@aspen_institute_aspen_2020-1; @carlucci_tempi_2019 ] 
+
+[^16]: See  **????** + [@kahn_fix_2011]
+
+[^17]: See  **????** & LIMEs... "Il nostro rapporto schizofrenico e irrisolto con lo Stato e con le sue emanazioni istituzionali ha favorito quel disinvestimento negli apparati burocratici che ha caratterizzato la postmodernità italiana. In ciò non ci distinguiamo molto da gran parte del mondo sviluppato. Salvo che da noi i contraccolpi della pratica si sono sommati a carenze storiche, antiche difformità territoriali e al parallelo collasso delle scuole di partito, spazzate via da Tangentopoli."  
+
+[^18]: [@maronta_il_2021]
+
+
+# Results
+
+
+
+# References
+
